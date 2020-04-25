@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0">
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <title> Изменение категории блюда </title>
+    <!-- CSS -->
+    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="../css/owl.carousel.min.css">
+    <link type="text/css" rel="stylesheet" href="../css/font-awesome.css">
+    <link type="text/css" href="../css/animate.css" rel="stylesheet" />
+    <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet" />
+    <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet" />
+    <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet" />
+
+</head>
+<body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
+<div id="site-head">
+    <!-- Header Section Begins -->
+    <header id="header" class="header-block" data-top="0" data-scroll="100">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 main-menu">
+                    <div class="menuBar scrollbtn">
+                        <nav class="navbar navbar-default">
+                            <div class="container-fluid">
+                                <div class="navbar-header">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+                                    <!--<div class="logo">
+                                        <h3><a class="navbar-collapse" th:href="@{/Director/index}">КАФЕ GORBIK</a></h3>
+                                    </div>-->
+                                </div>
+                                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                    <ul class="nav navbar-nav navbar-right">
+                                        <li class="active"><a th:href="@{/Director/index}"><font color="#ff7f50">Главная</font></a></li>
+                                        <li><a th:href="@{/Director/menu}"><font color="#ff7f50">Меню</font></a></li>
+                                        <li><a th:href="@{/Director/workers}"><font color="#ff7f50">Сотрудники</font></a></li>
+                                        <li><a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
+                                           th:href="@{/logout}"><font color="#ff7f50">Выход</font></a></li>                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section Ends -->
+
+    <section  class="reservation-block pad-top-100 pad-bottom-100">
+        <div class="container pr">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> <br>
+                    <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span> Изменение категории блюд<span class="side-img right-side-img"><i></i><i></i><i></i></span> </h2>
+                    <br><h4 class="block-title text-align-center">Измените, если это нужно, название категории и нажмите кнопку 'Сохранить'</a></h4>
+                    <br>
+                    <form enctype="multipart/form-data" th:action="@{/Director/category_update}" th:object="${category}" method="post">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col"><input th:field="*{id}" type="hidden" class="form-control" id="id"
+                                                        th:value="${category.id}" novalidate></div>
+                                <div class="row">
+                                    <div class="col mb-4">
+                                        <h4><label for="name">Название категории</label></h4>
+                                        <input th:field="*{name}" type="text" class="form-control" id="name" placeholder=""
+                                               th:value="${category.name}" required>
+                                        <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+                                    </div>
+
+                                    <hr class="mb-4">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">
+                                                    Сохранить
+                                                </button>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <button type="button" class="btn btn-danger btn-lg btn-block"
+                                                        th:onclick="'javascript:sure(\'' + ${category.id} + '\');'">Удалить
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<br/><br/><br/>
+<script>
+    function sure(id) {
+        /*
+                var path = "/dish_remove?id=" + id;
+                var form = document.createElement("form");
+                form.setAttribute("method", "delete");
+                form.setAttribute("action", path);
+
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", "1");
+                hiddenField.setAttribute("value", '1');
+
+                form.appendChild(hiddenField);
+
+                document.body.appendChild(form);
+        */
+
+        var sured = confirm("Вы уверены, что хотите удалить категорию?");
+        if (sured) {
+            // form.submit();
+            document.location.href = "category_remove?id=" + id;
+        }
+    }</script>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS-->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<!-- Jquery Js -->
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/element.js"></script>
+<script type="text/javascript" src="../js/modernizr.js"></script>
+<script type="text/javascript" src="../js/owl.carousel.js"></script>
+<script type="text/javascript" src="../js/jquery.localscroll-1.2.7-min.js"></script>
+<script type="text/javascript" src="../js/wow.min.js"></script>
+<script type="text/javascript" src="../js/imagesloaded.pkgd.min.js"></script>
+<script type="text/javascript" src="../js/jquery.isotope.min.js"></script>
+<script type="text/javascript" src="../js/jquery.parallax-1.1.3.js"></script>
+<script type="text/javascript" src="../js/jquery.magnific-popup.js"></script>
+<script type="text/javascript" src="../js/moment-with-locales.js"></script>
+<script type="text/javascript" src="../js/bootstrap-datetimepicker.js"></script>
+</body>
+</html>

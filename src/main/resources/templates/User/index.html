@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" xmlns:background="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0">
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <title> Главная </title>
+    <!-- CSS -->
+    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="../css/owl.carousel.min.css">
+    <link type="text/css" rel="stylesheet" href="../css/font-awesome.css">
+    <link type="text/css" href="../css/animate.css" rel="stylesheet" />
+    <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet" />
+    <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet" />
+    <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet" />
+
+</head>
+
+<body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
+<div id="site-head">
+    <!-- Header Section Begins -->
+    <header id="header" class="header-block" data-top="0" data-scroll="100">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 main-menu">
+                    <div class="menuBar scrollbtn">
+                        <nav class="navbar navbar-default">
+                            <div class="container-fluid">
+                                <div class="navbar-header">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+<!--                                    <div class="logo">
+                                        <h3><a class="navbar-collapse" th:href="@{/User/index}">КАФЕ</a> </h3>
+                                    </div>-->
+                                </div>
+                                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                    <ul class="nav navbar-nav navbar-right">
+                                        <li><a th:href="@{/User/entrance}">Log in</a></li>
+                                        <li class="active"><a href="#banner">Home</a></li>
+                                        <li><a href="#about">About us</a></li>
+                                        <li><a href="#gallery">Gallery</a></li>
+<!--                                        <li><a href="#reservation">Reservation</a></li>-->
+                                        <li><a href="#footer">Contact us</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section Ends -->
+
+    <!-- Banner Section Begins -->
+    <section id="banner" class="banner full-screen-mode parallax-fix parallaximg">
+        <div class="container pr">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="banner-text wow animated fadeInUp" data-wow-delay="1s">
+                        <div class="banner-cell">
+                            <h1> <img src="../images/dine-img.png" alt="image" /> Dine With Us </h1>
+                            <h2> <span class="side-img left-side-img"><i></i><i></i><i></i></span> consectetuer adipiscing <span class="side-img right-side-img"><i></i><i></i><i></i></span> </h2>
+                            <p> Lorem ipsum dolor sit amet consectetuer adipiscing </p>
+                            <h3> Aenean commodo ligula eget dolor Aenean consectetuer adipiscing </h3>
+                            <div class="banner-buttons scrollbtn">
+                                <a th:href="@{/User/menu}" class="orange-btn">Menu</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Banner Section Ends -->
+</div>
+
+<div class="main">
+
+    <!-- About Section Begins -->
+    <section id="about" class="about-block pad-top-100 pad-bottom-100">
+        <div class="container pr">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 wow animated fadeInLeft" data-wow-delay="0.5s">
+                    <div class="about-img">
+                        <img src="../images/about-img.png" alt="images" />
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <h2 class="block-title"> About Us <span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
+                    <h3> IT STARTED, QUITE SIMPLY, LIKE THIS... </h3>
+                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusm incididunt ut labore et dolore magna aliqua. Ut enim ad minim venia, nostrud exercitation ullamco. </p>
+                    <p> Aenean commodo ligula eget dolor aenean massa. Cum sociis nat penatibu set magnis dis parturient montes, nascetur ridiculus mus. quam felisorat, ultricies nec, Aenean commodo ligula eget dolor penatibu set magnis is parturient montes, nascetur ridiculus mus. quam felisorat, ultricies nec, pellentesque eu, pretium quis, sem. quat massa quis enim. Donec vitae sapien ut libero venenatis fauci Nullam quis ante. Etiam sit amet rci eget eros. </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- About Section Ends -->
+
+    <!-- Food Gallery Section Begins -->
+    <section id="gallery" class="gallery-block pad-top-100 pad-bottom-100">
+        <div class="container pr">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h2 class="block-title text-align-center"> <span class="side-img left-side-img"><i></i><i></i><i></i></span> Food Gallery <span class="side-img right-side-img"><i></i><i></i><i></i></span> </h2>
+                    <h5 class="title-caption text-align-center"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusm incididunt ut labore et dolore magna aliqua. Ut enim ad minim venia,nostrud exercitation ullamco. </h5>
+                    <div id="popup-gallery" class="food-gallery wow animated fadeInUp" data-wow-delay="0.2s">
+                        <div class="food-gallery-item gallery-small-height">
+                            <a href="../images/gallery-1.png">
+                                <img src="../images/gallery-1.png" alt="images" />
+                                <div class="image-hover-overlay">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="food-gallery-item wide gallery-small-height wow animated fadeInUp" data-wow-delay="0.3s">
+                            <a href="../images/gallery-2.png">
+                                <img src="../images/gallery-2.png" alt="images" />
+                                <div class="image-hover-overlay">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="food-gallery-item gallery-small-height wow animated fadeInUp" data-wow-delay="0.4s">
+                            <a href="../images/gallery-3.png">
+                                <img src="../images/gallery-3.png" alt="images" />
+                                <div class="image-hover-overlay">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="food-gallery-item gallery-big-height wow animated fadeInUp" data-wow-delay="0.5s">
+                            <a href="../images/gallery-4.png">
+                                <img src="../images/gallery-4.png" alt="images" />
+                                <div class="../image-hover-overlay">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="food-gallery-item wide gallery-big-height wow animated fadeInUp" data-wow-delay="0.6s">
+                            <a href="../images/gallery-5.png">
+                                <img src="../images/gallery-5.png" alt="images" />
+                                <div class="image-hover-overlay">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="food-gallery-item gallery-small-height wow animated fadeInUp" data-wow-delay="0.7s">
+                            <a href="../images/gallery-6.png">
+                                <img src="../images/gallery-6.png" alt="images" />
+                                <div class="image-hover-overlay">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="food-gallery-item gallery-small-height wow animated fadeInUp" data-wow-delay="0.8s">
+                            <a href="../images/gallery-7.png">
+                                <img src="../images/gallery-7.png" alt="images" />
+                                <div class="image-hover-overlay">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="food-gallery-item gallery-small-height wow animated fadeInUp" data-wow-delay="0.9s">
+                            <a href="../images/gallery-8.png">
+                                <img src="../images/gallery-8.png" alt="images" />
+                                <div class="image-hover-overlay">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="food-gallery-item gallery-small-height wow animated fadeInUp" data-wow-delay="1s">
+                            <a href="../images/gallery-9.png">
+                                <img src="../images/gallery-9.png" alt="images" />
+                                <div class="image-hover-overlay">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="food-gallery-item wide gallery-small-height wow animated fadeInUp" data-wow-delay="1.1s">
+                            <a href="../images/gallery-10.png">
+                                <img src="../images/gallery-10.png" alt="images" />
+                                <div class="image-hover-overlay">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Food Gallery Section Ends -->
+
+    <!-- Reservation Section Begins
+    <section id="reservation" class="reservation-block pad-top-100 pad-bottom-100">
+        <div class="container pr">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h2 class="block-title text-align-center"> <span class="side-img left-side-img"><i></i><i></i><i></i></span> Reservations<span class="side-img right-side-img"><i></i><i></i><i></i></span> </h2>
+                    <h5 class="title-caption text-align-center mar-bottom-25"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusm incididunt ut labore et dolore magna aliqua. Ut enim ad minim venia,nostrud exercitation ullamco. </h5>
+                    <form class="reservation-block">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-box">
+                                <input type="text" placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-box">
+                                <input type="text" placeholder="E-Mail ID">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-box">
+                                <input type="text" placeholder="contact no.">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-box">
+                                <select>
+                                    <option selected disabled>No. Of persons</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-box">
+                                <input type="text" id='date-picker' placeholder="Date" />
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-box">
+                                <input type="text" id='time-picker' placeholder="Time" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-box">
+                                <select>
+                                    <option selected disabled>preferred food</option>
+                                    <option>Indian</option>
+                                    <option>Continental</option>
+                                    <option>Mexican</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-box">
+                                <select>
+                                    <option selected disabled>Occasion</option>
+                                    <option>Wedding</option>
+                                    <option>Birthday</option>
+                                    <option>Anniversary</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 reserve-book-btn text-align-center">
+                            <a href="#" class="orange-btn">BOOK MY TABLE</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+     Reservation Section Ends -->
+
+    <!-- Footer Section Begins -->
+    <section id="footer" class="footer-block color-white parallax-fix parallaximg-7 pad-top-100">
+        <div class="container pr">
+            <div class="row">
+                <div class=" footer-section">
+                    <div class="footer-content">
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <div class="contact-us">
+                                <h3 class="footer-title">Contact Us</h3>
+                                <ul>
+                                    <li> <i class="fa fa-map-marker"></i> <span> 121 King St, Melbourne VIC 3000, Australia </span> </li>
+                                    <li> <i class="fa fa-phone"></i> <span> +91 98 76 543210 </span> </li>
+                                    <li> <i class="fa fa-envelope-o"></i> <a href="#"> support@food.com </a> </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <div class="opening-hours">
+                                <h3 class="footer-title">opening hours</h3>
+                                <h6><i class="fa fa-calendar-minus-o" aria-hidden="true"></i> <span>Monday - Thursday <br/> 10:00 AM - 7:00 PM</span> </h6>
+                                <h6><i class="fa fa-calendar-minus-o" aria-hidden="true"></i> <span>Friday - Saturday <br/> 10:00 AM - 3:00 PM</span> </h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer Section Ends -->
+
+    <!-- Back to top Section Begins -->
+    <a href="javascript:void(0);" class="back-to-top"><i class="fa fa-long-arrow-up" aria-hidden="true"></i></a>
+    <!-- Back to top Section Ends -->
+</div>
+<!-- Jquery Js -->
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/element.js"></script>
+<script type="text/javascript" src="../js/modernizr.js"></script>
+<script type="text/javascript" src="../js/owl.carousel.js"></script>
+<script type="text/javascript" src="../js/jquery.localscroll-1.2.7-min.js"></script>
+<script type="text/javascript" src="../js/wow.min.js"></script>
+<script type="text/javascript" src="../js/imagesloaded.pkgd.min.js"></script>
+<script type="text/javascript" src="../js/jquery.isotope.min.js"></script>
+<script type="text/javascript" src="../js/jquery.parallax-1.1.3.js"></script>
+<script type="text/javascript" src="../js/jquery.magnific-popup.js"></script>
+<script type="text/javascript" src="../js/moment-with-locales.js"></script>
+<script type="text/javascript" src="../js/bootstrap-datetimepicker.js"></script>
+
+</body>
+
+</html>
