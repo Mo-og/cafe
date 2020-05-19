@@ -39,8 +39,8 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li><a th:href="@{/User/index}"><font color="#ff7f50">Главная</font></a></li>
-                                        <li><a th:href="@{/User/entrance}"><font color="#ff7f50">Вход</font></a></li>
+                                        <li><a th:href="@{/User/index}"><span style="color: #ff7f50;">Главная</span></a></li>
+                                        <li><a th:href="@{/User/entrance}"><span style="color: #ff7f50;">Вход</span></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -76,12 +76,12 @@
 
                             <tr th:each="dish, state : ${dishes}">
                                 <!--<td class="align-middle"><span th:text="${dish.id}"/></td>-->
-                                <td class="align-middle"><span th:text="${state.count}"/></td>
-                                <td class="align-middle"><span th:text="${dish.name}"/></td>
-                                <td class="align-middle"><span th:text="${dish.category}"/></td>
-                                <td class="align-middle"><span th:text="${dish.weight}"/></td>
-                                <td class="align-middle"><span th:text="${dish.price}"/></td>
-                                <td class="align-middle"><span th:text="${dish.ingredients}"/></td>
+                                <td class="align-middle"><span th:text="${state.count}"></span></td>
+                                <td class="align-middle"><span th:text="${dish.name}"></span></td>
+                                <td class="align-middle"><span th:text="${dish.category}"></span></td>
+                                <td class="align-middle"><span th:text="${dish.weight}"></span></td>
+                                <td class="align-middle"><span th:text="${dish.price}"></span></td>
+                                <td class="align-middle"><span th:text="${dish.ingredients}"></span></td>
                             </tr>
                             </tbody>
                         </table>

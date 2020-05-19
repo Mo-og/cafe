@@ -16,7 +16,6 @@
     <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet" />
     <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet" />
     <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet" />
-
 </head>
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
 <div id="site-head">
@@ -41,10 +40,10 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li><a th:href="@{/Director/index}"><font color="#ff7f50">Главная</font></a></li>
-                                        <li><a th:href="@{/Director/menu}"><font color="#ff7f50">Меню</font></a></li>
+                                        <li><a th:href="@{/Director/index}"><span style="color: #ff7f50;">Главная</span></a></li>
+                                        <li><a th:href="@{/Director/menu}"><span style="color: #ff7f50;">Меню</span></a></li>
                                         <li><a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
-                                           th:href="@{/logout}"><font color="#ff7f50">Выход</font></a></li>                                    </ul>
+                                           th:href="@{/logout}"><span style="color: #ff7f50;">Выход</span></a></li>                                    </ul>
                                 </div>
                             </div>
                         </nav>
@@ -64,7 +63,8 @@
                     <br><a th:href="@{/Director/add_worker}" class="btn btn-lg btn-block btn-outline-primary" role="button"
                        aria-disabled="true">Добавить сотрудника</a>
                     <br>
-                    <h4 class="block-title text-align-center">Для изменения данных о сотруднике, выберите его в списке<i></i><i></i><i></i></span> </h4>
+                    <h4 class="block-title text-align-center">Для изменения данных о сотруднике, выберите его в списке<i></i><i></i><i></i>
+                    </h4>
                     <br><br>
                     <form class="reservation-block">
                         <div class="table-responsive">
@@ -83,14 +83,14 @@
                                 </thead>
                                 <tr th:each="worker,state : ${workers}" style="cursor: pointer"
                                     th:onclick="'javascript:rowClicked(\'' + ${worker.id} + '\');'">
-                                    <td class="align-middle"><span th:text="${state.count}"/></td>
-                                    <td class="align-middle"><span th:text="${worker.lastName}"/></td>
-                                    <td class="align-middle"><span th:text="${worker.firstName}"/></td>
-                                    <td class="align-middle"><span th:text="${worker.patronymic}"/></td>
-                                    <td class="align-middle"><span th:text="${worker.email}"/></td>
-                                    <td class="align-middle"><span th:text="${worker.username}"/></td>
-                                    <td class="align-middle"><span th:text="${worker.address}"/></td>
-                                    <td class="align-middle"><span th:text="${worker.position}"/></td>
+                                    <td class="align-middle"><span th:text="${state.count}"></span></td>
+                                    <td class="align-middle"><span th:text="${worker.lastName}"></span></td>
+                                    <td class="align-middle"><span th:text="${worker.firstName}"></span></td>
+                                    <td class="align-middle"><span th:text="${worker.patronymic}"></span></td>
+                                    <td class="align-middle"><span th:text="${worker.email}"></span></td>
+                                    <td class="align-middle"><span th:text="${worker.username}"></span></td>
+                                    <td class="align-middle"><span th:text="${worker.address}"></span></td>
+                                    <td class="align-middle"><span th:text="${worker.position}"></span></td>
                                 </tr>
                             </table>
                         </div>

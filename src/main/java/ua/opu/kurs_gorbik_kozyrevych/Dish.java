@@ -1,12 +1,15 @@
 package ua.opu.kurs_gorbik_kozyrevych;
 
+import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Table(name = "dishes")
+@Data
 public class Dish {
 
     @Id
@@ -19,7 +22,21 @@ public class Dish {
     private double weight;
     private double price;
     private String ingredients;
-    private boolean available=true;
+    private boolean available = true;
+
+    @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL)
+    private List<Details> details;
+
+    public void addDetail(Details detail) {
+        for (Details d : details) {
+            if (d.getOrder_id() != detail.getOrder_id())
+                details.add(detail);
+        }
+    }
+
+    public void removeDetail(Details detail) {
+        details.remove(detail);
+    }
 
     public Dish(String category, String name, double weight, double price, String ingredients) {
         this.category = category;
@@ -29,8 +46,19 @@ public class Dish {
         this.ingredients = ingredients;
     }
 
+    public Dish(Dish dish) {
+        this.id = dish.id;
+        this.category = dish.category;
+        this.name = dish.name;
+        this.weight = dish.weight;
+        this.price = dish.price;
+        this.ingredients = dish.ingredients;
+        this.available = dish.available;
+    }
+
     public Dish() {
     }
+
 
     public String getIngredients() {
         return ingredients;
@@ -92,11 +120,10 @@ public class Dish {
     public String toString() {
         return "Dish{" +
                 "id=" + id +
-                ", category='" + category + '\'' +
+//                ", category='" + category + '\'' +
                 ", name='" + name + '\'' +
-                ", weight=" + weight +
-                ", price=" + price +
-                ", ingredients='" + ingredients + '\'' +
+//                ", weight=" + weight +
+//                ", ingredients='" + ingredients + '\'' +
                 '}';
     }
 }

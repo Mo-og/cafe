@@ -9,17 +9,23 @@ import ua.opu.kurs_gorbik_kozyrevych.Dish;
 import ua.opu.kurs_gorbik_kozyrevych.services.DishService;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Controller
 public class DishController {
 
-    private DishService service;
+    private static DishService service;
 
     @Autowired
     public void setService(DishService service) {
-        this.service = service;
+        DishController.service = service;
     }
+
+    public static List<Dish> getAllDishes() {
+        return service.getAllDishes();
+    }
+    public static Dish getDishById(long id){return service.getById(id);}
 
     @GetMapping("/User/menu")
     public String getMenu(Model model) {
@@ -39,11 +45,6 @@ public class DishController {
         return "Waiter/menu";
     }
 
-    @GetMapping("/Waiter/add_order")
-    public String getAddOrder(Model model) {
-        model.addAttribute("dishes", service.getAllDishes());
-        return "Waiter/add_order";
-    }
 
     @GetMapping("/Director/add_dish")
     public String addDish(Model model) {

@@ -8,15 +8,14 @@
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <title> Категории </title>
     <!-- CSS -->
-    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css"/>
     <link type="text/css" rel="stylesheet" href="../css/owl.carousel.min.css">
     <link type="text/css" rel="stylesheet" href="../css/font-awesome.css">
-    <link type="text/css" href="../css/animate.css" rel="stylesheet" />
-    <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet" />
-    <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet" />
-    <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet" />
-    <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet" />
-
+    <link type="text/css" href="../css/animate.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
+    <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
 </head>
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
 <div id="site-head">
@@ -29,7 +28,8 @@
                         <nav class="navbar navbar-default">
                             <div class="container-fluid">
                                 <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                                         <span class="sr-only">Toggle navigation</span>
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
@@ -41,11 +41,15 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li class="active"><a th:href="@{/Director/index}"><font color="#ff7f50">Главная</font></a></li>
-                                        <li><a th:href="@{/Director/menu}"><font color="#ff7f50">Меню</font></a></li>
-                                        <li><a th:href="@{/Director/workers}"><font color="#ff7f50">Сотрудники</font></a></li>
-                                        <li><a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
-                                           th:href="@{/logout}"><font color="#ff7f50">Выход</font></a></li>                                    </ul>
+                                        <li class="active"><a th:href="@{/Director/index}"><span
+                                                style="color: #ff7f50;">Главная</span></a></li>
+                                        <li><a th:href="@{/Director/menu}"><span style="color: #ff7f50;">Меню</span></a></li>
+                                        <li><a th:href="@{/Director/workers}"><span
+                                                style="color: #ff7f50;">Сотрудники</span></a></li>
+                                        <li>
+                                            <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
+                                               th:href="@{/logout}"><span style="color: #ff7f50;">Выход</span></a></li>
+                                    </ul>
                                 </div>
                             </div>
                         </nav>
@@ -57,15 +61,18 @@
     <!-- Header Section Ends -->
 
 
-    <section  class="reservation-block pad-top-100 pad-bottom-100">
+    <section class="reservation-block pad-top-100 pad-bottom-100">
         <div class="container pr">
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> <br>
-                    <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span> Категории<span class="side-img right-side-img"><i></i><i></i><i></i></span> </h2>
-                    <br><a th:href="@{/Director/add_category}" class="btn btn-lg btn-block btn-outline-primary" role="button"
-                       aria-disabled="true">Добавить категорию блюда</a>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
+                    <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span>
+                        Категории<span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
+                    <br><a th:href="@{/Director/add_category}" class="btn btn-lg btn-block btn-outline-primary"
+                           role="button"
+                           aria-disabled="true">Добавить категорию блюда</a>
                     <br>
-                    <h4 class="block-title text-align-center">Для редактирования конкретной категории блюда, выберите её в списке ниже<i></i><i></i><i></i></span> </h4>
+                    <h4 class="block-title text-align-center">Для редактирования конкретной категории блюда, выберите её
+                        в списке ниже<i></i><i></i><i></i></h4>
                     <br><br>
                     <form class="reservation-block">
                         <div class="table-responsive">
@@ -92,8 +99,6 @@
         </div>
     </section>
 </div>
-
-
 
 
 <script>

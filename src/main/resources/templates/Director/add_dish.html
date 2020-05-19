@@ -8,15 +8,14 @@
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <title> Добавление блюда </title>
     <!-- CSS -->
-    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css"/>
     <link type="text/css" rel="stylesheet" href="../css/owl.carousel.min.css">
     <link type="text/css" rel="stylesheet" href="../css/font-awesome.css">
-    <link type="text/css" href="../css/animate.css" rel="stylesheet" />
-    <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet" />
-    <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet" />
-    <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet" />
-    <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet" />
-
+    <link type="text/css" href="../css/animate.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
+    <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
 </head>
 
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
@@ -30,7 +29,8 @@
                         <nav class="navbar navbar-default">
                             <div class="container-fluid">
                                 <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                                         <span class="sr-only">Toggle navigation</span>
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
@@ -42,11 +42,15 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li class="active"><a th:href="@{/Director/index}"><font color="#ff7f50">Главная</font></a></li>
-                                        <li><a th:href="@{/Director/menu}"><font color="#ff7f50">Меню</font></a></li>
-                                        <li><a th:href="@{/Director/workers}"><font color="#ff7f50">Сотрудники</font></a></li>
-                                        <li><a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
-                                           th:href="@{/logout}"><font color="#ff7f50">Выход</font></a></li>                                    </ul>
+                                        <li class="active"><a th:href="@{/Director/index}"><span
+                                                style="color: #ff7f50;">Главная</span></a></li>
+                                        <li><a th:href="@{/Director/menu}"><span style="color: #ff7f50;">Меню</span></a></li>
+                                        <li><a th:href="@{/Director/workers}"><span
+                                                style="color: #ff7f50;">Сотрудники</span></a></li>
+                                        <li>
+                                            <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
+                                               th:href="@{/logout}"><span style="color: #ff7f50;">Выход</span></a></li>
+                                    </ul>
                                 </div>
                             </div>
                         </nav>
@@ -57,14 +61,16 @@
     </header>
     <!-- Header Section Ends -->
 
-    <section  class="reservation-block pad-top-100 pad-bottom-100">
+    <section class="reservation-block pad-top-100 pad-bottom-100">
         <div class="container pr">
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> <br>
-                    <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span> Добавление блюда<span class="side-img right-side-img"><i></i><i></i><i></i></span> </h2>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
+                    <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span>
+                        Добавление блюда<span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
                     <br><h4 class="block-title text-align-center">Заполните поля и нажмите кнопку 'Добавить блюдо''</h4>
                     <br>
-                    <form enctype="multipart/form-data" th:action="@{/Director/add_dish}" th:object="${dish}" method="post" novalidate>
+                    <form enctype="multipart/form-data" th:action="@{/Director/add_dish}" th:object="${dish}"
+                          method="post" novalidate>
                         <div class="row">
                             <div class="col-md-12">
                                 <h4 class="mb-3">Поля для заполнения</h4> <br>
@@ -72,30 +78,38 @@
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <label for="name">Название блюда</label>
-                                        <input th:field="*{name}" type="text" class="form-control" id="name" placeholder=""
+                                        <input th:field="*{name}" type="text" class="form-control" id="name"
+                                               placeholder=""
                                                value="" required>
-                                        <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+                                        <small class="text-danger" th:if="${#fields.hasErrors('name')}"
+                                               th:errors="*{name}"></small>
                                     </div>
 
                                     <div class="col-md-4 mb-3">
                                         <label for="price">Цена</label>
-                                        <input th:field="*{price}" type="number" class="form-control" id="price" placeholder=""
+                                        <input th:field="*{price}" type="number" class="form-control" id="price"
+                                               placeholder=""
                                                value=0 required>
-                                        <small class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></small>
+                                        <small class="text-danger" th:if="${#fields.hasErrors('price')}"
+                                               th:errors="*{price}"></small>
                                     </div>
 
                                     <div class="col-md-4 mb-3">
                                         <label for="weight">Вес (г/мл)</label>
-                                        <input th:field="*{weight}" type="number" class="form-control" id="weight" placeholder=""
+                                        <input th:field="*{weight}" type="number" class="form-control" id="weight"
+                                               placeholder=""
                                                value=0 required>
-                                        <small class="text-danger" th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}"></small>
+                                        <small class="text-danger" th:if="${#fields.hasErrors('weight')}"
+                                               th:errors="*{weight}"></small>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <div class="btn-toolbar"><label for="category">Категория</label><a th:href="@{/Director/categories}">
-                                            <svg class="bi bi-gear-fill" width="1.4em" height="1.4em" viewBox="-4 -4 20 20"
+                                        <div class="btn-toolbar"><label for="category">Категория</label><a
+                                                th:href="@{/Director/categories}">
+                                            <svg class="bi bi-gear-fill" width="1.4em" height="1.4em"
+                                                 viewBox="-4 -4 20 20"
                                                  fill="black" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd"
                                                       d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 01-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 01.872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 012.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 012.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 01.872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 01-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 01-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 100-5.86 2.929 2.929 0 000 5.858z"
@@ -128,12 +142,15 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="ingredients">Ингредиенты</label>
-                                        <input th:field="*{ingredients}" type="text" class="form-control" id="ingredients"
+                                        <input th:field="*{ingredients}" type="text" class="form-control"
+                                               id="ingredients"
                                                placeholder="" value="" required>
                                     </div>
                                 </div>
                                 <hr class="mb-4">
-                                <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">Добавить блюдо</button>
+                                <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">Добавить
+                                    блюдо
+                                </button>
                             </div>
                         </div>
                     </form>

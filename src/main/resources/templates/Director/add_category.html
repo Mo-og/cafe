@@ -42,14 +42,14 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li><a th:href="@{/Director/index}"><font color="#ff7f50">Главная</font></a>
-                                        </li>
-                                        <li><a th:href="@{/Director/menu}"><font color="#ff7f50">Меню</font></a></li>
-                                        <li><a th:href="@{/Director/workers}"><font
-                                                color="#ff7f50">Сотрудники</font></a></li>
+                                        <li><a th:href="@{/Director/index}"><span style="color: #ff7f50;">Главная</span></a></li>
+                                        <li><a th:href="@{/Director/menu}"><span style="color: #ff7f50;">Меню</span></a></li>
+                                        <li><a th:href="@{/Director/workers}"><span
+                                                style="color: #ff7f50;">Сотрудники</span></a></li>
                                         <li>
                                             <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
-                                               th:href="@{/logout}"><font color="#ff7f50">Выход</font></a></li>
+                                               th:href="@{/logout}"><span style="color: #ff7f50;">Выход</span></a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                         Добавление категории блюда<span class="side-img right-side-img"><i></i><i></i><i></i></span>
                     </h2>
                     <br><h4 class="block-title text-align-center">Введите название категории и нажмите кнопку 'Добавить
-                        категорию'</a></h4>
+                        категорию'</h4>
                     <br>
                     <form class="reservation-block" enctype="multipart/form-data" th:action="@{/Director/add_category}"
                           th:object="${category}" method="post">

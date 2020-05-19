@@ -16,7 +16,6 @@
     <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet" />
     <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet" />
     <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet" />
-
 </head>
 
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
@@ -42,8 +41,8 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li><a th:href="@{/User/menu}"><font color="#ff7f50">Меню</font></a></li>
-                                        <li><a th:href="@{/User/index}"><font color="#ff7f50">Главная</font></a></li>
+                                        <li><a th:href="@{/User/menu}"><span style="color: #ff7f50;">Меню</span></a></li>
+                                        <li><a th:href="@{/User/index}"><span style="color: #ff7f50;">Главная</span></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -65,14 +64,14 @@
                                   class="needs-validation"><br><br><br><br>
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                             <div class="form-box">
-                                                <font color="#ff7f50"> <label for="username">Номер телефона</label></font>
+                                                <span style="color: #ff7f50; "> <label for="username">Номер телефона</label></span>
                                                 <input th:field="*{username}" type="text" class="form-control" id="username" placeholder=""
                                                        value="" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                             <div class="form-box">
-                                                <font color="#ff7f50"><label for="password">Пароль</label></font>
+                                                <span style="color: #ff7f50; "><label for="password">Пароль</label></span>
                                                 <input class="form-control" id="password" placeholder="********" th:field="*{password}"
                                                        type="password" value="">
                                             </div>

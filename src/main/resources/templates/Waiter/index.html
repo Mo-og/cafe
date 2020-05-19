@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org" xmlns:background="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -41,6 +41,7 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
+                                        <li><a th:href="@{/Waiter/orders}">Заказы</a></li>
                                         <li><a th:href="@{/Waiter/workers}">Сотрудники</a></li>
                                         <li><a href="#about">About us</a></li>
                                         <li><a href="#gallery">Gallery</a></li>

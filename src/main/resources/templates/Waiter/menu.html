@@ -16,6 +16,7 @@
     <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet"/>
     <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
     <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
+    <style>a{color: #ff7f50}</style>
 </head>
 
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
@@ -42,9 +43,12 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li><a th:href="@{/Waiter/index}"><font color="#ff7f50">Главная</font></a></li>
-                                        <li><a th:href="@{/Waiter/workers}"><font color="#ff7f50">Сотрудники</font></a></li>
-                                        <li><a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"th:href="@{/logout}"><font color="#ff7f50">Выход</font></a></li>
+                                        <li><a th:href="@{/Waiter/index}"><span style="color: #ff7f50;">Главная</span></a></li>
+                                        <li><a th:href="@{/Waiter/orders}"><span style="color: #ff7f50;">Заказы</span></a></li>
+                                        <li><a th:href="@{/Waiter/workers}"><span style="color: #ff7f50;">Сотрудники</span></a></li>
+                                        <li>
+                                            <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
+                                               th:href="@{/logout}"><span style="color: #ff7f50;">Выход</span></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -77,15 +81,15 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-
                                 <tr th:each="dish, state : ${dishes}">
                                     <!--<td class="align-middle"><span th:text="${dish.id}"/></td>-->
-                                    <td class="align-middle"><span th:text="${state.count}"/></td>
-                                    <td class="align-middle"><span th:text="${dish.name}"/></td>
-                                    <td class="align-middle"><span th:text="${dish.category}"/></td>
-                                    <td class="align-middle"><span th:text="${dish.weight}"/></td>
-                                    <td class="align-middle"><span th:text="${dish.price}"/></td>
-                                    <td class="align-middle"><span th:text="${dish.ingredients}"/></td>
+                                    <td class="align-middle"><span th:text="${state.count}"></span></td>
+                                    <td class="align-middle"><span th:text="${dish.name}"></span></td>
+                                    <td class="align-middle"><span th:text="${dish.category}"></span></td>
+                                    <td class="align-middle"><span th:text="${dish.weight}"></span></td>
+                                    <td class="align-middle"><span th:text="${dish.price}"></span></td>
+                                    <td class="align-middle"><span th:text="${dish.ingredients}"></span></td>
+                                    <td class="align-middle"><span th:text="${dish.ingredients}"></span></td>
                                 </tr>
                                 </tbody>
                             </table>

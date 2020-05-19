@@ -3,27 +3,27 @@ package ua.opu.kurs_gorbik_kozyrevych.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.opu.kurs_gorbik_kozyrevych.Dish;
-import ua.opu.kurs_gorbik_kozyrevych.repositories.DishRepository;
-
+import ua.opu.kurs_gorbik_kozyrevych.Order;
+import ua.opu.kurs_gorbik_kozyrevych.repositories.OrderRepository;
 
 import java.util.List;
 
 @Service
-public class DishService {
+public class OrderService {
 
-    private DishRepository repository;
+    private OrderRepository repository;
 
     @Autowired
-    public void setRepository(DishRepository repository) {
+    public void setRepository(OrderRepository repository) {
         this.repository = repository;
     }
 
-    public void saveDish(Dish dish) {
-        repository.save(dish);
+    public void saveOrder(Order order){
+    repository.save(order);
     }
 
-    public List<Dish> getAllDishes() {
-        return repository.findAllByOrderByCategory();
+    public List<Order> getAllOrders() {
+        return repository.findAll();
     }
 
     public void removeById(long id) {
@@ -34,7 +34,7 @@ public class DishService {
         return repository.existsById(id);
     }
 
-    public Dish getById(long id) {
+    public Order getById(long id) {
         return repository.getOne(id);
     }
 

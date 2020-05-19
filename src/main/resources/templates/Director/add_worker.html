@@ -8,15 +8,14 @@
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <title> Добавление работника </title>
     <!-- CSS -->
-    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css"/>
     <link type="text/css" rel="stylesheet" href="../css/owl.carousel.min.css">
     <link type="text/css" rel="stylesheet" href="../css/font-awesome.css">
-    <link type="text/css" href="../css/animate.css" rel="stylesheet" />
-    <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet" />
-    <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet" />
-    <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet" />
-    <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet" />
-
+    <link type="text/css" href="../css/animate.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
+    <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
 </head>
 
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
@@ -30,7 +29,8 @@
                         <nav class="navbar navbar-default">
                             <div class="container-fluid">
                                 <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                                         <span class="sr-only">Toggle navigation</span>
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
@@ -42,11 +42,15 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li class="active"><a th:href="@{/Director/index}"><font color="#ff7f50">Главная</font></a></li>
-                                        <li><a th:href="@{/Director/menu}"><font color="#ff7f50">Меню</font></a></li>
-                                        <li><a th:href="@{/Director/workers}"><font color="#ff7f50">Сотрудники</font></a></li>
-                                        <li><a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
-                                           th:href="@{/logout}"><font color="#ff7f50">Выход</font></a></li>                                    </ul>
+                                        <li class="active"><a th:href="@{/Director/index}"><span
+                                                style="color: #ff7f50;">Главная</span></a></li>
+                                        <li><a th:href="@{/Director/menu}"><span style="color: #ff7f50;">Меню</span></a></li>
+                                        <li><a th:href="@{/Director/workers}"><span
+                                                style="color: #ff7f50;">Сотрудники</span></a></li>
+                                        <li>
+                                            <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
+                                               th:href="@{/logout}"><span style="color: #ff7f50;">Выход</span></a></li>
+                                    </ul>
                                 </div>
                             </div>
                         </nav>
@@ -57,14 +61,17 @@
     </header>
     <!-- Header Section Ends -->
 
-    <section  class="reservation-block pad-top-100 pad-bottom-100">
+    <section class="reservation-block pad-top-100 pad-bottom-100">
         <div class="container pr">
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> <br>
-                    <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span> Добавление сотрудника<span class="side-img right-side-img"><i></i><i></i><i></i></span> </h2>
-                    <br><h4 class="block-title text-align-center">Заполните поля и нажмите кнопку 'Добавить сотрудника'</a></h4>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
+                    <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span>
+                        Добавление сотрудника<span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
+                    <br><h4 class="block-title text-align-center">Заполните поля и нажмите кнопку 'Добавить
+                        сотрудника'</h4>
                     <br>
-                    <form enctype="multipart/form-data" th:action="@{/Director/add_worker}" th:object="${worker}" method="post"
+                    <form enctype="multipart/form-data" th:action="@{/Director/add_worker}" th:object="${worker}"
+                          method="post"
                           class="needs-validation" novalidate>
                         <div class="row">
                             <div class="col-md-12">
@@ -105,7 +112,8 @@
                                         <label for="email">Электронная почта</label>
                                         <input th:field="*{email}" type="email" class="form-control" id="email"
                                                placeholder="name@example.com" value="" required>
-                                        <small class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+                                        <small class="text-danger" th:if="${#fields.hasErrors('email')}"
+                                               th:errors="*{email}"></small>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
@@ -121,19 +129,22 @@
                                         <label for="username">Телефон</label>
                                         <input th:field="*{username}" type="text" class="form-control" id="username"
                                                placeholder="5 - 14 цифр" value="" required>
-                                        <small class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
+                                        <small class="text-danger" th:if="${#fields.hasErrors('username')}"
+                                               th:errors="*{username}"></small>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
                                         <label for="address">Домашний адрес</label>
-                                        <input th:field="*{address}" type="text" class="form-control" id="address" placeholder=""
+                                        <input th:field="*{address}" type="text" class="form-control" id="address"
+                                               placeholder=""
                                                value=""
                                                required>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
                                         <label for="password">Пароль для входа на сайт</label>
-                                        <input  th:field="*{password}" type="text" class="form-control" id="password" placeholder="*******" value="" required>
+                                        <input th:field="*{password}" type="text" class="form-control" id="password"
+                                               placeholder="*******" value="" required>
                                         <small class="text-danger" th:if="${#fields.hasErrors('password')}"
                                                th:errors="*{password}"></small>
                                     </div>
@@ -141,7 +152,8 @@
                                 </div>
 
                                 <hr class="mb-4">
-                                <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">Добавить работника
+                                <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">Добавить
+                                    работника
                                 </button>
                             </div>
                         </div>
