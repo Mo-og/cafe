@@ -20,6 +20,12 @@ public class DetailsService {
     }
 
     public void saveDetail(Details detail) {
+        Details det = repository.findByOrder_idAndDish_id(detail.getOrder_id(), detail.getDish_id());
+        if (det != null) {
+            det.setQuantity(det.getQuantity() + detail.getQuantity());
+            repository.save(det);
+            return;
+        }
         repository.save(detail);
     }
 
@@ -28,7 +34,10 @@ public class DetailsService {
     }
 
     public void removeByOrderIdAndDishID(long order_id, long dish_id) {
-        repository.deleteByOrder_idAndDish_id(order_id, dish_id);
+        Details detail = repository.findByOrder_idAndDish_id(order_id, dish_id);
+        detail.setDish(null);
+        detail.setOrder(null);
+        repository.delete(detail);
     }
 
     public void remove(Details details) {

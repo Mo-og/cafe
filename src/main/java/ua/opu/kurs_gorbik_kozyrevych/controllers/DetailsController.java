@@ -24,9 +24,12 @@ public class DetailsController {
     }
 
     @GetMapping("/Waiter/dish_exclude")
-    public String removeDishFromOrder(@RequestParam Long dish_id, @RequestParam Long order_id) {
+    public String removeDishFromOrder(@RequestParam Long dish_id, @RequestParam Long order_id, Model model) {
         service.removeByOrderIdAndDishID(order_id, dish_id);
-        return "redirect:/Waiter/order_edit";
+        model.addAttribute("order", OrderController.service.getById(order_id));
+        model.addAttribute("dishes", DishController.getAllDishes());
+        model.addAttribute("container", new Details());
+        return "redirect:/Waiter/order_edit?id=" + order_id;
     }
 
     @PostMapping("/Waiter/order_dish_add")
@@ -44,13 +47,6 @@ public class DetailsController {
             model.addAttribute("container", container);
             return "Waiter/edit_order_dish";
         }
-//        order.addDetail(container);
-//        dish_toSave.addDetail(container);
-//        System.out.println("order = " + order);
-//        System.out.println("dish_toSave = " + dish_toSave);
-//        System.out.println("container = "+ container);
-//        //TODO: в этом месте ломается сохранение от order_id=null, хотя оно не null
-//        service.saveOrder(order);
         service.saveDetail(container);
         model.addAttribute("order", order);
         model.addAttribute("dish", dish_toSave);

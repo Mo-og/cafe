@@ -37,6 +37,10 @@ public class Order {
         return details.remove(detail);
     }
 
+    public void removeDetail(Details detail) {
+        details.remove(detail);
+    }
+
     public void addDetail(Details detail) {
         Details present = getDetailsIfPresent(detail.getDish_id());
         if (present != null) {

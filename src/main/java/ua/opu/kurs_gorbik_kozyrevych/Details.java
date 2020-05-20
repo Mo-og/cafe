@@ -17,8 +17,6 @@ public class Details {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    //    private long order_id;
-//    private long dish_id;
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "dish_id")
     private Dish dish;
@@ -36,6 +34,22 @@ public class Details {
     private Order order;
 
     private int quantity;
+
+    public Dish getDish() {
+        return dish;
+    }
+
+    public void setDish(Dish dish) {
+        this.dish = dish;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 
     public long getOrder_id() {
         if(order==null)
@@ -78,7 +92,6 @@ public class Details {
                 "dish_id=" + dish_id +
                 ", order_id=" + order_id +
                 ", id=" + id +
-
                 ", quantity=" + quantity +
                 '}';
     }

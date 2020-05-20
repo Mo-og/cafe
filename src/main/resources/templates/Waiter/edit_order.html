@@ -176,7 +176,7 @@
                                         <td class="align-middle"><span th:text="${detail.dish.name}"></span></td>
                                         <td class="align-middle"><span th:text="${detail.quantity}"></span></td>
                                         <td class="align-middle"><span th:text="${detail.cost}"></span></td>
-                                        <td th:onclick="'javascript:clickedToDelete(\'' + ${detail.id} + '\', \'' + ${order.id}+'\' );'">
+                                        <td th:onclick="'javascript:clickedToDelete(\'' + ${detail.dish.id} + '\', \'' + ${order.id}+'\' );'">
                                             <!--                                        <button  class="btn btn-primary" style="" >Отменить</button>-->
                                             <!--                                        альтернатива - иконка крестика-->
                                             <svg class="bi bi-x-square-fill" width="1em" height="1em"
