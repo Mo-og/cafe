@@ -73,7 +73,6 @@ public class OrderController {
     public String editDish(Model model, @RequestParam Long id) {
         Order order = service.getById(id);
         Details container = new Details();
-//????        container.setDish_id(id);
         model.addAttribute("order", order);
         model.addAttribute("container", container);
         model.addAttribute("dishes", DishController.getAllDishes());
@@ -89,20 +88,5 @@ public class OrderController {
         service.removeById(id);
         return "redirect:/Waiter/orders";
     }
-
-
-
-    @GetMapping("/Waiter/order_dish_edit")
-    public String editDishFromOrder(Model model, @RequestParam Long dish_id, @RequestParam Long order_id) {
-        Order order = service.getById(order_id);
-        Dish dish = order.getDetailsIfPresent(dish_id).getDish();
-        if (dish == null)
-            throw new NoSuchElementException();
-        model.addAttribute("order", order);
-        model.addAttribute("dish", dish);
-        model.addAttribute("dishes", DishController.getAllDishes());
-        return "redirect:/Waiter/edit_order_dish";
-    }
-
 
 }

@@ -17,23 +17,13 @@
     <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
     <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
     <style>
-        .b-container {
-            width: 100%;
-            height: 100%;
-            background-color: #ccc;
-            margin: 0px auto;
-            padding: 100px;
-            font-size: 30px;
-            color: #fff;
-        }
-
         .b-popup {
             width: 100%;
             min-height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             overflow: hidden;
             position: fixed;
-            top: 0px;
+            top: 0;
         }
 
         .b-popup .b-popup-content { /*настройки формы*/
@@ -43,7 +33,7 @@
             padding: 10px;
             background-color: #fdfdfd; /*заливка формы*/
             border-radius: 15px;
-            box-shadow: 0px 0px 10px #000; /*тень от всплывающего окна*/
+            box-shadow: 0 0 10px #000; /*тень от всплывающего окна*/
         }
     </style>
 
@@ -69,8 +59,16 @@
             location.href = "order_remove?id=" + id;
         }
     }
-
     function PopUpShow(id) {
+        $('#' + id).fadeIn(300);
+        setTimeout(function(){$('#inner').slideDown(400);},301);
+    }
+
+    function PopUpHide(id) {
+        $('#inner').slideUp(400);
+        setTimeout(function(){$('#' + id).fadeOut(300)},300);
+    }
+/*    function PopUpShow(id) {
         document.getElementById(id).style.display = 'block';
         //$('#' + id).show();
     }
@@ -78,7 +76,7 @@
     function PopUpHide(id) {
         document.getElementById(id).style.display = 'none';
         //$('#' + id).hide();
-    }
+    }*/
 </script>
 <div id="site-head">
     <!-- Header Section Begins -->
@@ -218,48 +216,44 @@
 </div>
 
 <div class="b-popup creamBg" id="addDish" style="display: none;">
-    <div class="b-popup-content">
+    <div class="b-popup-content" id="inner">
         <br>
         <h3 class="block-title text-align-center">Добавьте блюдо в заказ</h3>
         <br>
         <form class="reservation-block" enctype="multipart/form-data" th:action="@{/Waiter/order_dish_add}"
               method="post">
-            <div class="container">
-                <div class="col-md-12" align="center">
-                    <div class="row">
-                        <div class="col mb-3" align="left">
-                            <h4><label for="dish">Выберите блюдо</label></h4>
-                            <select th:object="${container}" th:field="*{dish_id}" class="form-control" id="dish"
-                                    required>
-                                <option th:each="dish_row : ${dishes}"
-                                        th:value="${dish_row.id}" th:text="${dish_row.name}"></option>
-                            </select>
-                        </div>
-                        <div class="col mb-3" align="left">
-                            <h4><label for="quantity">Количество</label></h4>
-                            <input type="number" class="form-control" id="quantity" name="quantity"
-                                   value="1" required>
-                            <!--<small class="text-danger" th:if="${#fields.hasErrors('num')}"
-                                   th:errors="*{new_dish.quantity}"></small>-->
-                        </div>
-                        <br>
-                        <input th:object="${container}" type="number" id="order_id" name="order_id" class="form-control"
-                               hidden style="display:none;" th:value="${order.id}">
-                    </div>
-                    <hr class="mb-4">
-                    <div class="row">
-                        <div class="col-8 col-md-6">
-                            <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">
-                                Добавить блюдо
-                            </button>
-                        </div>
-                        <div class="col-8 col-md-6">
-                            <button onclick="PopUpHide('addDish')" type="button"
-                                    class="btn btn-secondary btn-lg btn-block">
-                                Отменить
-                            </button>
-                        </div>
-                    </div>
+            <div class="form-row" style="margin-left: 3%;margin-right: 3%">
+                <div class="col mb-3" align="left">
+                    <h4><label for="dish">Выберите блюдо</label></h4>
+                    <select th:object="${container}" th:field="*{dish_id}" class="form-control" id="dish"
+                            required>
+                        <option th:each="dish_row : ${dishes}"
+                                th:value="${dish_row.id}" th:text="${dish_row.name}"></option>
+                    </select>
+                </div>
+                <div class="col mb-3" align="left">
+                    <h4><label for="quantity">Количество</label></h4>
+                    <input type="number" class="form-control" id="quantity" name="quantity"
+                           value="1" required>
+                    <!--<small class="text-danger" th:if="${#fields.hasErrors('num')}"
+                           th:errors="*{new_dish.quantity}"></small>-->
+                </div>
+                <br>
+                <input th:object="${container}" type="number" id="order_id" name="order_id" class="form-control"
+                       hidden style="display:none;" th:value="${order.id}">
+            </div>
+            <hr class="mb-4">
+            <div class="row">
+                <div class="col-8 col-md-6">
+                    <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">
+                        Добавить блюдо
+                    </button>
+                </div>
+                <div class="col-8 col-md-6">
+                    <button onclick="PopUpHide('addDish')" type="button"
+                            class="btn btn-secondary btn-lg btn-block">
+                        Отменить
+                    </button>
                 </div>
             </div>
         </form>

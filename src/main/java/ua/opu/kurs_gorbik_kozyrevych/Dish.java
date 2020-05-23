@@ -34,28 +34,6 @@ public class Dish {
         }
     }
 
-    public void removeDetail(Details detail) {
-        details.remove(detail);
-    }
-
-    public Dish(String category, String name, double weight, double price, String ingredients) {
-        this.category = category;
-        this.name = name;
-        this.weight = weight;
-        this.price = price;
-        this.ingredients = ingredients;
-    }
-
-    public Dish(Dish dish) {
-        this.id = dish.id;
-        this.category = dish.category;
-        this.name = dish.name;
-        this.weight = dish.weight;
-        this.price = dish.price;
-        this.ingredients = dish.ingredients;
-        this.available = dish.available;
-    }
-
     public Dish() {
     }
 
@@ -126,4 +104,6 @@ public class Dish {
 //                ", ingredients='" + ingredients + '\'' +
                 '}';
     }
+
+
 }

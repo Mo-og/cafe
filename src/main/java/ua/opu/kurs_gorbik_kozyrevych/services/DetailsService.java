@@ -29,6 +29,10 @@ public class DetailsService {
         repository.save(detail);
     }
 
+    public void forceSaveDetail(Details detail) {
+        repository.save(detail);
+    }
+
     public Details findByOrderIdAndDishID(long order_id, long dish_id) {
         return repository.findByOrder_idAndDish_id(order_id, dish_id);
     }
@@ -40,8 +44,10 @@ public class DetailsService {
         repository.delete(detail);
     }
 
-    public void remove(Details details) {
-        repository.delete(details);
+    public void remove(Details detail) {
+        detail.setDish(null);
+        detail.setOrder(null);
+        repository.delete(detail);
     }
 
     public List<Details> getAllDishes() {

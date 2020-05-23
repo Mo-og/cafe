@@ -18,23 +18,14 @@
     <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
     <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
 </head>
-<style>.b-container {
-    width: 100%;
-    height: 100%;
-    background-color: #ccc;
-    margin: 0px auto;
-    padding: 100px;
-    font-size: 30px;
-    color: #fff;
-}
-
+<style>
 .b-popup {
     width: 100%;
     min-height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     overflow: hidden;
     position: fixed;
-    top: 0px;
+    top: 0;
 }
 
 .b-popup .b-popup-content { /*настройки формы*/
@@ -44,19 +35,20 @@
     padding: 10px;
     background-color: #fdfdfd; /*заливка формы*/
     border-radius: 15px;
-    box-shadow: 0px 0px 10px #000; /*тень от всплывающего окна*/
+    box-shadow: 0 0 10px #000; /*тень от всплывающего окна*/
 }
 </style>
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
 <script>
     //Функция отображения PopUp
     function PopUpShow(id) {
-        //document.getElementById(id).style.display = 'block';
-        $('#' + id).show();
+        $('#' + id).fadeIn(300);
+        setTimeout(function(){$('#inner').slideDown(400);},301);
     }
 
     function PopUpHide(id) {
-        $('#' + id).hide();
+        $('#inner').slideUp(400);
+        setTimeout(function(){$('#' + id).fadeOut(300)},300);
     }
 
     function clickedToDelete(id) {
@@ -94,7 +86,8 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li><a th:href="@{/Waiter/index}"><span style="color: #ff7f50;">Главная</span></a></li>
+                                        <li><a th:href="@{/Waiter/index}"><span
+                                                style="color: #ff7f50;">Главная</span></a></li>
                                         <li><a th:href="@{/Waiter/workers}"><span
                                                 style="color: #ff7f50;">Сотрудники</span></a>
                                         </li>
@@ -118,11 +111,12 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
                     <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i></span>
                         Заказы<span class="side-img right-side-img"><i></i><i></i></span></h2>
-                    <h4 class="block-title text-align-center">Для редактирования конкретного заказа, дважды нажмите на него в списке ниже.<i></i><i></i><i></i>
+                    <h4 class="block-title text-align-center">Для редактирования конкретного заказа, дважды нажмите на
+                        него в списке ниже.<i></i><i></i><i></i>
                     </h4>
                     <br><a onclick="PopUpShow('addOrder')" class="btn btn-lg btn-block btn-outline-primary"
                            role="button"
-                    aria-disabled="true">Добавить заказ</a>
+                           aria-disabled="true">Добавить заказ</a>
                     <br>
                     <form class="reservation-block">
                         <div class="table-responsive">
@@ -149,8 +143,8 @@
                                     <td class="align-middle"><span th:text="${order.cost}"></span></td>
                                     <td class="align-middle"><span th:text="${order.comments}"></span></td>
                                     <td th:onclick="'javascript:clickedToDelete(\'' + ${order.id} + '\');'">
-<!--                                        <button  class="btn btn-primary" style="" >Отменить</button>-->
-<!--                                        альтернатива - иконка крестика-->
+                                        <!--                                        <button  class="btn btn-primary" style="" >Отменить</button>-->
+                                        <!--                                        альтернатива - иконка крестика-->
                                         <svg class="bi bi-x-square-fill" width="1em" height="1em" viewBox="0 0 16 16"
                                              fill="currentColor" xmlns="http://www.w3.org/2000/svg"
                                              style="display: inline; cursor: pointer">
@@ -171,52 +165,47 @@
 </div>
 
 
-<div class="b-popup creamBg" id="addOrder" style="display: none;">
-    <div class="b-popup-content">
+<div class="b-popup" id="addOrder" style="display: none;">
+    <div class="b-popup-content" id="inner">
         <br><h4 class="block-title text-align-center">Введите данные заказа</h4>
         <br>
         <form class="reservation-block" enctype="multipart/form-data" th:action="@{/Waiter/orders}"
               th:object="${new_order}" method="post">
-            <div class="container">
-                <div class="col-md-12" align="center">
-                    <div class="row">
-                        <div class="col mb-3" align="left">
-                            <h4><label for="tabl_num">Номер столика</label></h4>
-                            <input type="number" class="form-control" id="tabl_num" name="tab_num" placeholder=""
-                                   th:field="*{table_num}" value="" required>
-                            <small class="text-danger" th:if="${#fields.hasErrors('table_num')}"
-                                   th:errors="*{table_num}"></small>
-                        </div>
-                        <div class="col mb-3" align="left">
-                            <h4><label for="commen">Комментарий к заказу</label></h4>
-                            <input type="text" class="form-control" id="commen" name="comment" placeholder=""
-                                   th:field="*{comments}" value="">
-                            <small class="text-danger" th:if="${#fields.hasErrors('comments')}"
-                                   th:errors="*{comments}"></small>
-                        </div>
-                    </div>
-                    <input th:field="*{id}" type="hidden" class="form-control" id="id"
-                           value="" novalidate>
-                    <hr class="mb-4">
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">
-                                Оформить заказ
-                            </button>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <button type="button" class="btn btn-secondary btn-lg btn-block"
-                                    onclick="PopUpHide('addOrder')">
-                                Отменить
-                            </button>
-                        </div>
-                    </div>
+            <div class="form-row" style="margin-left: 3%;margin-right: 3%">
+                <div class="col">
+                    <h4><label for="tabl_num">Номер столика</label></h4>
+                    <input type="number" class="form-control" id="tabl_num" name="tab_num" placeholder=""
+                           th:field="*{table_num}" value="" required>
+                    <small class="text-danger" th:if="${#fields.hasErrors('table_num')}"
+                           th:errors="*{table_num}"></small>
+                </div>
+                <div class="col">
+                    <h4><label for="commen">Комментарий к заказу</label></h4>
+                    <input type="text" class="form-control" id="commen" name="comment" placeholder=""
+                           th:field="*{comments}" value="">
+                    <small class="text-danger" th:if="${#fields.hasErrors('comments')}"
+                           th:errors="*{comments}"></small>
+                </div>
+            </div>
+            <input th:field="*{id}" type="hidden" style="display: none" class="form-control" id="id"
+                   value="" novalidate>
+            <hr class="mb-4">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">
+                        Оформить заказ
+                    </button>
+                </div>
+                <div class="col-12 col-md-6">
+                    <button type="button" class="btn btn-secondary btn-lg btn-block"
+                            onclick="PopUpHide('addOrder')">
+                        Отменить
+                    </button>
                 </div>
             </div>
         </form>
     </div>
 </div>
-
 
 
 <!-- Optional JavaScript -->

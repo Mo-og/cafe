@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0">
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <title> Изменение данных заказа </title>
+    <!-- CSS -->
+    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="../css/owl.carousel.min.css">
+    <link type="text/css" rel="stylesheet" href="../css/font-awesome.css">
+    <link type="text/css" href="../css/animate.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
+    <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
+    <style>
+        .b-popup {
+            margin: 15% auto 0 auto;
+            width: 80%;
+            height: 100%;
+            padding: 10px;
+            background-color: #fdfdfd; /*заливка формы*/
+            border-radius: 15px;
+            box-shadow: 0 0 10px #000; /*тень от всплывающего окна*/
+        }
+    </style>
+
+
+</head>
+<body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
+<script>
+    function clickedToDelete(dish_id, order_id) {
+        var sured = confirm("Вы уверены, что хотите удалить блюдо №" + dish_id + " из заказа?");
+        if (sured) {
+            // form.submit();
+            document.location.href = "dish_exclude?dish_id=" + dish_id + "&order_id=" + order_id;
+        }
+    }
+
+    function clickedToEdit(dish_id, order_id) {
+        document.location.href = "order_dish_edit?dish_id=" + dish_id + "&order_id=" + order_id;
+    }
+
+    function remove(id) {
+        var sured = confirm("Вы уверены, что хотите удалить заказ №" + id + "? Это действие невозможно отменить!");
+        if (sured) {
+            location.href = "order_remove?id=" + id;
+        }
+    }
+
+    function PopUpShow(id) {
+        document.getElementById(id).style.display = 'block';
+        //$('#' + id).show();
+    }
+
+    function PopUpHide(id) {
+        document.getElementById(id).style.display = 'none';
+        //$('#' + id).hide();
+    }
+</script>
+<div id="site-head">
+    <!-- Header Section Begins -->
+    <header id="header" class="header-block" data-top="0" data-scroll="100">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 main-menu">
+                    <div class="menuBar scrollbtn">
+                        <nav class="navbar navbar-default">
+                            <div class="container-fluid">
+                                <div class="navbar-header">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+                                </div>
+                                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                    <ul class="nav navbar-nav navbar-right">
+                                        <li class="active"><a th:href="@{/Waiter/index}"><span style="color: #ff7f50;">Главная</span></a>
+                                        </li>
+                                        <li><a th:href="@{/Waiter/orders}"><span
+                                                style="color: #ff7f50;">Заказы</span></a></li>
+                                        <li><a th:href="@{/Waiter/menu}"><span style="color: #ff7f50;">Меню</span></a>
+                                        </li>
+                                        <li><a th:href="@{/Waiter/workers}"><span
+                                                style="color: #ff7f50;">Сотрудники</span></a></li>
+                                        <li>
+                                            <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
+                                               th:href="@{/logout}"><span style="color: #ff7f50;">Выход</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section Ends -->
+
+    <section class="reservation-block pad-top-100 pad-bottom-100">
+        <form class="reservation-block" enctype="multipart/form-data" th:action="@{/Waiter/order_update}"
+              method="post">
+            <div class="container pr">
+                <div class="row">
+                    <div class="col-20" th:object="${order}"><br>
+                        <h2 class="block-title text-align-center">
+                            <span class="side-img left-side-img"><i></i><i></i><i></i></span>
+                            Столик - [[${order.table_num}]]
+                            <span class="side-img right-side-img"><i></i><i></i><i></i></span>
+                        </h2>
+                        <h4 class="block-title text-align-center">
+                            Заказ №[[${order.id}]]
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>
+
+<div class="b-popup-content">
+    <h3 class="block-title text-align-center">Изменение заказанного блюда</h3>
+    <form class="reservation-block" enctype="multipart/form-data" th:action="@{/Waiter/order_dish_edit}"
+          method="post">
+        <div class="container">
+            <div class="col-md-12" align="center">
+                <div class="row">
+                    <div class="col mb-3" align="left">
+                        <h4><label for="dish">Блюдо</label></h4>
+                        <select th:object="${container}" th:field="*{dish_id}" th:default="${container.dish_id}" class="form-control" id="dish"
+                                required>
+                            <option th:each="dish_row : ${dishes}"
+                                    th:value="${dish_row.id}" th:text="${dish_row.name}"></option>
+                        </select>
+                    </div>
+                    <div class="col mb-3" align="left">
+                        <h4><label for="quantity">Количество</label></h4>
+                        <input type="number" class="form-control" id="quantity" name="quantity"
+                               th:value="${container.quantity}" required>
+                        <!--<small class="text-danger" th:if="${#fields.hasErrors('num')}"
+                               th:errors="*{new_dish.quantity}"></small>-->
+                    </div>
+                    <br>
+                    <input th:object="${container}" type="number" id="order_id" name="order_id" class="form-control"
+                           hidden style="display:none;" th:value="${order.id}">
+                    <input th:object="${container}" type="number" id="id" name="id" class="form-control"
+                           hidden style="display:none;" th:value="${container.id}">
+                </div>
+                <hr class="mb-4">
+                <div class="row">
+                    <div class="col-8 col-md-6">
+                        <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">
+                            Применить изменения
+                        </button>
+                    </div>
+                    <div class="col-8 col-md-6">
+                        <button th:onclick="'javascript:clickedToEdit(\'' + ${container.dish_id} + '\', \'' + ${order.id}+'\' );'" type="button"
+                                class="btn btn-secondary btn-lg btn-block">
+                            Удалить блюдо из заказа
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS-->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<!-- Jquery Js -->
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/element.js"></script>
+<script type="text/javascript" src="../js/modernizr.js"></script>
+<script type="text/javascript" src="../js/owl.carousel.js"></script>
+<script type="text/javascript" src="../js/jquery.localscroll-1.2.7-min.js"></script>
+<script type="text/javascript" src="../js/wow.min.js"></script>
+<script type="text/javascript" src="../js/imagesloaded.pkgd.min.js"></script>
+<script type="text/javascript" src="../js/jquery.isotope.min.js"></script>
+<script type="text/javascript" src="../js/jquery.parallax-1.1.3.js"></script>
+<script type="text/javascript" src="../js/jquery.magnific-popup.js"></script>
+<script type="text/javascript" src="../js/moment-with-locales.js"></script>
+<script type="text/javascript" src="../js/bootstrap-datetimepicker.js"></script>
+</body>
+</html>
