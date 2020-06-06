@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ua.opu.kurs_gorbik_kozyrevych.Dish;
 import ua.opu.kurs_gorbik_kozyrevych.repositories.DishRepository;
 
-
 import java.util.Comparator;
 import java.util.List;
 
@@ -23,8 +22,15 @@ public class DishService {
         repository.save(dish);
     }
 
+    Comparator<Dish> comparator = (o1, o2) -> {
+        if (o1.getCategory().compareTo(o2.getCategory()) == 0) return o1.getName().compareToIgnoreCase(o2.getName());
+        return 0;
+    };
+
     public List<Dish> getAllDishes() {
-        return repository.findAllByOrderByCategory();
+        List<Dish> list = repository.findAllByOrderByCategory();
+        list.sort(comparator);
+        return list;
     }
 
     public void removeById(long id) {
