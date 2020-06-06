@@ -1,6 +1,7 @@
 package ua.opu.kurs_gorbik_kozyrevych;
 
 import lombok.Data;
+import ua.opu.kurs_gorbik_kozyrevych.controllers.DishController;
 
 import javax.persistence.*;
 
@@ -21,6 +22,12 @@ public class Details {
     @JoinColumn(name = "dish_id")
     private Dish dish;
 
+    public Details(long dish_id, long order_id, int quantity) {
+        this.dish_id = dish_id;
+        this.order_id = order_id;
+        this.quantity = quantity;
+        this.dish = DishController.getDishById(dish_id);
+    }
 
     public void setDish_id(long dish_id) {
         this.dish_id = dish_id;

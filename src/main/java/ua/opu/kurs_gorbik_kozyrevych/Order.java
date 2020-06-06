@@ -5,6 +5,7 @@ import ua.opu.kurs_gorbik_kozyrevych.controllers.DishController;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +29,9 @@ public class Order {
     public Order() {
     }
 
+    public void sortByQuantity() {
+        details.sort(Comparator.comparingInt(Details::getQuantity).reversed());
+    }
 
     public Details getDetailsIfPresent(long id) {
         return details.stream().filter(i -> i.getDish_id() == id).findFirst().orElse(null);

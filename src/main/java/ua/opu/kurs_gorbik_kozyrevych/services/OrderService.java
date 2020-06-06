@@ -27,6 +27,8 @@ public class OrderService {
 //    }
 
     //TODO надо решить как-то через репозиторий методом вроде findAllByOrderByTable_numAndDate_ordered()
+    // **решается прерименовыванием table_num в tableNum и date_ordered в dateOrdered и написанием метода в репозитории,
+    // но надо отследить изменение имён
     public List<Order> getAllOrders() {
         List<Order> n = repository.findAll();
         n.sort(comparator);

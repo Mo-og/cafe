@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ua.opu.kurs_gorbik_kozyrevych.Details;
 import ua.opu.kurs_gorbik_kozyrevych.Dish;
 import ua.opu.kurs_gorbik_kozyrevych.Order;
-import ua.opu.kurs_gorbik_kozyrevych.services.DetailsService;
 import ua.opu.kurs_gorbik_kozyrevych.services.OrderService;
 import ua.opu.kurs_gorbik_kozyrevych.services.WorkerService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Controller
@@ -36,27 +37,29 @@ public class OrderController {
 
     @GetMapping("/orders")
     public String getOrders(Model model, Principal principal) {
-        try{
+        try {
             model.addAttribute("orders", service.getAllOrders());
             model.addAttribute("new_order", new Order());
 
             final UserDetails user = workerService.loadUserByUsername(principal.getName());
 
-            switch(user.getAuthorities().toString()) {
-                case "[ROLE_WAITER]":return "Waiter/orders";
-                case "[ROLE_ADMIN]":return "Director/orders";
-                case "[ROLE_COOK]":  return "Cook/orders";
+            switch (user.getAuthorities().toString()) {
+                case "[ROLE_WAITER]":
+                    return "Waiter/orders";
+                case "[ROLE_ADMIN]":
+                    return "Director/orders";
+                case "[ROLE_COOK]":
+                    return "Cook/orders";
             }
+        } catch (NullPointerException e) {
+            return "User/index";
         }
-        catch (NullPointerException e) {
-            return  "User/index";
-        }
-        return  "User/index";
+        return "User/index";
     }
 
 
     @PostMapping("/orders")
-    public String saveOrder(@Valid Order order, BindingResult result, Model model, Principal principal ) {
+    public String saveOrder(@Valid Order order, BindingResult result, Model model, Principal principal) {
         try {
             final UserDetails user = workerService.loadUserByUsername(principal.getName());
             if (result.hasErrors()) {
@@ -75,9 +78,8 @@ public class OrderController {
             service.saveOrder(order);
 
             return "redirect:/orders";
-        }
-        catch(NullPointerException e) {
-            return  "User/index";
+        } catch (NullPointerException e) {
+            return "User/index";
         }
     }
 
@@ -110,14 +112,21 @@ public class OrderController {
         return "Waiter/edit_order";
     }
 
+
     @GetMapping("/report")
     public String getReport(Model model) {
         Order order = new Order();
+        List<Dish> dishes = DishController.getAllDishes();
+        List<Details> details = new ArrayList<>();
+        for (Dish d : dishes) {
+            order.techAddDetail(new Details(d.getId(), -1, 0));
+        }
         for (Order o : service.getAllOrders()) {
             for (Details d : o.getDetails()) {
                 order.techAddDetail(d);
             }
         }
+        order.sortByQuantity();
         model.addAttribute("order", order);
         return "Director/report";
     }
