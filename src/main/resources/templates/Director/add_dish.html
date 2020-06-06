@@ -42,11 +42,13 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li class="active"><a th:href="@{/Director/index}"><span
+                                        <li class="active"><a th:href="@{/}"><span
                                                 style="color: #ff7f50;">Главная</span></a></li>
-                                        <li><a th:href="@{/Director/menu}"><span style="color: #ff7f50;">Меню</span></a></li>
-                                        <li><a th:href="@{/Director/workers}"><span
+                                        <li><a th:href="@{/menu}"><span style="color: #ff7f50;">Меню</span></a></li>
+                                        <li><a th:href="@{/workers}"><span
                                                 style="color: #ff7f50;">Сотрудники</span></a></li>
+                                        <li><a th:href="@{/orders}"><span style="color: #ff7f50;">Заказы</span></a></li>
+                                        <li><a th:href="@{/report}"><span style="color: #ff7f50;">Отчет</span></a></li>
                                         <li>
                                             <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
                                                th:href="@{/logout}"><span style="color: #ff7f50;">Выход</span></a></li>
@@ -69,7 +71,7 @@
                         Добавление блюда<span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
                     <br><h4 class="block-title text-align-center">Заполните поля и нажмите кнопку 'Добавить блюдо''</h4>
                     <br>
-                    <form enctype="multipart/form-data" th:action="@{/Director/add_dish}" th:object="${dish}"
+                    <form enctype="multipart/form-data" th:action="@{/add_dish}" th:object="${dish}"
                           method="post" novalidate>
                         <div class="row">
                             <div class="col-md-12">
@@ -107,7 +109,7 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <div class="btn-toolbar"><label for="category">Категория</label><a
-                                                th:href="@{/Director/categories}">
+                                                th:href="@{/categories}">
                                             <svg class="bi bi-gear-fill" width="1.4em" height="1.4em"
                                                  viewBox="-4 -4 20 20"
                                                  fill="black" xmlns="http://www.w3.org/2000/svg">

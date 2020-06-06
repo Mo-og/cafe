@@ -4,6 +4,7 @@ import lombok.Data;
 import ua.opu.kurs_gorbik_kozyrevych.controllers.DishController;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class Order {
     private Date date_ordered;
     private String comments;
     private int table_num;
+    private String status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<Details> details;
@@ -41,6 +43,14 @@ public class Order {
         details.remove(detail);
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public void addDetail(Details detail) {
         Details present = getDetailsIfPresent(detail.getDish_id());
         if (present != null) {
@@ -50,6 +60,19 @@ public class Order {
         } else {
             //detail.setOrder(this);
             DishController.getDishById(detail.getDish_id()).addDetail(detail);
+            details.add(detail);
+            System.out.println("Добавляем блюдо: (" + detail.getDish().getName() + ") в количестве: " + detail.getQuantity());
+        }
+    }
+
+    public void techAddDetail(Details detail) {
+        if (details == null) details = new ArrayList<>();
+        Details present = getDetailsIfPresent(detail.getDish_id());
+        if (present != null) {
+            present.setQuantity(detail.getQuantity() + present.getQuantity());
+            System.out.println("Увеличеваем количество блюд: quantity(" + present.getDish().getName() + ") = " + detail.getQuantity());
+
+        } else {
             details.add(detail);
             System.out.println("Добавляем блюдо: (" + detail.getDish().getName() + ") в количестве: " + detail.getQuantity());
         }

@@ -35,15 +35,17 @@
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
                                     </button>
+                                    <!--<div class="logo">
+                                        <h3><a class="navbar-collapse" th:href="@{/Cook/index}">КАФЕ GORBIK</a></h3>
+                                    </div>-->
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li class="active"><a href="#banner">Главная</a></li>
                                         <li><a th:href="@{/orders}">Заказы</a></li>
-                                        <li><a th:href="@{/menu}">Меню</a></li>
                                         <li><a th:href="@{/workers}">Сотрудники</a></li>
                                         <li><a href="#about">О нас</a></li>
                                         <li><a href="#gallery">Галерея</a></li>
+                                        <!--<li><a href="#reservation">Reservation</a></li>-->
                                         <li><a href="#footer">Связаться с нами</a></li>
                                         <li><a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
                                                th:href="@{/logout}">Выйти</a></li>

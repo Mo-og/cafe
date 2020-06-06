@@ -19,24 +19,24 @@
     <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
 </head>
 <style>
-.b-popup {
-    width: 100%;
-    min-height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    overflow: hidden;
-    position: fixed;
-    top: 0;
-}
+    .b-popup {
+        width: 100%;
+        min-height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+    }
 
-.b-popup .b-popup-content { /*настройки формы*/
-    margin: 15% auto 0 auto;
-    width: 80%;
-    height: 100%;
-    padding: 10px;
-    background-color: #fdfdfd; /*заливка формы*/
-    border-radius: 15px;
-    box-shadow: 0 0 10px #000; /*тень от всплывающего окна*/
-}
+    .b-popup .b-popup-content { /*настройки формы*/
+        margin: 15% auto 0 auto;
+        width: 80%;
+        height: 100%;
+        padding: 10px;
+        background-color: #fdfdfd; /*заливка формы*/
+        border-radius: 15px;
+        box-shadow: 0 0 10px #000; /*тень от всплывающего окна*/
+    }
 </style>
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
 <script>
@@ -89,6 +89,7 @@
                                         <li><a th:href="@{/}"><span
                                                 style="color: #ff7f50;">Главная</span></a></li>
                                         <li><a th:href="@{/menu}"><span style="color: #ff7f50;">Меню</span></a></li>
+                                        <li><a th:href="@{/report}"><span style="color: #ff7f50;">Отчет</span></a></li>
                                         <li><a th:href="@{/workers}"><span
                                                 style="color: #ff7f50;">Сотрудники</span></a>
                                         </li>

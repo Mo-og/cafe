@@ -22,7 +22,7 @@ public class CategoriesService {
         }
 
         public List<DishCategory> getAllCategories() {
-            return repository.findAll();
+            return repository.findAllByOrderByName();
         }
 
         public void removeById(long id) {

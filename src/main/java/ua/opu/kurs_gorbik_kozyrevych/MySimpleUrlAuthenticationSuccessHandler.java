@@ -71,11 +71,11 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
         }
 
         if (isAdmin) {
-            return "/Director/index";
+            return "/";
         } else if (isCook) {
-            return "/Cook/index";
+            return "/";
         } else if(isWaiter) {
-            return "/Waiter/index";
+            return "/";
         }
         else {
             throw new IllegalStateException();

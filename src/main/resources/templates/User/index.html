@@ -42,12 +42,12 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li><a th:href="@{/User/entrance}">Log in</a></li>
-                                        <li class="active"><a href="#banner">Home</a></li>
-                                        <li><a href="#about">About us</a></li>
-                                        <li><a href="#gallery">Gallery</a></li>
-<!--                                        <li><a href="#reservation">Reservation</a></li>-->
-                                        <li><a href="#footer">Contact us</a></li>
+                                        <li class="active"><a href="#banner">Главная</a></li>
+                                        <li><a th:href="@{/menu}">Меню</a></li>
+                                        <li><a href="#about">О нас</a></li>
+                                        <li><a href="#gallery">Галерея</a></li>
+                                        <li><a href="#footer">Связаться с нами</a></li>
+                                        <li><a th:href="@{/entrance}">Вход</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -66,12 +66,12 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="banner-text wow animated fadeInUp" data-wow-delay="1s">
                         <div class="banner-cell">
-                            <h1> <img src="../images/dine-img.png" alt="image" /> Dine With Us </h1>
+                            <h1> <img src="../images/dine-img.png" alt="image" /> Добро пожаловать! </h1>
                             <h2> <span class="side-img left-side-img"><i></i><i></i><i></i></span> consectetuer adipiscing <span class="side-img right-side-img"><i></i><i></i><i></i></span> </h2>
                             <p> Lorem ipsum dolor sit amet consectetuer adipiscing </p>
                             <h3> Aenean commodo ligula eget dolor Aenean consectetuer adipiscing </h3>
                             <div class="banner-buttons scrollbtn">
-                                <a th:href="@{/User/menu}" class="orange-btn">Menu</a>
+                                <a th:href="@{/menu}" class="orange-btn">Меню</a>
                             </div>
                         </div>
                     </div>
@@ -94,8 +94,8 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    <h2 class="block-title"> About Us <span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
-                    <h3> IT STARTED, QUITE SIMPLY, LIKE THIS... </h3>
+                    <h2 class="block-title"> О нас <span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
+                    <h3> Всё началось примерно так... </h3>
                     <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusm incididunt ut labore et dolore magna aliqua. Ut enim ad minim venia, nostrud exercitation ullamco. </p>
                     <p> Aenean commodo ligula eget dolor aenean massa. Cum sociis nat penatibu set magnis dis parturient montes, nascetur ridiculus mus. quam felisorat, ultricies nec, Aenean commodo ligula eget dolor penatibu set magnis is parturient montes, nascetur ridiculus mus. quam felisorat, ultricies nec, pellentesque eu, pretium quis, sem. quat massa quis enim. Donec vitae sapien ut libero venenatis fauci Nullam quis ante. Etiam sit amet rci eget eros. </p>
                 </div>
@@ -109,7 +109,7 @@
         <div class="container pr">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <h2 class="block-title text-align-center"> <span class="side-img left-side-img"><i></i><i></i><i></i></span> Food Gallery <span class="side-img right-side-img"><i></i><i></i><i></i></span> </h2>
+                    <h2 class="block-title text-align-center"> <span class="side-img left-side-img"><i></i><i></i><i></i></span> Галерея <span class="side-img right-side-img"><i></i><i></i><i></i></span> </h2>
                     <h5 class="title-caption text-align-center"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusm incididunt ut labore et dolore magna aliqua. Ut enim ad minim venia,nostrud exercitation ullamco. </h5>
                     <div id="popup-gallery" class="food-gallery wow animated fadeInUp" data-wow-delay="0.2s">
                         <div class="food-gallery-item gallery-small-height">
@@ -199,78 +199,6 @@
     </section>
     <!-- Food Gallery Section Ends -->
 
-    <!-- Reservation Section Begins
-    <section id="reservation" class="reservation-block pad-top-100 pad-bottom-100">
-        <div class="container pr">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <h2 class="block-title text-align-center"> <span class="side-img left-side-img"><i></i><i></i><i></i></span> Reservations<span class="side-img right-side-img"><i></i><i></i><i></i></span> </h2>
-                    <h5 class="title-caption text-align-center mar-bottom-25"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusm incididunt ut labore et dolore magna aliqua. Ut enim ad minim venia,nostrud exercitation ullamco. </h5>
-                    <form class="reservation-block">
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <div class="form-box">
-                                <input type="text" placeholder="Name">
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <div class="form-box">
-                                <input type="text" placeholder="E-Mail ID">
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <div class="form-box">
-                                <input type="text" placeholder="contact no.">
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <div class="form-box">
-                                <select>
-                                    <option selected disabled>No. Of persons</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <div class="form-box">
-                                <input type="text" id='date-picker' placeholder="Date" />
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <div class="form-box">
-                                <input type="text" id='time-picker' placeholder="Time" />
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-box">
-                                <select>
-                                    <option selected disabled>preferred food</option>
-                                    <option>Indian</option>
-                                    <option>Continental</option>
-                                    <option>Mexican</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-box">
-                                <select>
-                                    <option selected disabled>Occasion</option>
-                                    <option>Wedding</option>
-                                    <option>Birthday</option>
-                                    <option>Anniversary</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 reserve-book-btn text-align-center">
-                            <a href="#" class="orange-btn">BOOK MY TABLE</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-     Reservation Section Ends -->
 
     <!-- Footer Section Begins -->
     <section id="footer" class="footer-block color-white parallax-fix parallaximg-7 pad-top-100">
@@ -280,19 +208,19 @@
                     <div class="footer-content">
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <div class="contact-us">
-                                <h3 class="footer-title">Contact Us</h3>
+                                <h3 class="footer-title">Связаться с нами</h3>
                                 <ul>
                                     <li> <i class="fa fa-map-marker"></i> <span> 121 King St, Melbourne VIC 3000, Australia </span> </li>
-                                    <li> <i class="fa fa-phone"></i> <span> +91 98 76 543210 </span> </li>
+                                    <li> <i class="fa fa-phone"></i> <span> +380 98 76 54210 </span> </li>
                                     <li> <i class="fa fa-envelope-o"></i> <a href="#"> support@food.com </a> </li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <div class="opening-hours">
-                                <h3 class="footer-title">opening hours</h3>
-                                <h6><i class="fa fa-calendar-minus-o" aria-hidden="true"></i> <span>Monday - Thursday <br/> 10:00 AM - 7:00 PM</span> </h6>
-                                <h6><i class="fa fa-calendar-minus-o" aria-hidden="true"></i> <span>Friday - Saturday <br/> 10:00 AM - 3:00 PM</span> </h6>
+                                <h3 class="footer-title">Мы работаем</h3>
+                                <h6><i class="fa fa-calendar-minus-o" aria-hidden="true"></i> <span>Понедельник - Четверг <br/> 10:00 - 19:00 </span> </h6>
+                                <h6><i class="fa fa-calendar-minus-o" aria-hidden="true"></i> <span>Пятница - Суббота <br/> 10:00  - 17:00 </span> </h6>
                             </div>
                         </div>
                     </div>

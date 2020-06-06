@@ -21,6 +21,7 @@ public class Details {
     @JoinColumn(name = "dish_id")
     private Dish dish;
 
+
     public void setDish_id(long dish_id) {
         this.dish_id = dish_id;
     }

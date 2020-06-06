@@ -41,11 +41,13 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li class="active"><a th:href="@{/Director/index}"><span
+                                        <li class="active"><a th:href="@{/}"><span
                                                 style="color: #ff7f50;">Главная</span></a></li>
-                                        <li><a th:href="@{/Director/menu}"><span style="color: #ff7f50;">Меню</span></a></li>
-                                        <li><a th:href="@{/Director/workers}"><span
+                                        <li><a th:href="@{/menu}"><span style="color: #ff7f50;">Меню</span></a></li>
+                                        <li><a th:href="@{/workers}"><span
                                                 style="color: #ff7f50;">Сотрудники</span></a></li>
+                                        <li><a th:href="@{/orders}"><span style="color: #ff7f50;">Заказы</span></a></li>
+                                        <li><a th:href="@{/report}"><span style="color: #ff7f50;">Отчет</span></a></li>
                                         <li>
                                             <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
                                                th:href="@{/logout}"><span style="color: #ff7f50;">Выход</span></a></li>
@@ -67,7 +69,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
                     <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span>
                         Категории<span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
-                    <br><a th:href="@{/Director/add_category}" class="btn btn-lg btn-block btn-outline-primary"
+                    <br><a th:href="@{/add_category}" class="btn btn-lg btn-block btn-outline-primary"
                            role="button"
                            aria-disabled="true">Добавить категорию блюда</a>
                     <br>

@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @Controller
 public class EntranceController {
 
-    @GetMapping("/User/entrance")
+    @GetMapping("/entrance")
     public String getEntrance(Model model) {
         model.addAttribute("entrance", new EntranceForm());
         return "User/entrance";
@@ -25,7 +25,7 @@ public class EntranceController {
         return "User/index";
     }
 
-    @PostMapping("/User/entrance")
+    @PostMapping("/entrance")
     public String validateEntrance(@Valid EntranceForm entrance, BindingResult result) {
         if (result.hasErrors()) {
             return "User/entrance";

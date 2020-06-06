@@ -25,16 +25,16 @@ public class DetailsController {
         this.service = service;
     }
 
-    @GetMapping("/Waiter/dish_exclude")
+    @GetMapping("/dish_exclude")
     public String removeDishFromOrder(@RequestParam Long dish_id, @RequestParam Long order_id, Model model) {
         service.removeByOrderIdAndDishID(order_id, dish_id);
         model.addAttribute("order", OrderController.service.getById(order_id));
         model.addAttribute("dishes", DishController.getAllDishes());
         model.addAttribute("container", new Details());
-        return "redirect:/Waiter/order_edit?id=" + order_id;
+        return "redirect:/order_edit?id=" + order_id;
     }
 
-    @PostMapping("/Waiter/order_dish_add")
+    @PostMapping("/order_dish_add")
     public String addDishToOrder(Details container, BindingResult result, Model model) {
         System.out.println("ПОЛУЧЕНО container: " + container);
         Order order = OrderController.service.getById(container.getOrder_id());
@@ -54,10 +54,10 @@ public class DetailsController {
         model.addAttribute("dish", dish_toSave);
         model.addAttribute("dishes", DishController.getAllDishes());
         model.addAttribute("container", container);
-        return "redirect:/Waiter/order_edit?id=" + container.getOrder_id();
+        return "redirect:/order_edit?id=" + container.getOrder_id();
     }
 
-    @GetMapping("/Waiter/order_dish_edit")
+    @GetMapping("/order_dish_edit")
     public String viewDishFromOrder(Model model, @RequestParam Long dish_id, @RequestParam Long order_id) {
         Details detail = service.findByOrderIdAndDishID(order_id,dish_id);
         model.addAttribute("order", detail.getOrder());
@@ -67,7 +67,7 @@ public class DetailsController {
         return "Waiter/edit_order_dish";
     }
 
-    @PostMapping("/Waiter/order_dish_edit")
+    @PostMapping("/order_dish_edit")
     public String editDishFromOrder(@RequestParam Long dish_id, Details container, BindingResult result, Model model) {
         System.out.println("ПОЛУЧЕНО container: " + container);
         Order order = OrderController.service.getById(container.getOrder_id());
@@ -86,7 +86,7 @@ public class DetailsController {
         model.addAttribute("dish", dish_toSave);
         model.addAttribute("dishes", DishController.getAllDishes());
         model.addAttribute("container", container);
-        return "redirect:/Waiter/order_edit?id=" + container.getOrder_id();
+        return "redirect:/order_edit?id=" + container.getOrder_id();
     }
 
 

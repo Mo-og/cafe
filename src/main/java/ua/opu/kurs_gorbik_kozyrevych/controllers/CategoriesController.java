@@ -1,6 +1,7 @@
 package ua.opu.kurs_gorbik_kozyrevych.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,8 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ua.opu.kurs_gorbik_kozyrevych.DishCategory;
 import ua.opu.kurs_gorbik_kozyrevych.services.CategoriesService;
+import ua.opu.kurs_gorbik_kozyrevych.services.WorkerService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 import java.util.NoSuchElementException;
@@ -19,6 +22,8 @@ import java.util.NoSuchElementException;
 public class CategoriesController {
 
     private static CategoriesService service;
+    @Autowired
+    WorkerService workerService;
 
     public static List<DishCategory> getAllCategories() {
         return service.getAllCategories();
@@ -29,25 +34,32 @@ public class CategoriesController {
         CategoriesController.service = service;
     }
 
-    @GetMapping("/Director/categories")
-    public String getCategory(Model model) {
-        model.addAttribute("categories", service.getAllCategories());
-        return "Director/categories";
+    @GetMapping("/categories")
+    public String getCategory(Model model, Principal principal) {
+
+        try {
+            final UserDetails user = workerService.loadUserByUsername(principal.getName());
+            model.addAttribute("categories", service.getAllCategories());
+            switch (user.getAuthorities().toString()) {
+                case "[ROLE_ADMIN]":
+                    return "Director/categories";
+                case "[ROLE_WAITER]":
+                    return "Waiter/categories";
+            }
+        }
+        catch (NullPointerException e) {
+            return  "User/index";
+        }
+        return "User/index";
     }
 
-    @GetMapping("/Waiter/categories")
-    public String getCategoryWaiter(Model model) {
-        model.addAttribute("categories", service.getAllCategories());
-        return "Waiter/categories";
-    }
-
-    @GetMapping("/Director/add_category")
+    @GetMapping("/add_category")
     public String addDishCategory(Model model) {
         model.addAttribute("category", new DishCategory());
         return "Director/add_category";
     }
 
-    @GetMapping("/Director/category_edit")
+    @GetMapping("/category_edit")
     public String editDish(Model model, @RequestParam Long id) {
         DishCategory category = service.getById(id);
         model.addAttribute("category", category);
@@ -55,30 +67,30 @@ public class CategoriesController {
         return "Director/edit_category";
     }
 
-    @PostMapping("/Director/category_update")
+    @PostMapping("/category_update")
     public String updateDish(@Valid DishCategory category, BindingResult result) {
         if (result.hasErrors())
             return "Director/edit_category";
         service.saveCategory(category);
         System.out.println("Обновлено " + category);
-        return "redirect:/Director/categories";
+        return "redirect:/categories";
     }
 
-    @PostMapping("/Director/add_category")
+    @PostMapping("/add_category")
     public String addDishCatPost(@Valid DishCategory category, BindingResult result) {
         System.out.println("Отправлено " + category);
         if (result.hasErrors())
             return "/Director/add_category";
         service.saveCategory(category);
         System.out.println("Успешно добавлено " + category);
-        return "redirect:/Director/categories";
+        return "redirect:/categories";
     }
 
-    @GetMapping("/Director/category_remove")
+    @GetMapping("/category_remove")
     public String removeCategory(@RequestParam Long id) {
         if (!service.existsWithId(id))
             throw new NoSuchElementException();
         service.removeById(id);
-        return "redirect:/Director/categories";
+        return "redirect:/categories";
     }
 }

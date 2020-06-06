@@ -1,6 +1,7 @@
 package ua.opu.kurs_gorbik_kozyrevych.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,8 +13,10 @@ import ua.opu.kurs_gorbik_kozyrevych.Dish;
 import ua.opu.kurs_gorbik_kozyrevych.Order;
 import ua.opu.kurs_gorbik_kozyrevych.services.DetailsService;
 import ua.opu.kurs_gorbik_kozyrevych.services.OrderService;
+import ua.opu.kurs_gorbik_kozyrevych.services.WorkerService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
@@ -21,6 +24,8 @@ import java.util.NoSuchElementException;
 public class OrderController {
 
     public static OrderService service;
+    @Autowired
+    WorkerService workerService;
 
 
     @Autowired
@@ -29,29 +34,55 @@ public class OrderController {
     }
 
 
-    @GetMapping("/Waiter/orders")
-    public String getOrders(Model model) {
-        model.addAttribute("orders", service.getAllOrders());
-        model.addAttribute("new_order", new Order());
-        return "Waiter/orders";
-    }
-
-
-    @PostMapping("/Waiter/orders")
-    public String saveOrder(@Valid Order order, BindingResult result, Model model) {
-        if (result.hasErrors()) {
+    @GetMapping("/orders")
+    public String getOrders(Model model, Principal principal) {
+        try{
             model.addAttribute("orders", service.getAllOrders());
             model.addAttribute("new_order", new Order());
-            return "Waiter/orders";
+
+            final UserDetails user = workerService.loadUserByUsername(principal.getName());
+
+            switch(user.getAuthorities().toString()) {
+                case "[ROLE_WAITER]":return "Waiter/orders";
+                case "[ROLE_ADMIN]":return "Director/orders";
+                case "[ROLE_COOK]":  return "Cook/orders";
+            }
         }
-        if (order.getDate_ordered() == null) {
-            order.setDate_ordered(new Date(System.currentTimeMillis()));
+        catch (NullPointerException e) {
+            return  "User/index";
         }
-        service.saveOrder(order);
-        return "redirect:/Waiter/orders";
+        return  "User/index";
     }
 
-    @PostMapping("/Waiter/order_update")
+
+    @PostMapping("/orders")
+    public String saveOrder(@Valid Order order, BindingResult result, Model model, Principal principal ) {
+        try {
+            final UserDetails user = workerService.loadUserByUsername(principal.getName());
+            if (result.hasErrors()) {
+                model.addAttribute("orders", service.getAllOrders());
+                model.addAttribute("new_order", new Order());
+                switch (user.getAuthorities().toString()) {
+                    case "[ROLE_WAITER]":
+                        return "Waiter/orders";
+                    case "[ROLE_COOK]":
+                        return "Cook/orders";
+                }
+            }
+            if (order.getDate_ordered() == null) {
+                order.setDate_ordered(new Date(System.currentTimeMillis()));
+            }
+            service.saveOrder(order);
+
+            return "redirect:/orders";
+        }
+        catch(NullPointerException e) {
+            return  "User/index";
+        }
+    }
+
+
+    @PostMapping("/order_update")
     public String updateOrder(@Valid Order order, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("order", order);
@@ -66,10 +97,10 @@ public class OrderController {
         model.addAttribute("order", order);
         model.addAttribute("container", new Details());
         model.addAttribute("dishes", DishController.getAllDishes());
-        return "redirect:/Waiter/order_edit?id=" + order.getId();
+        return "redirect:/order_edit?id=" + order.getId();
     }
 
-    @GetMapping("/Waiter/order_edit")
+    @GetMapping("/order_edit")
     public String editDish(Model model, @RequestParam Long id) {
         Order order = service.getById(id);
         Details container = new Details();
@@ -79,14 +110,34 @@ public class OrderController {
         return "Waiter/edit_order";
     }
 
-    @GetMapping("/Waiter/order_remove")
+    @GetMapping("/report")
+    public String getReport(Model model) {
+        Order order = new Order();
+        for (Order o : service.getAllOrders()) {
+            for (Details d : o.getDetails()) {
+                order.techAddDetail(d);
+            }
+        }
+        model.addAttribute("order", order);
+        return "Director/report";
+    }
+
+    @GetMapping("/change_status")
+    public String editStatus(Model model, @RequestParam Long id) {
+        Order order = service.getById(id);
+        model.addAttribute("order", order);
+        model.addAttribute("dishes", DishController.getAllDishes());
+        return "Cook/change_status";
+    }
+
+    @GetMapping("/order_remove")
     public String removeOrder(Model model, @RequestParam Long id) {
         model.addAttribute("orders", service.getAllOrders());
         model.addAttribute("new_order", new Order());
         if (!service.existsWithId(id))
             throw new NoSuchElementException();
         service.removeById(id);
-        return "redirect:/Waiter/orders";
+        return "redirect:/orders";
     }
 
 }

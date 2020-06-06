@@ -1,6 +1,7 @@
 package ua.opu.kurs_gorbik_kozyrevych.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import ua.opu.kurs_gorbik_kozyrevych.Worker;
 import ua.opu.kurs_gorbik_kozyrevych.services.WorkerService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
@@ -25,20 +27,30 @@ public class WorkerController {
     public void setService(WorkerService service) {
         this.service = service;
     }
+    @Autowired
+    WorkerService workerService;
 
-    @GetMapping("/Director/workers")
-    public String getWorkers(Model model) {
-        model.addAttribute("workers", service.getAllWorkers());
-        return "Director/workers";
+    @GetMapping("/workers")
+    public String getWorkers(Model model, Principal principal) {
+
+        try{
+            model.addAttribute("workers", service.getAllWorkers());
+
+            final UserDetails user = workerService.loadUserByUsername(principal.getName());
+
+            switch(user.getAuthorities().toString()) {
+                case "[ROLE_WAITER]":  return "Waiter/workers";
+                case "[ROLE_COOK]":  return "Cook/workers";
+                case "[ROLE_ADMIN]":  return "Director/workers";
+            }
+        }
+        catch (NullPointerException e) {
+            return  "User/menu";
+        }
+        return "User/menu";
     }
 
-    @GetMapping("/Waiter/workers")
-    public String getWorkersWaiter(Model model) {
-        model.addAttribute("workers", service.getAllWorkers());
-        return "Waiter/workers";
-    }
-
-    @GetMapping("/Director/worker_edit")
+    @GetMapping("/worker_edit")
     public String editWorker(Model model, @RequestParam Long id) {
         Worker worker = service.getById(id);
         model.addAttribute("worker", worker);
@@ -53,25 +65,25 @@ public class WorkerController {
         worker.setPassword(new BCryptPasswordEncoder().encode("74553211"));
         service.saveWorker(worker);
 
-return "redirect:/User/entrance";
+        return "redirect:/entrance";
     }
 
 
-    @GetMapping("/Director/worker_remove")
+    @GetMapping("/worker_remove")
     public String removeWorker(@RequestParam Long id) {
         if (!service.existsWithId(id))
             throw new NoSuchElementException();
         service.removeById(id);
-        return "redirect:/Director/workers";
+        return "redirect:/workers";
     }
 
-    @GetMapping("/Director/add_worker")
+    @GetMapping("/add_worker")
     public String addWorker(Model model) {
         model.addAttribute("worker", new Worker());
         return "Director/add_worker";
     }
 
-    @PostMapping("/Director/worker_update")
+    @PostMapping("/worker_update")
     public String editingSubmit(@Valid Worker worker, BindingResult result) {
         if (result.hasErrors()) {
             return "Director/edit_worker";
@@ -82,10 +94,10 @@ return "redirect:/User/entrance";
             worker.setPassword(new BCryptPasswordEncoder().encode(worker.getPassword()));
         }
         service.saveWorker(worker);
-        return "redirect:/Director/workers";
+        return "redirect:/workers";
     }
 
-    @PostMapping("/Director/add_worker")
+    @PostMapping("/add_worker")
     public String greetingSubmit(@Valid Worker worker, BindingResult result) {
         if (result.hasErrors()) {
             return "Director/add_worker";
@@ -97,6 +109,6 @@ return "redirect:/User/entrance";
         }
         worker.setPassword(new BCryptPasswordEncoder().encode(worker.getPassword()));
         service.saveWorker(worker);
-        return "redirect:/Director/workers";
+        return "redirect:/workers";
     }
 }

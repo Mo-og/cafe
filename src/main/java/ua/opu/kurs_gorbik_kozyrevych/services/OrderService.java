@@ -21,7 +21,12 @@ public class OrderService {
     public void saveOrder(Order order) {
         repository.save(order);
     }
-//TODO надо решить как-то через репозиторий методом вроде findAllByOrderByTable_numAndDate_ordered()
+
+//    public List<Order> getAllOrders() {
+//        return repository.findAllByOrderByTable_num();
+//    }
+
+    //TODO надо решить как-то через репозиторий методом вроде findAllByOrderByTable_numAndDate_ordered()
     public List<Order> getAllOrders() {
         List<Order> n = repository.findAll();
         n.sort(comparator);
@@ -38,6 +43,7 @@ public class OrderService {
             return -1;
         return 1;
     };
+
 
     public void removeById(long id) {
         repository.deleteById(id);

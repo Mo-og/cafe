@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <title>Заказы</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0">
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
-    <title> Категории </title>
+    <title>Добавление заказа</title>
     <!-- CSS -->
     <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css"/>
     <link type="text/css" rel="stylesheet" href="../css/owl.carousel.min.css">
@@ -16,13 +17,45 @@
     <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet"/>
     <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
     <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
-    <style>
-        a {
-            color: #ff7f50
-        }
-    </style>
 </head>
+<style>
+.b-popup {
+    width: 100%;
+    min-height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+}
+
+.b-popup .b-popup-content { /*настройки формы*/
+    margin: 15% auto 0 auto;
+    width: 80%;
+    height: 100%;
+    padding: 10px;
+    background-color: #fdfdfd; /*заливка формы*/
+    border-radius: 15px;
+    box-shadow: 0 0 10px #000; /*тень от всплывающего окна*/
+}
+</style>
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
+<script>
+    //Функция отображения PopUp
+    function PopUpShow(id) {
+        $('#' + id).fadeIn(300);
+        setTimeout(function(){$('#inner').slideDown(400);},301);
+    }
+
+    function PopUpHide(id) {
+        $('#inner').slideUp(400);
+        setTimeout(function(){$('#' + id).fadeOut(300)},300);
+    }
+
+    function rowClickedToEdit(id) {
+        location.href = "change_status?id=" + id;
+    }
+</script>
+
 <div id="site-head">
     <!-- Header Section Begins -->
     <header id="header" class="header-block" data-top="0" data-scroll="100">
@@ -40,20 +73,21 @@
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
                                     </button>
-                                    <!-- <div class="logo">
-                                         <h3><a class="navbar-collapse" th:href="@{/Waiter/index}">КАФЕ GORBIK</a></h3>
-                                     </div>-->
+                                    <!--<div class="logo">
+                                        <h3><a class="navbar-collapse" th:href="@{/Cook/index}">КАФЕ GORBIK</a></h3>
+                                    </div>-->
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li class="active"><a th:href="@{/}"><span style="color: #ff7f50;">Главная</span></a></li>
-                                        <li><a th:href="@{/orders}"><span style="color: #ff7f50;">Заказы</span></a></li>
+                                        <li><a th:href="@{/}"><span
+                                                style="color: #ff7f50;">Главная</span></a></li>
                                         <li><a th:href="@{/menu}"><span style="color: #ff7f50;">Меню</span></a></li>
-                                        <li><a th:href="@{/workers}"><span style="color: #ff7f50;">Сотрудники</span></a></li>
+                                        <li><a th:href="@{/workers}"><span
+                                                style="color: #ff7f50;">Сотрудники</span></a>
+                                        </li>
                                         <li>
                                             <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
-                                               th:href="@{/logout}"><span style="color: #ff7f50;">Выход</span></a>
-                                        </li>
+                                               th:href="@{/logout}"><span style="color: #ff7f50;">Выход</span></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -65,28 +99,35 @@
     </header>
     <!-- Header Section Ends -->
 
-
     <section class="reservation-block pad-top-100 pad-bottom-100">
         <div class="container pr">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
-                    <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span>
-                        Категории<span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
-                    <br><br>
+                    <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i></span>
+                        Заказы<span class="side-img right-side-img"><i></i><i></i></span></h2><br>
+                    <h4 class="block-title text-align-center">Для редактирования конкретного заказа, дважды нажмите на
+                        него в списке ниже.<i></i><i></i><i></i> <br>
+                    </h4>
                     <form class="reservation-block">
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th class="text-justify">#</th>
-                                    <th class="text-justify">Категория</th>
+                                    <th class="text-justify">Код заказа</th>
+                                    <th class="text-justify">Блюда</th>
+                                    <th class="text-justify">Статус</th>
+                                    <th class="text-justify">Комментарий</th>
+                                    <th class="text-justify"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-
-                                <tr th:each="category, state : ${categories}">
-                                    <td class="align-middle"><span th:text="${state.count}"></span></td>
-                                    <td class="align-middle"><span th:text="${category.name}"></span></td>
+                                <tr th:each="order: ${orders}"
+                                    th:ondblclick="'javascript:rowClickedToEdit(\'' + ${order.id} + '\');'"
+                                    style="cursor: pointer">
+                                    <td class="align-middle"><span th:text="${order.id}"></span></td>
+                                    <td class="align-middle"><span th:text="${order.getDishNames()}"></span></td>
+                                    <td class="align-middle"><span th:text="${order.status}"></span></td>
+                                    <td class="align-middle"><span th:text="${order.comments}"></span></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -98,8 +139,14 @@
     </section>
 </div>
 
+
+
+
+
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS-->
+<script src="http://code.jquery.com/jquery-2.0.2.min.js"></script>
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

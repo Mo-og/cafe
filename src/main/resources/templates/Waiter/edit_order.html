@@ -68,15 +68,6 @@
         $('#inner').slideUp(400);
         setTimeout(function(){$('#' + id).fadeOut(300)},300);
     }
-/*    function PopUpShow(id) {
-        document.getElementById(id).style.display = 'block';
-        //$('#' + id).show();
-    }
-
-    function PopUpHide(id) {
-        document.getElementById(id).style.display = 'none';
-        //$('#' + id).hide();
-    }*/
 </script>
 <div id="site-head">
     <!-- Header Section Begins -->
@@ -101,13 +92,13 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li class="active"><a th:href="@{/Waiter/index}"><span style="color: #ff7f50;">Главная</span></a>
+                                        <li class="active"><a th:href="@{/}"><span style="color: #ff7f50;">Главная</span></a>
                                         </li>
-                                        <li><a th:href="@{/Waiter/orders}"><span
+                                        <li><a th:href="@{/orders}"><span
                                                 style="color: #ff7f50;">Заказы</span></a></li>
-                                        <li><a th:href="@{/Waiter/menu}"><span style="color: #ff7f50;">Меню</span></a>
+                                        <li><a th:href="@{/menu}"><span style="color: #ff7f50;">Меню</span></a>
                                         </li>
-                                        <li><a th:href="@{/Waiter/workers}"><span
+                                        <li><a th:href="@{/workers}"><span
                                                 style="color: #ff7f50;">Сотрудники</span></a></li>
                                         <li>
                                             <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
@@ -124,7 +115,7 @@
     <!-- Header Section Ends -->
 
     <section class="reservation-block pad-top-100 pad-bottom-100">
-        <form class="reservation-block" enctype="multipart/form-data" th:action="@{/Waiter/order_update}"
+        <form class="reservation-block" enctype="multipart/form-data" th:action="@{/order_update}"
               method="post">
             <div class="container pr">
                 <div class="row">
@@ -175,8 +166,6 @@
                                         <td class="align-middle"><span th:text="${detail.quantity}"></span></td>
                                         <td class="align-middle"><span th:text="${detail.cost}"></span></td>
                                         <td th:onclick="'javascript:clickedToDelete(\'' + ${detail.dish.id} + '\', \'' + ${order.id}+'\' );'">
-                                            <!--                                        <button  class="btn btn-primary" style="" >Отменить</button>-->
-                                            <!--                                        альтернатива - иконка крестика-->
                                             <svg class="bi bi-x-square-fill" width="1em" height="1em"
                                                  viewBox="0 0 16 16"
                                                  fill="currentColor" xmlns="http://www.w3.org/2000/svg"
@@ -220,7 +209,7 @@
         <br>
         <h3 class="block-title text-align-center">Добавьте блюдо в заказ</h3>
         <br>
-        <form class="reservation-block" enctype="multipart/form-data" th:action="@{/Waiter/order_dish_add}"
+        <form class="reservation-block" enctype="multipart/form-data" th:action="@{/order_dish_add}"
               method="post">
             <div class="form-row" style="margin-left: 3%;margin-right: 3%">
                 <div class="col mb-3" align="left">
@@ -235,8 +224,8 @@
                     <h4><label for="quantity">Количество</label></h4>
                     <input type="number" class="form-control" id="quantity" name="quantity"
                            value="1" required>
-                    <!--<small class="text-danger" th:if="${#fields.hasErrors('num')}"
-                           th:errors="*{new_dish.quantity}"></small>-->
+<!--                    <small class="text-danger" th:if="${#fields.hasErrors('quantity')}"-->
+<!--                           th:errors="*{container.quantity}"></small>-->
                 </div>
                 <br>
                 <input th:object="${container}" type="number" id="order_id" name="order_id" class="form-control"
@@ -286,5 +275,7 @@
 <script type="text/javascript" src="../js/jquery.magnific-popup.js"></script>
 <script type="text/javascript" src="../js/moment-with-locales.js"></script>
 <script type="text/javascript" src="../js/bootstrap-datetimepicker.js"></script>
+
+
 </body>
 </html>
