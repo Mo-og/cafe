@@ -112,7 +112,7 @@ public class OrderController {
         return "Waiter/edit_order";
     }
 
-
+    //отчет
     @GetMapping("/report")
     public String getReport(Model model) {
         Order order = new Order();
