@@ -4,10 +4,7 @@ import lombok.Data;
 import ua.opu.kurs_gorbik_kozyrevych.controllers.DishController;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "orders")
@@ -29,6 +26,10 @@ public class Order {
     public Order() {
     }
 
+    public Order(ArrayList<Details> details) {
+        this.details = details;
+    }
+
     public void sortByQuantity() {
         details.sort(Comparator.comparingInt(Details::getQuantity).reversed());
     }
@@ -38,7 +39,10 @@ public class Order {
     }
 
     public boolean removeFromOrder(long id) {
-        Details detail = details.stream().filter(i -> i.getDish().getId() == id || i.getDish_id() == id).findFirst().orElse(null);
+        Details detail = details.stream().filter(i -> i.getDish().getId() == id
+                || i.getDish_id() == id).findFirst().orElse(null);
+        if (detail == null)
+            throw new NoSuchElementException();
         System.out.println("Удаляем из заказа №" + id + ": " + detail);
         return details.remove(detail);
     }
@@ -59,9 +63,14 @@ public class Order {
         Details present = getDetailsIfPresent(detail.getDish_id());
         if (present != null) {
             present.setQuantity(detail.getQuantity() + present.getQuantity());
-            System.out.println("Увеличеваем количество блюд: quantity(" + present.getDish().getName() + ") = " + detail.getQuantity());
-
+            if (present.getQuantity() == 0)
+                details.remove(detail);
+            System.out.println("Изменяем количество блюд: quantity(" + present.getDish().getName() + ") = " + detail.getQuantity());
         } else {
+            if (detail.getQuantity() == 0) {
+                System.out.println("Количество блюда = 0 - пропускаем");
+                return;
+            }
             //detail.setOrder(this);
             DishController.getDishById(detail.getDish_id()).addDetail(detail);
             details.add(detail);
@@ -92,12 +101,8 @@ public class Order {
         return dishNames;
     }
 
-    public int getTable_num() {
-        return table_num;
-    }
-
-    public void setTable_num(int table) {
-        this.table_num = table;
+    public List<Details> getDetails() {
+        return details;
     }
 
     public double getCost() {
@@ -107,31 +112,6 @@ public class Order {
         }
         return cost;
     }
-
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comment) {
-        this.comments = comment;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Date getDate_ordered() {
-        return date_ordered;
-    }
-
-    public void setDate_ordered(Date date) {
-        this.date_ordered = date;
-    }
-
 
     @Override
     public String toString() {

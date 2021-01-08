@@ -23,7 +23,8 @@ public class DishService {
     }
 
     Comparator<Dish> comparator = (o1, o2) -> {
-        if (o1.getCategory().compareTo(o2.getCategory()) == 0) return o1.getName().compareToIgnoreCase(o2.getName());
+        if (o1.getCategory().compareTo(o2.getCategory()) == 0)
+            return o1.getName().compareToIgnoreCase(o2.getName());
         return 0;
     };
 

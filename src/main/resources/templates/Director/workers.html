@@ -83,16 +83,16 @@
                                     <th class="text-justify">Должность</th>
                                 </tr>
                                 </thead>
-                                <tr th:each="worker,state : ${workers}" style="cursor: pointer"
-                                    th:onclick="'javascript:rowClicked(\'' + ${worker.id} + '\');'">
+                                <tr th:each="user,state : ${workers}" style="cursor: pointer"
+                                    th:onclick="'javascript:rowClicked(\'' + ${user.id} + '\');'">
                                     <td class="align-middle"><span th:text="${state.count}"></span></td>
-                                    <td class="align-middle"><span th:text="${worker.lastName}"></span></td>
-                                    <td class="align-middle"><span th:text="${worker.firstName}"></span></td>
-                                    <td class="align-middle"><span th:text="${worker.patronymic}"></span></td>
-                                    <td class="align-middle"><span th:text="${worker.email}"></span></td>
-                                    <td class="align-middle"><span th:text="${worker.username}"></span></td>
-                                    <td class="align-middle"><span th:text="${worker.address}"></span></td>
-                                    <td class="align-middle"><span th:text="${worker.position}"></span></td>
+                                    <td class="align-middle"><span th:text="${user.lastName}"></span></td>
+                                    <td class="align-middle"><span th:text="${user.firstName}"></span></td>
+                                    <td class="align-middle"><span th:text="${user.patronymic}"></span></td>
+                                    <td class="align-middle"><span th:text="${user.email}"></span></td>
+                                    <td class="align-middle"><span th:text="${user.username}"></span></td>
+                                    <td class="align-middle"><span th:text="${user.address}"></span></td>
+                                    <td class="align-middle"><span th:text="${user.position}"></span></td>
                                 </tr>
                             </table>
                         </div>

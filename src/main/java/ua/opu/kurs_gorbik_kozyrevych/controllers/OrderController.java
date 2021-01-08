@@ -12,7 +12,7 @@ import ua.opu.kurs_gorbik_kozyrevych.Details;
 import ua.opu.kurs_gorbik_kozyrevych.Dish;
 import ua.opu.kurs_gorbik_kozyrevych.Order;
 import ua.opu.kurs_gorbik_kozyrevych.services.OrderService;
-import ua.opu.kurs_gorbik_kozyrevych.services.WorkerService;
+import ua.opu.kurs_gorbik_kozyrevych.services.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -26,7 +26,7 @@ public class OrderController {
 
     public static OrderService service;
     @Autowired
-    WorkerService workerService;
+    UserService userService;
 
 
     @Autowired
@@ -41,7 +41,7 @@ public class OrderController {
             model.addAttribute("orders", service.getAllOrders());
             model.addAttribute("new_order", new Order());
 
-            final UserDetails user = workerService.loadUserByUsername(principal.getName());
+            final UserDetails user = userService.loadUserByUsername(principal.getName());
 
             switch (user.getAuthorities().toString()) {
                 case "[ROLE_WAITER]":
@@ -61,7 +61,7 @@ public class OrderController {
     @PostMapping("/orders")
     public String saveOrder(@Valid Order order, BindingResult result, Model model, Principal principal) {
         try {
-            final UserDetails user = workerService.loadUserByUsername(principal.getName());
+            final UserDetails user = userService.loadUserByUsername(principal.getName());
             if (result.hasErrors()) {
                 model.addAttribute("orders", service.getAllOrders());
                 model.addAttribute("new_order", new Order());

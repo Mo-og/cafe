@@ -16,6 +16,50 @@
     <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet"/>
     <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
     <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
+    <!-- Jquery Js -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/element.js"></script>
+    <script type="text/javascript" src="../js/modernizr.js"></script>
+    <script type="text/javascript" src="../js/owl.carousel.js"></script>
+    <script type="text/javascript" src="../js/jquery.localscroll-1.2.7-min.js"></script>
+    <script type="text/javascript" src="../js/wow.min.js"></script>
+    <script type="text/javascript" src="../js/imagesloaded.pkgd.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.isotope.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.parallax-1.1.3.js"></script>
+    <script type="text/javascript" src="../js/jquery.magnific-popup.js"></script>
+    <script type="text/javascript" src="../js/moment-with-locales.js"></script>
+    <script type="text/javascript" src="../js/bootstrap-datetimepicker.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.16/sorting/datetime-moment.js"></script>
+
+    <script>$(document).ready(function () {
+        $.fn.dataTable.moment('D-MM-YYYY H:m:s');
+
+        $('#table').DataTable({
+            language: {
+                // lengthMenu: "Отображать _MENU_ блюд",
+                url: "https://cdn.datatables.net/plug-ins/1.10.21/i18n/Russian.json",
+            },
+            // "bLengthChange": false,
+            "pageLength": 15,
+        });
+    });
+    </script>
 </head>
 
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
@@ -42,7 +86,8 @@
                                         <li><a th:href="@{/}"><span style="color: #ff7f50;">Главная</span></a>
                                         </li>
                                         <li><a th:href="@{/orders}"><span style="color: #ff7f50;">Заказы</span></a></li>
-                                        <li><a th:href="@{/workers}"><span style="color: #ff7f50;">Сотрудники</span></a></li>
+                                        <li><a th:href="@{/workers}"><span style="color: #ff7f50;">Сотрудники</span></a>
+                                        </li>
                                         <li><a th:href="@{/report}"><span style="color: #ff7f50;">Отчет</span></a></li>
                                         <li>
                                             <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
@@ -64,9 +109,10 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
                     <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span>
                         Меню<span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
-                    <br><a th:href="@{/add_dish}" class="btn btn-lg btn-block btn-outline-primary"
-                           role="button"
-                           aria-disabled="true">Добавить блюдо</a>
+                    <br>
+                    <a th:href="@{/add_dish}"
+                       class="btn btn-lg btn-block btn-outline-primary" role="button" aria-disabled="true">Добавить
+                        блюдо</a>
                     <br>
                     <h4 class="block-title text-align-center">Для редактирования конкретного блюда меню, выберите его в
                         списке ниже<i></i><i></i><i></i>
@@ -74,7 +120,7 @@
                     <br><br>
                     <form class="reservation-block">
                         <div class="table-responsive-sm">
-                            <table class="table table-striped">
+                            <table id="table" class="table table-striped">
                                 <thead>
                                 <tr>
                                     <th class="text-justify">#</th>
@@ -114,28 +160,6 @@
         location.href = "dish_edit?id=" + value;
     }
 </script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-<!-- Jquery Js -->
-<script type="text/javascript" src="../js/jquery.min.js"></script>
-<script type="text/javascript" src="../js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../js/element.js"></script>
-<script type="text/javascript" src="../js/modernizr.js"></script>
-<script type="text/javascript" src="../js/owl.carousel.js"></script>
-<script type="text/javascript" src="../js/jquery.localscroll-1.2.7-min.js"></script>
-<script type="text/javascript" src="../js/wow.min.js"></script>
-<script type="text/javascript" src="../js/imagesloaded.pkgd.min.js"></script>
-<script type="text/javascript" src="../js/jquery.isotope.min.js"></script>
-<script type="text/javascript" src="../js/jquery.parallax-1.1.3.js"></script>
-<script type="text/javascript" src="../js/jquery.magnific-popup.js"></script>
-<script type="text/javascript" src="../js/moment-with-locales.js"></script>
-<script type="text/javascript" src="../js/bootstrap-datetimepicker.js"></script>
+
 </body>
 </html>

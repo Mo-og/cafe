@@ -67,6 +67,8 @@
                                                 <span style="color: #ff7f50; "> <label for="username">Номер телефона</label></span>
                                                 <input th:field="*{username}" type="text" class="form-control" id="username" placeholder=""
                                                        value="" required>
+                                                <small class="text-danger" th:if="${#fields.hasErrors('username')}"
+                                                       th:errors="*{username}"></small>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -74,6 +76,8 @@
                                                 <span style="color: #ff7f50; "><label for="password">Пароль</label></span>
                                                 <input class="form-control" id="password" placeholder="********" th:field="*{password}"
                                                        type="password" value="">
+                                                <small class="text-danger" th:if="${#fields.hasErrors('password')}"
+                                                       th:errors="Некорректный пароль"></small>
                                             </div>
                                         </div><br><br><br><br>
                                 <hr class="mb-4">

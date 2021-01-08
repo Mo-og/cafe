@@ -9,34 +9,34 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ua.opu.kurs_gorbik_kozyrevych.Worker;
-import ua.opu.kurs_gorbik_kozyrevych.services.WorkerService;
+import ua.opu.kurs_gorbik_kozyrevych.User;
+import ua.opu.kurs_gorbik_kozyrevych.services.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.NoSuchElementException;
-import java.util.regex.Pattern;
 
 
 @Controller
-public class WorkerController {
+public class UserController {
 
-    private WorkerService service;
+    private UserService service;
 
     @Autowired
-    public void setService(WorkerService service) {
+    public void setService(UserService service) {
         this.service = service;
     }
-    @Autowired
-    WorkerService workerService;
 
-    @GetMapping("/workers")
+    @Autowired
+    UserService userService;
+
+    @GetMapping("/users")
     public String getWorkers(Model model, Principal principal) {
 
         try{
-            model.addAttribute("workers", service.getAllWorkers());
+            model.addAttribute("workers", service.getAllUsers());
 
-            final UserDetails user = workerService.loadUserByUsername(principal.getName());
+            final UserDetails user = userService.loadUserByUsername(principal.getName());
 
             switch(user.getAuthorities().toString()) {
                 case "[ROLE_WAITER]":  return "Waiter/workers";
@@ -52,18 +52,18 @@ public class WorkerController {
 
     @GetMapping("/worker_edit")
     public String editWorker(Model model, @RequestParam Long id) {
-        Worker worker = service.getById(id);
-        model.addAttribute("worker", worker);
+        User user = service.getById(id);
+        model.addAttribute("worker", user);
         return "Director/edit_worker";
     }
 
     //на случай сброса базы - добавляет сотрудника
     @GetMapping("/supersecretrequest7355")
     public String addAdmin(Model model) {
-        Worker worker = new Worker("admin", "admin", "admin", "a@b.c", "991122334455", "address", "директор", "password");
-        worker.setRoles("ROLE_ADMIN");
-        worker.setPassword(new BCryptPasswordEncoder().encode("74553211"));
-        service.saveWorker(worker);
+        User user = new User("admin", "admin", "admin", "a@b.c", "991122334455", "address", "директор", "password");
+        user.setRoles("ROLE_ADMIN");
+        user.setPassword(new BCryptPasswordEncoder().encode("74553211"));
+        service.saveUser(user);
 
         return "redirect:/entrance";
     }
@@ -74,41 +74,46 @@ public class WorkerController {
         if (!service.existsWithId(id))
             throw new NoSuchElementException();
         service.removeById(id);
-        return "redirect:/workers";
+        return "redirect:/users";
     }
 
     @GetMapping("/add_worker")
     public String addWorker(Model model) {
-        model.addAttribute("worker", new Worker());
+        model.addAttribute("worker", new User());
         return "Director/add_worker";
     }
 
     @PostMapping("/worker_update")
-    public String editingSubmit(@Valid Worker worker, BindingResult result) {
+    public String editingSubmit(@Valid User user, BindingResult result) {
         if (result.hasErrors()) {
             return "Director/edit_worker";
         }
-
         //если пароль не поменяли, то хешировать снова не стоит, если поменяли, то хешируем
-        if(!worker.getPassword().equals(service.getById(worker.getId()).getPassword())) {
-            worker.setPassword(new BCryptPasswordEncoder().encode(worker.getPassword()));
+        if (!user.getPassword().equals(service.getById(user.getId()).getPassword())) {
+            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         }
-        service.saveWorker(worker);
-        return "redirect:/workers";
+        service.saveUser(user);
+        return "redirect:/users";
     }
 
     @PostMapping("/add_worker")
-    public String greetingSubmit(@Valid Worker worker, BindingResult result) {
+    public String greetingSubmit(@Valid User user, BindingResult result) {
         if (result.hasErrors()) {
             return "Director/add_worker";
         }
-        switch(worker.getPosition().toLowerCase()) {
-            case "повар": worker.setRoles("ROLE_COOK"); break;
-            case "официант": worker.setRoles("ROLE_WAITER"); break;
-            case "директор": worker.setRoles("ROLE_ADMIN"); break;
+        switch (user.getPosition().toLowerCase()) {
+            case "повар":
+                user.setRoles("ROLE_COOK");
+                break;
+            case "официант":
+                user.setRoles("ROLE_WAITER");
+                break;
+            case "директор":
+                user.setRoles("ROLE_ADMIN");
+                break;
         }
-        worker.setPassword(new BCryptPasswordEncoder().encode(worker.getPassword()));
-        service.saveWorker(worker);
-        return "redirect:/workers";
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        service.saveUser(user);
+        return "redirect:/users";
     }
 }

@@ -5,33 +5,32 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ua.opu.kurs_gorbik_kozyrevych.Dish;
 import ua.opu.kurs_gorbik_kozyrevych.MyUserDetails;
-import ua.opu.kurs_gorbik_kozyrevych.Worker;
-import ua.opu.kurs_gorbik_kozyrevych.repositories.WorkerRepository;
+import ua.opu.kurs_gorbik_kozyrevych.User;
+import ua.opu.kurs_gorbik_kozyrevych.repositories.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class WorkerService implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
-    private WorkerRepository repository;
+    private UserRepository repository;
 
     @Autowired
-    public void setRepository(WorkerRepository repository) {
+    public void setRepository(UserRepository repository) {
         this.repository = repository;
     }
 
-    public void saveWorker(Worker worker) {
-        repository.save(worker);
+    public void saveUser(User user) {
+        repository.save(user);
     }
 
-    public List<Worker> getAllWorkers() {
+    public List<User> getAllUsers() {
         return repository.findAll();
     }
 
-    public Worker getById(long id) {
+    public User getById(long id) {
         return repository.getOne(id);
     }
 
@@ -45,7 +44,7 @@ public class WorkerService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Worker> user = repository.findByUsername(username);
+        Optional<User> user = repository.findByUsername(username);
         System.out.println(user);
         user.orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
         return user.map(MyUserDetails::new).get();

@@ -13,16 +13,18 @@ import ua.opu.kurs_gorbik_kozyrevych.Dish;
 import ua.opu.kurs_gorbik_kozyrevych.Order;
 import ua.opu.kurs_gorbik_kozyrevych.services.DetailsService;
 
-import java.util.NoSuchElementException;
-
 @Controller
 public class DetailsController {
 
-    private DetailsService service;
+    private static DetailsService service;
+
+    public static void removeDishFromOrder(long dish_id, long order_id) {
+        service.removeByOrderIdAndDishID(order_id, dish_id);
+    }
 
     @Autowired
     public void setDetailsService(DetailsService service) {
-        this.service = service;
+        DetailsController.service = service;
     }
 
     @GetMapping("/dish_exclude")
@@ -59,11 +61,11 @@ public class DetailsController {
 
     @GetMapping("/order_dish_edit")
     public String viewDishFromOrder(Model model, @RequestParam Long dish_id, @RequestParam Long order_id) {
-        Details detail = service.findByOrderIdAndDishID(order_id,dish_id);
+        Details detail = service.findByOrderIdAndDishID(order_id, dish_id);
         model.addAttribute("order", detail.getOrder());
         model.addAttribute("dish", detail.getDish());
         model.addAttribute("dishes", DishController.getAllDishes());
-        model.addAttribute("container",detail);
+        model.addAttribute("container", detail);
         return "Waiter/edit_order_dish";
     }
 

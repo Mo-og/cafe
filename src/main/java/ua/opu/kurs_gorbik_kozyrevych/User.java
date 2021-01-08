@@ -6,8 +6,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "workers")
-public class Worker {
+@Table(name = "users")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +30,7 @@ public class Worker {
     private String roles;
 
 
-    public Worker(String lastName, String firstName, String patronymic, String email, String username, String address, String position, String password) {
+    public User(String lastName, String firstName, String patronymic, String email, String username, String address, String position, String password) {
         if (username.contains("+"))
             username.replace("+", "");
         this.lastName = lastName;
@@ -55,7 +55,7 @@ public class Worker {
 
     }
 
-    public Worker() {
+    public User() {
     }
 
     public String getPosition() {
@@ -151,7 +151,7 @@ public class Worker {
 
     @Override
     public String toString() {
-        return "Worker{" +
+        return "User{" +
                 "id=" + id +
                 ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +

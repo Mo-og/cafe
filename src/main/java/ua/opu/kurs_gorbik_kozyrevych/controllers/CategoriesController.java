@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ua.opu.kurs_gorbik_kozyrevych.DishCategory;
 import ua.opu.kurs_gorbik_kozyrevych.services.CategoriesService;
-import ua.opu.kurs_gorbik_kozyrevych.services.WorkerService;
+import ua.opu.kurs_gorbik_kozyrevych.services.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
-
 import java.util.NoSuchElementException;
 
 @Controller
@@ -23,7 +22,7 @@ public class CategoriesController {
 
     private static CategoriesService service;
     @Autowired
-    WorkerService workerService;
+    UserService userService;
 
     public static List<DishCategory> getAllCategories() {
         return service.getAllCategories();
@@ -38,7 +37,7 @@ public class CategoriesController {
     public String getCategory(Model model, Principal principal) {
 
         try {
-            final UserDetails user = workerService.loadUserByUsername(principal.getName());
+            final UserDetails user = userService.loadUserByUsername(principal.getName());
             model.addAttribute("categories", service.getAllCategories());
             switch (user.getAuthorities().toString()) {
                 case "[ROLE_ADMIN]":

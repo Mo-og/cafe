@@ -65,12 +65,13 @@
                     <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span> Изменение данных работника<span class="side-img right-side-img"><i></i><i></i><i></i></span> </h2>
                     <br><h4 class="block-title text-align-center">Измените необходимые поля и нажмите кнопку 'Сохранить работника'</h4>
                     <br>
-                    <form enctype="multipart/form-data"  th:action="@{/worker_update}" th:object="${worker}" method="post" novalidate>
+                    <form enctype="multipart/form-data" th:action="@{/worker_update}" th:object="${user}" method="post"
+                          novalidate>
                         <div class="row">
                             <label for="id"><input th:field="*{id}" type="hidden" class="form-control" id="id"
-                                                                    th:value="${worker.id}"></label>
+                                                   th:value="${user.id}"></label>
                             <label for="roles"><input th:field="*{roles}" type="hidden" class="form-control" id="roles"
-                                                   th:value="${worker.roles}"></label>
+                                                      th:value="${user.roles}"></label>
                             <div class="col-md-12">
                                 <h4 class="mb-3">Поля для заполнения</h4><br>
 
@@ -80,7 +81,7 @@
                                         <label for="lastName">Фамилия</label>
                                         <input th:field="*{lastName}" type="text" class="form-control" id="lastName"
                                                placeholder="2 - 50 букв"
-                                               th:value="${worker.lastName}" required>
+                                               th:value="${user.lastName}" required>
                                         <small class="text-danger" th:if="${#fields.hasErrors('lastName')}"
                                                th:errors="*{lastName}"></small>
                                     </div>
@@ -89,7 +90,7 @@
                                         <label for="firstName">Имя</label>
                                         <input th:field="*{firstName}" type="text" class="form-control" id="firstName"
                                                placeholder="2 - 50 букв"
-                                               th:value="${worker.firstName}" required>
+                                               th:value="${user.firstName}" required>
                                         <small class="text-danger" th:if="${#fields.hasErrors('firstName')}"
                                                th:errors="*{firstName}"></small>
                                     </div>
@@ -98,7 +99,7 @@
                                         <label for="patronymic">Отчество</label>
                                         <input th:field="*{patronymic}" type="text" class="form-control" id="patronymic"
                                                placeholder="2 - 50 букв"
-                                               th:value="${worker.patronymic}" required>
+                                               th:value="${user.patronymic}" required>
                                         <small class="text-danger" th:if="${#fields.hasErrors('patronymic')}"
                                                th:errors="*{patronymic}"></small>
                                     </div>
@@ -108,7 +109,7 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="email">Электронная почта</label>
                                         <input th:field="*{email}" type="email" class="form-control" id="email"
-                                               placeholder="name@example.com" th:value="${worker.email}" required>
+                                               placeholder="name@example.com" th:value="${user.email}" required>
                                         <small class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
                                     </div>
 
@@ -124,21 +125,23 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="username">Телефон</label>
                                         <input th:field="*{username}" type="text" class="form-control" id="username"
-                                               placeholder="5 - 14 цифр" th:value="${worker.username}" required>
+                                               placeholder="5 - 14 цифр" th:value="${user.username}" required>
                                         <small class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
                                         <label for="address">Домашний адрес</label>
-                                        <input th:field="*{address}" type="text" class="form-control" id="address" placeholder=""
-                                               th:value="${worker.address}" required>
+                                        <input th:field="*{address}" type="text" class="form-control" id="address"
+                                               placeholder=""
+                                               th:value="${user.address}" required>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
                                         <label for="password">Пароль для входа на сайт</label>
                                         <!--если поставить type = password, данные не вносятся в поле (почему-то) -->
-                                        <input th:field="*{password}" type="text" class="form-control" id="password" placeholder=""
-                                               th:value="${worker.password}" required>
+                                        <input th:field="*{password}" type="text" class="form-control" id="password"
+                                               placeholder=""
+                                               th:value="${user.password}" required>
                                         <small class="text-danger" th:if="${#fields.hasErrors('password')}"
                                                th:errors="*{password}"></small>
                                     </div>
@@ -153,7 +156,7 @@
                                         </div>
                                         <div class="col-12 col-md-6">
                                             <button type="button" class="btn btn-danger btn-lg btn-block"
-                                                    th:onclick="'javascript:sure(\'' + ${worker.id} + '\');'">Удалить
+                                                    th:onclick="'javascript:sure(\'' + ${user.id} + '\');'">Удалить
                                             </button>
                                         </div>
                                     </div>

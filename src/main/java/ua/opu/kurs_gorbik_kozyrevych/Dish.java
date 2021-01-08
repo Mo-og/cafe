@@ -37,6 +37,13 @@ public class Dish {
     public Dish() {
     }
 
+    public Dish(long id) {
+        this.id = id;
+    }
+
+    public Dish(@NotBlank(message = "У блюда должно быть название!") String name) {
+        this.name = name;
+    }
 
     public String getIngredients() {
         return ingredients;
