@@ -1,4 +1,6 @@
 spring:
+  main:
+    lazy-initialization: false
   jpa:
     database: POSTGRESQL
     show-sql: true
@@ -13,3 +15,7 @@ spring:
     username: postgres
     password: '74553211'
     driverClassName: org.postgresql.Driver
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB

@@ -12,7 +12,7 @@
     <artifactId>kurs_gorbik_kozyrevych</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>kurs_gorbik_kozyrevych</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Web application for cafe staff</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -40,7 +40,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
+        <!-- hot swapping, disable cache for template, enable live reload -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

@@ -2,6 +2,7 @@ package ua.opu.kurs_gorbik_kozyrevych.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ua.opu.kurs_gorbik_kozyrevych.Dish;
 import ua.opu.kurs_gorbik_kozyrevych.repositories.DishRepository;
 
@@ -20,6 +21,10 @@ public class DishService {
 
     public void saveDish(Dish dish) {
         repository.save(dish);
+    }
+
+    public void saveImage(long id, MultipartFile file) {
+
     }
 
     Comparator<Dish> comparator = (o1, o2) -> {
