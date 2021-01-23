@@ -45,7 +45,7 @@
                                         <li class="active"><a th:href="@{/}"><span
                                                 style="color: #ff7f50;">Главная</span></a></li>
                                         <li><a th:href="@{/menu}"><span style="color: #ff7f50;">Меню</span></a></li>
-                                        <li><a th:href="@{/workers}"><span
+                                        <li><a th:href="@{/users}"><span
                                                 style="color: #ff7f50;">Сотрудники</span></a></li>
                                         <li><a th:href="@{/orders}"><span style="color: #ff7f50;">Заказы</span></a></li>
                                         <li><a th:href="@{/report}"><span style="color: #ff7f50;">Отчет</span></a></li>
@@ -64,7 +64,7 @@
     <!-- Header Section Ends -->
 
     <section class="reservation-block pad-top-100 pad-bottom-100">
-        <div class="container pr">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
                     <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span>
@@ -72,7 +72,7 @@
                     <br><h4 class="block-title text-align-center">Заполните поля и нажмите кнопку 'Добавить
                         сотрудника'</h4>
                     <br>
-                    <form enctype="multipart/form-data" th:action="@{/add_worker}" th:object="${user}"
+                    <form enctype="multipart/form-data" th:action="@{/add_user}" th:object="${user}"
                           method="post"
                           class="needs-validation" novalidate>
                         <div class="row">

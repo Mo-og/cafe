@@ -80,7 +80,7 @@
                                     <th class="text-justify">Должность</th>
                                 </tr>
                                 </thead>
-                                <tr th:each="user,state : ${workers}">
+                                <tr th:each="user,state : ${users}">
                                     <td class="align-middle"><span th:text="${state.count}"></span></td>
                                     <td class="align-middle"><span th:text="${user.lastName}"></span></td>
                                     <td class="align-middle"><span th:text="${user.firstName}"></span></td>
