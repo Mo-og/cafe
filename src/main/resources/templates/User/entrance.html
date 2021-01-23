@@ -8,14 +8,14 @@
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <title> Главная </title>
     <!-- CSS -->
-    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css"/>
     <link type="text/css" rel="stylesheet" href="../css/owl.carousel.min.css">
     <link type="text/css" rel="stylesheet" href="../css/font-awesome.css">
-    <link type="text/css" href="../css/animate.css" rel="stylesheet" />
-    <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet" />
-    <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet" />
-    <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet" />
-    <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet" />
+    <link type="text/css" href="../css/animate.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+    <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
+    <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
 </head>
 
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
@@ -29,15 +29,13 @@
                         <nav class="navbar navbar-default">
                             <div class="container-fluid">
                                 <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                                        <span class="sr-only">Toggle navigation</span>
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                        <span class="sr-only">Открыть навигацию</span>
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
                                     </button>
-                                    <!--<div class="logo">
-                                        <h3><a class="navbar-collapse" th:href="@{/User/index}">КАФЕ GORBIK</a></h3>
-                                    </div>-->
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
@@ -55,35 +53,41 @@
     <!-- Header Section Ends -->
 
     <!-- Banner Section Begins -->
-    <section  class="reservation-block pad-top-100 pad-bottom-100">
+    <section class="reservation-block pad-top-100 pad-bottom-100">
         <div class="container pr">
             <div class="row"><br><br><br><br>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span> Выполните вход в аккаунт<span class="side-img right-side-img"><i></i><i></i><i></i></span> </h2>
-                            <form enctype="multipart/form-data"   th:object="${entrance}" method="post"
-                                  class="needs-validation"><br><br><br><br>
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                            <div class="form-box">
-                                                <span style="color: #ff7f50; "> <label for="username">Номер телефона</label></span>
-                                                <input th:field="*{username}" type="text" class="form-control" id="username" placeholder=""
-                                                       value="" required>
-                                                <small class="text-danger" th:if="${#fields.hasErrors('username')}"
-                                                       th:errors="*{username}"></small>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                            <div class="form-box">
-                                                <span style="color: #ff7f50; "><label for="password">Пароль</label></span>
-                                                <input class="form-control" id="password" placeholder="********" th:field="*{password}"
-                                                       type="password" value="">
-                                                <small class="text-danger" th:if="${#fields.hasErrors('password')}"
-                                                       th:errors="Некорректный пароль"></small>
-                                            </div>
-                                        </div><br><br><br><br>
-                                <hr class="mb-4">
-                                <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">Войти
-                                </button>
-                             </form>
+                    <h2 class="block-title text-align-center" style="font-size: 9vmin"><span
+                            class="side-img left-side-img"><i></i><i></i><i></i></span> Выполните вход в аккаунт<span
+                            class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
+                    <form enctype="multipart/form-data" th:object="${entrance}" method="post"
+                          class="needs-validation"><br><br><br><br>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="form-box">
+                                <span style="color: #ff7f50; "> <label for="username" style="font-size: 4vmin">Номер телефона</label></span>
+                                <input type="text" class="form-control" id="username" th:field="*{username}"
+                                       placeholder=""
+                                       th:value="${entrance.username}" required>
+                                <small class="text-danger" th:if="${usernameFailed!=null&&usernameFailed}"
+                                       th:text="${messageUsername}"></small>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="form-box">
+                                <span style="color: #ff7f50; "><label for="password"
+                                                                      style="font-size: 4vmin">Пароль</label></span>
+                                <input class="form-control" id="password" placeholder="********" th:field="*{password}"
+                                       type="password" th:value="${entrance.password}" required>
+                                <small class="text-danger" th:if="${passwordFailed!=null&&passwordFailed}"
+                                       th:text="${messagePassword}"></small>
+                            </div>
+                        </div>
+                        <br><br><br><br>
+                        <hr class="mb-4">
+                        <button class="btn btn-warning btn-lg btn-block mt-2" type="submit" value="Submit">Войти
+                        </button>
+                        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden">
+                    </form>
                 </div>
             </div>
         </div>

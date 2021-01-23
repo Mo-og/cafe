@@ -36,8 +36,6 @@
             box-shadow: 0 0 10px #000; /*тень от всплывающего окна*/
         }
     </style>
-
-
 </head>
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
 <script>
@@ -117,7 +115,7 @@
     <section class="reservation-block pad-top-100 pad-bottom-100">
         <form class="reservation-block" enctype="multipart/form-data" th:action="@{/order_update}"
               method="post">
-            <div class="container pr">
+            <div class="container-fluid">
                 <div class="row">
                     <div class="col-20" th:object="${order}"><br>
                         <h2 class="block-title text-align-center"><span
@@ -275,7 +273,6 @@
 <script type="text/javascript" src="../js/jquery.magnific-popup.js"></script>
 <script type="text/javascript" src="../js/moment-with-locales.js"></script>
 <script type="text/javascript" src="../js/bootstrap-datetimepicker.js"></script>
-
 
 </body>
 </html>

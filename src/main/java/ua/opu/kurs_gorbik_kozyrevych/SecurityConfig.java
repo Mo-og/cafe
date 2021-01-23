@@ -31,15 +31,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
+        http.authorizeRequests()
                 .antMatchers("/", "static/css", "static/js").permitAll().
                 antMatchers("/User/**").permitAll().
                 antMatchers("/Director/**").hasRole("ADMIN").
-                antMatchers("/Waiter/**").hasAnyRole("ADMIN","WAITER").
-                antMatchers("/Cook/**").hasAnyRole("ADMIN","COOK")
+                antMatchers("/Waiter/**").hasAnyRole("ADMIN", "WAITER").
+                antMatchers("/Cook/**").hasAnyRole("ADMIN", "COOK")
                 .and().formLogin().loginPage("/entrance")
-                .successHandler(myAuthenticationSuccessHandler()).
-                failureUrl("/entrance?error=true");
+                .successHandler(myAuthenticationSuccessHandler())
+                .failureForwardUrl("/entrance");
 
     }
 

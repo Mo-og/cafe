@@ -43,7 +43,8 @@
                                     <ul class="nav navbar-nav navbar-right">
                                         <li><a th:href="@{/}"><span style="color: #ff7f50;">Главная</span></a></li>
                                         <li><a th:href="@{/menu}"><span style="color: #ff7f50;">Меню</span></a></li>
-                                        <li><a th:href="@{/workers}"><span style="color: #ff7f50;">Сотрудники</span></a></li>
+                                        <li><a th:href="@{/users}"><span style="color: #ff7f50;">Сотрудники</span></a>
+                                        </li>
                                         <li><a th:href="@{/orders}"><span style="color: #ff7f50;">Заказы</span></a></li>
                                         <li><a th:href="@{/report}"><span style="color: #ff7f50;">Отчет</span></a></li>
                                         <li><a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
@@ -59,13 +60,16 @@
     <!-- Header Section Ends -->
 
     <section  class="reservation-block pad-top-100 pad-bottom-100">
-        <div class="container pr">
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> <br>
-                    <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span> Изменение данных работника<span class="side-img right-side-img"><i></i><i></i><i></i></span> </h2>
-                    <br><h4 class="block-title text-align-center">Измените необходимые поля и нажмите кнопку 'Сохранить работника'</h4>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
+                    <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span>
+                        Изменение данных работника<span class="side-img right-side-img"><i></i><i></i><i></i></span>
+                    </h2>
+                    <br><h4 class="block-title text-align-center">Измените необходимые поля и нажмите кнопку
+                        сохранения</h4>
                     <br>
-                    <form enctype="multipart/form-data" th:action="@{/worker_update}" th:object="${user}" method="post"
+                    <form enctype="multipart/form-data" th:action="@{/user_update}" th:object="${user}" method="post"
                           novalidate>
                         <div class="row">
                             <label for="id"><input th:field="*{id}" type="hidden" class="form-control" id="id"
@@ -137,11 +141,10 @@
                                     </div>
 
                                     <div class="col-md-12 mb-3">
-                                        <label for="password">Пароль для входа на сайт</label>
+                                        <label for="password">Новый пароль (если требуется сменить)</label>
                                         <!--если поставить type = password, данные не вносятся в поле (почему-то) -->
-                                        <input th:field="*{password}" type="text" class="form-control" id="password"
-                                               placeholder=""
-                                               th:value="${user.password}" required>
+                                        <input th:field="*{password}" type="password" class="form-control" id="password"
+                                               placeholder="*задан текущий пароль*">
                                         <small class="text-danger" th:if="${#fields.hasErrors('password')}"
                                                th:errors="*{password}"></small>
                                     </div>
@@ -150,8 +153,9 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-12 col-md-6">
-                                            <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">Сохранить
-                                                работника
+                                            <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">
+                                                Сохранить
+                                                изменения
                                             </button>
                                         </div>
                                         <div class="col-12 col-md-6">
@@ -174,7 +178,7 @@
 <br/><br/><br/>
 <script>
     function sure(id) {
-        var sured = confirm("Вы уверены, что хотите удалить работника?");
+        var sured = confirm("Вы уверены, что хотите удалить пользователя?");
         if (sured) {
             document.location.href = "worker_remove?id=" + id;
         }

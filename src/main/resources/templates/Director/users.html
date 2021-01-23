@@ -58,14 +58,16 @@
 
     <!-- Banner Section Begins -->
     <section  class="reservation-block pad-top-100 pad-bottom-100">
-        <div class="container pr">
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> <br>
-                    <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span> Управление сотрудниками<span class="side-img right-side-img"><i></i><i></i><i></i></span> </h2>
-                    <br><a th:href="@{/add_worker}" class="btn btn-lg btn-block btn-outline-primary" role="button"
-                       aria-disabled="true">Добавить сотрудника</a>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
+                    <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span>
+                        Управление сотрудниками<span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
+                    <br><a th:href="@{/add_user}" class="btn btn-lg btn-block btn-outline-primary" role="button"
+                           aria-disabled="true">Добавить сотрудника</a>
                     <br>
-                    <h4 class="block-title text-align-center">Для изменения данных о сотруднике, выберите его в списке<i></i><i></i><i></i>
+                    <h4 class="block-title text-align-center">Для изменения данных о сотруднике, выберите его в
+                        списке<i></i><i></i><i></i>
                     </h4>
                     <br><br>
                     <form class="reservation-block">
@@ -83,7 +85,7 @@
                                     <th class="text-justify">Должность</th>
                                 </tr>
                                 </thead>
-                                <tr th:each="user,state : ${workers}" style="cursor: pointer"
+                                <tr th:each="user,state : ${users}" style="cursor: pointer"
                                     th:onclick="'javascript:rowClicked(\'' + ${user.id} + '\');'">
                                     <td class="align-middle"><span th:text="${state.count}"></span></td>
                                     <td class="align-middle"><span th:text="${user.lastName}"></span></td>
@@ -115,7 +117,7 @@
         }
     }
     function rowClicked(value) {
-        location.href = "worker_edit?id=" + value;
+        location.href = "user_edit?id=" + value;
     }
 </script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

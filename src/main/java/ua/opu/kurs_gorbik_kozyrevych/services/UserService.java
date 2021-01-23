@@ -27,6 +27,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> getAllUsers() {
+        System.out.println(repository.findAll());
         return repository.findAll();
     }
 
@@ -38,8 +39,17 @@ public class UserService implements UserDetailsService {
         repository.deleteById(id);
     }
 
+    public void removeByUsername(String username) {
+        Optional<User> userOptional = repository.findByUsername(username);
+        userOptional.ifPresent(user -> repository.delete(user));
+    }
+
     public boolean existsWithId(long id) {
         return repository.existsById(id);
+    }
+
+    public boolean existsWithUsername(String username) {
+        return repository.findByUsername(username).isPresent();
     }
 
     @Override

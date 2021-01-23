@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 public class UploadController {
 
     //Save the uploaded file to this folder
-    private static final String UPLOADED_FOLDER = ".//src//main//resources//DishImages//";
+    private static final String IMAGES_FOLDER_PATH = ".//src//main//resources//DishImages//";
 
     @GetMapping("/upload")
     public String index() {
@@ -36,7 +36,7 @@ public class UploadController {
 
             // Get the file and save it somewhere
             byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+            Path path = Paths.get(IMAGES_FOLDER_PATH + file.getOriginalFilename());
             Files.write(path, bytes);
 
             redirectAttributes.addFlashAttribute("message",
