@@ -1,10 +1,11 @@
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0">
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <title> Главная </title>
     <!-- CSS -->
-    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css"/>
     <link type="text/css" rel="stylesheet" href="../css/owl.carousel.min.css">
     <link type="text/css" rel="stylesheet" href="../css/font-awesome.css">
     <link type="text/css" href="../css/animate.css" rel="stylesheet"/>
@@ -12,9 +13,22 @@
     <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet"/>
     <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
     <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <!-- Jquery Js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+            integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+            crossorigin="anonymous"></script>
+
     <!-- Jquery Js -->
     <script type="text/javascript" src="../js/jquery.min.js"></script>
-    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../js/element.js"></script>
     <script type="text/javascript" src="../js/modernizr.js"></script>
     <script type="text/javascript" src="../js/owl.carousel.js"></script>
@@ -26,15 +40,7 @@
     <script type="text/javascript" src="../js/jquery.magnific-popup.js"></script>
     <script type="text/javascript" src="../js/moment-with-locales.js"></script>
     <script type="text/javascript" src="../js/bootstrap-datetimepicker.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
+
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
@@ -57,83 +63,78 @@
     });
     </script>
 </head>
-<body>
-<div id="site-head">
-    <!-- Header Section Begins -->
-    <header id="header" class="header-block" data-top="0" data-scroll="100">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 main-menu">
-                    <div class="menuBar scrollbtn">
-                        <nav class="navbar navbar-default">
-                            <div class="container-fluid">
-                                <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                                        <span class="sr-only">Toggle navigation</span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                    </button>
-                                    <!--<div class="logo">
-                                        <h3><a class="navbar-collapse" th:href="@{/User/index}">КАФЕ GORBIK</a></h3>
-                                    </div>-->
-                                </div>
-                                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                    <ul class="nav navbar-nav navbar-right">
-                                        <li><a th:href="@{/}"><span style="color: #ff7f50;">Главная</span></a></li>
-                                        <li><a th:href="@{/entrance}"><span style="color: #ff7f50;">Вход</span></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </nav>
+<body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}" style="color: #ff7f50;">Главная</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li><a class="nav-link" th:href="@{/entrance}" style="color: #ff7f50;">Вход</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Banner Section Begins -->
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br><br>
+            <h2 class="block-title text-align-center"><span
+                    class="side-img left-side-img"><i></i><i></i><i></i></span> Меню<span
+                    class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
+            <br><br><br>
+            <div class="menu-list">
+                <div class="menu-card" th:each="dish, state : ${dishes}"
+                     style="background-image:url('/images/gallery-6.png')">
+                    <h5 class="menu-card-title" th:text="${dish.name}"></h5>
+                    <span class="menu-card-price" th:text="${#strings.concat(dish.price,'₴')}"></span>
+                    <div class="menu-card-description">
+                        <p class="card-subtitle mb-2 text-muted" th:text="${dish.name}"></p>
+                        <p class="card-text" th:text="${#strings.concat(dish.weight,'г')}"></p>
+                        <p class="card-text" th:text="${dish.ingredients}"></p>
                     </div>
                 </div>
             </div>
-        </div>
-    </header>
-    <!-- Header Section Ends -->
-</div>
-<!-- Banner Section Begins -->
-<section class="reservation-block pad-top-100 pad-bottom-100">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br><br>
-                <h2 class="block-title text-align-center"><span
-                        class="side-img left-side-img"><i></i><i></i><i></i></span> Меню<span
-                        class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
-                <br><br><br>
-                <form class="reservation-block">
-                    <div class="table-responsive">
-                        <table id="myTable" class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th class="text-justify">#</th>
-                                <th class="text-justify">Название</th>
-                                <th class="text-justify">Категория</th>
-                                <th class="text-justify">Порция (г)</th>
-                                <th class="text-justify">Цена (грн)</th>
-                                <th class="text-justify">Состав</th>
-                            </tr>
-                            </thead>
-                            <tbody>
 
-                            <tr th:each="dish, state : ${dishes}">
-                                <!--<td class="align-middle"><span th:text="${dish.id}"/></td>-->
-                                <td class="align-middle"><span th:text="${state.count}"></span></td>
-                                <td class="align-middle"><span th:text="${dish.name}"></span></td>
-                                <td class="align-middle"><span th:text="${dish.category}"></span></td>
-                                <td class="align-middle"><span th:text="${dish.weight}"></span></td>
-                                <td class="align-middle"><span th:text="${dish.price}"></span></td>
-                                <td class="align-middle"><span th:text="${dish.ingredients}"></span></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </form>
-            </div>
+
+            <!--<form class="reservation-block">
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th class="text-justify">#</th>
+                            <th class="text-justify">#</th>
+                            <th class="text-justify">Название</th>
+                            <th class="text-justify">Категория</th>
+                            <th class="text-justify">Порция (г)</th>
+                            <th class="text-justify">Цена (грн)</th>
+                            <th class="text-justify">Состав</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:each="dish, state : ${dishes}">
+                            <td class="align-middle"><img src="/images/gallery-6.png" style="height: 2em"/></td>
+                            <td class="align-middle"><span th:text="${state.count}"></span></td>
+                            <td class="align-middle"><span th:text="${dish.name}"></span></td>
+                            <td class="align-middle"><span th:text="${dish.category}"></span></td>
+                            <td class="align-middle"><span th:text="${dish.weight}"></span></td>
+                            <td class="align-middle"><span th:text="${dish.price}"></span></td>
+                            <td class="align-middle"><span th:text="${dish.ingredients}"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>-->
         </div>
     </div>
-</section>
+</div>
 <!-- Banner Section Ends -->
 
 
