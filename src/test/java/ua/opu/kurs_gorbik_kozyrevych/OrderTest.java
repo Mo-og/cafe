@@ -1,6 +1,9 @@
 package ua.opu.kurs_gorbik_kozyrevych;
 
 import org.junit.jupiter.api.Test;
+import ua.cafe.entities.Details;
+import ua.cafe.entities.Dish;
+import ua.cafe.entities.Order;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
