@@ -1,16 +1,19 @@
 package ua.cafe.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ua.cafe.entities.Dish;
+import ua.cafe.services.CategoriesService;
 import ua.cafe.services.DishService;
 import ua.cafe.services.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -22,6 +25,7 @@ public class DishController {
 
     private static DishService dishService;
     private static UserService userService;
+    private static CategoriesService categoriesService;
 
     @Autowired
     public void setService(DishService service) {
@@ -31,12 +35,34 @@ public class DishController {
     public void setService(UserService service) {
         userService = service;
     }
+    @Autowired
+    public void setService(CategoriesService service) {
+        categoriesService = service;
+    }
 
     public static List<Dish> getAllDishes() {
         return dishService.getAllDishes();
     }
 
     public static Dish getDishById(long id){return dishService.getById(id);}
+
+    @RequestMapping(value = "/menuJSON", method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public String getMenuJson() {
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = null;
+        try {
+            List<Dish> dishes = dishService.getAllDishes();
+            for (Dish dish : dishes) {
+                dish.setDetails(null);
+            }
+            json = ow.writeValueAsString(dishes);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
 
     @GetMapping("/menu")
     public String getMenu(Model model, Principal principal ) {
@@ -57,10 +83,12 @@ public class DishController {
     }
 
 
+
+
     @GetMapping("/add_dish")
     public String addDish(Model model) {
         model.addAttribute("dish", new Dish());
-        model.addAttribute("categories",CategoriesController.getAllCategories());
+        model.addAttribute("categories",categoriesService.getAllCategories());
         return "Director/add_dish";
     }
 
@@ -68,7 +96,7 @@ public class DishController {
     public String editDish(Model model, @RequestParam Long id) {
         Dish dish = dishService.getById(id);
         model.addAttribute("dish", dish);
-        model.addAttribute("categories",CategoriesController.getAllCategories());
+        model.addAttribute("categories",categoriesService.getAllCategories());
         System.out.println("Получено " + dish);
         return "Director/edit_dish";
     }
@@ -76,7 +104,7 @@ public class DishController {
     @PostMapping("/dish_update")
     public String updateDish(@Valid Dish dish, BindingResult result, Model model) {
         if (result.hasErrors()){
-            model.addAttribute("categories",CategoriesController.getAllCategories());
+            model.addAttribute("categories",categoriesService.getAllCategories());
             return "Director/edit_dish";
         }
         dishService.saveDish(dish);
@@ -87,7 +115,7 @@ public class DishController {
     @PostMapping("/add_dish")
     public String greetingSubmit(@Valid Dish dish, BindingResult result, Model model) {
         if (result.hasErrors()){
-            model.addAttribute("categories",CategoriesController.getAllCategories());
+            model.addAttribute("categories",categoriesService.getAllCategories());
             return "Director/add_dish";
         }
         dishService.saveDish(dish);

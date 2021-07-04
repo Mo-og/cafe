@@ -1,7 +1,10 @@
 package ua.cafe.entities;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
+@Data
 @Entity
 @Table(name = "dishCategory")
 public class DishCategory {
@@ -11,6 +14,7 @@ public class DishCategory {
     private long id;
 //    @Pattern(regexp = "[ A-Za-zА-Яа-яЁё]{2,200}", message = "Название категории должно содержать только буквы (латинские или русские) и быть в пределах 2-200 символов.")
     private String name;
+    private int categoryOrder; //for menu sorting
 
     public DishCategory() {
     }
@@ -41,6 +45,7 @@ public class DishCategory {
         return "DishCategory{" +
                 "name='" + name + '\'' +
                 ", id=" + id +
+                ", order=" + categoryOrder +
                 '}';
     }
 }

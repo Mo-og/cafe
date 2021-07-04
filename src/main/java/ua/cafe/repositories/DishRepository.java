@@ -6,5 +6,5 @@ import ua.cafe.entities.Dish;
 import java.util.List;
 
 public interface DishRepository extends JpaRepository<Dish, Long> {
-    List<Dish> findAllByOrderByCategory();
+    //List<Dish> findAllByOrderByCategoryId();
 }

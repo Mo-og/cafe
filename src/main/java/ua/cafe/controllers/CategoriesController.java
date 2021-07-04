@@ -1,13 +1,15 @@
 package ua.cafe.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import ua.cafe.entities.Dish;
 import ua.cafe.services.CategoriesService;
 import ua.cafe.services.UserService;
 import ua.cafe.entities.DishCategory;
@@ -20,7 +22,7 @@ import java.util.NoSuchElementException;
 @Controller
 public class CategoriesController {
 
-    private static CategoriesService service;
+    private static CategoriesService categoriesService;
     private static UserService userService;
 
     @Autowired
@@ -30,11 +32,21 @@ public class CategoriesController {
 
     @Autowired
     public void setService(CategoriesService service) {
-        CategoriesController.service = service;
+        categoriesService = service;
     }
 
-    public static List<DishCategory> getAllCategories() {
-        return service.getAllCategories();
+    @RequestMapping(value = "/categoriesJSON", method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public String getMenuJson() {
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = null;
+        try {
+            json = ow.writeValueAsString(categoriesService.getAllCategories());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return json;
     }
 
     @GetMapping("/categories")
@@ -42,7 +54,7 @@ public class CategoriesController {
 
         try {
             final UserDetails user = userService.loadUserByUsername(principal.getName());
-            model.addAttribute("categories", service.getAllCategories());
+            model.addAttribute("categories", categoriesService.getAllCategories());
             switch (user.getAuthorities().toString()) {
                 case "[ROLE_ADMIN]":
                     return "Director/categories";
@@ -63,7 +75,7 @@ public class CategoriesController {
 
     @GetMapping("/category_edit")
     public String editDish(Model model, @RequestParam Long id) {
-        DishCategory category = service.getById(id);
+        DishCategory category = categoriesService.getById(id);
         model.addAttribute("category", category);
         System.out.println("Получено " + category);
         return "Director/edit_category";
@@ -73,7 +85,7 @@ public class CategoriesController {
     public String updateDish(@Valid DishCategory category, BindingResult result) {
         if (result.hasErrors())
             return "Director/edit_category";
-        service.saveCategory(category);
+        categoriesService.saveCategory(category);
         System.out.println("Обновлено " + category);
         return "redirect:/categories";
     }
@@ -83,16 +95,16 @@ public class CategoriesController {
         System.out.println("Отправлено " + category);
         if (result.hasErrors())
             return "/Director/add_category";
-        service.saveCategory(category);
+        categoriesService.saveCategory(category);
         System.out.println("Успешно добавлено " + category);
         return "redirect:/categories";
     }
 
     @GetMapping("/category_remove")
     public String removeCategory(@RequestParam Long id) {
-        if (!service.existsWithId(id))
+        if (!categoriesService.existsWithId(id))
             throw new NoSuchElementException();
-        service.removeById(id);
+        categoriesService.removeById(id);
         return "redirect:/categories";
     }
 }

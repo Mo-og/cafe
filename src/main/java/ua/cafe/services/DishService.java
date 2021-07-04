@@ -23,13 +23,13 @@ public class DishService {
     }
 
     Comparator<Dish> comparator = (o1, o2) -> {
-        if (o1.getCategory().compareTo(o2.getCategory()) == 0)
+        if (o1.getCategoryId() == o2.getCategoryId())
             return o1.getName().compareToIgnoreCase(o2.getName());
         return 0;
     };
 
     public List<Dish> getAllDishes() {
-        List<Dish> list = repository.findAllByOrderByCategory();
+        List<Dish> list = repository.findAll();
         list.sort(comparator);
         return list;
     }
