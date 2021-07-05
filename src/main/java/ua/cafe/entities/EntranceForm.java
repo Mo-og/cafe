@@ -3,6 +3,7 @@ package ua.cafe.entities;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+
 public class EntranceForm {
     @Pattern(regexp = "(\\+)?\\d{12}", message = "Номер телефона должен состоять из 12 цифр!")
     private String username;
