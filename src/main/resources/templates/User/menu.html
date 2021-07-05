@@ -5,84 +5,28 @@
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <title> Главная </title>
-    <!-- CSS -->
-    <link type="text/css" rel="stylesheet" href="../css/owl.carousel.min.css">
-    <link type="text/css" rel="stylesheet" href="../css/font-awesome.css">
-    <link type="text/css" href="../css/animate.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+    <!-- Styles -->
     <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
-    <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-
-    <!-- Jquery Js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
-            integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
-            crossorigin="anonymous"></script>
-
-    <!-- Jquery Js -->
-    <script type="text/javascript" src="../js/jquery.min.js"></script>
-    <script type="text/javascript" src="../js/element.js"></script>
-    <script type="text/javascript" src="../js/modernizr.js"></script>
-    <script type="text/javascript" src="../js/owl.carousel.js"></script>
-    <script type="text/javascript" src="../js/jquery.localscroll-1.2.7-min.js"></script>
-    <script type="text/javascript" src="../js/wow.min.js"></script>
-    <script type="text/javascript" src="../js/imagesloaded.pkgd.min.js"></script>
-    <script type="text/javascript" src="../js/jquery.isotope.min.js"></script>
-    <script type="text/javascript" src="../js/jquery.parallax-1.1.3.js"></script>
-    <script type="text/javascript" src="../js/jquery.magnific-popup.js"></script>
-    <script type="text/javascript" src="../js/moment-with-locales.js"></script>
-    <script type="text/javascript" src="../js/bootstrap-datetimepicker.js"></script>
-
-
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
-    <script src="https://cdn.datatables.net/plug-ins/1.10.16/sorting/datetime-moment.js"></script>
-
-    <script>$(document).ready(function () {
-        $.fn.dataTable.moment('D-MM-YYYY H:m:s');
-
-        $('#myTable').DataTable({
-            language: {
-                // lengthMenu: "Отображать _MENU_ блюд",
-                url: "https://cdn.datatables.net/plug-ins/1.10.21/i18n/Russian.json",
-            },
-            // "bLengthChange": false,
-            "pageLength": 15,
-        });
-    });
-    </script>
 </head>
-<body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
+<body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/}" style="color: #ff7f50;">Главная</a>
+        <a class="navbar-brand zoom" th:href="@{/}" style="color: #ff7f50;">Главная</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav zoom">
                 <li><a class="nav-link" th:href="@{/entrance}" style="color: #ff7f50;">Вход</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
-<!-- Banner Section Begins -->
-
 <div class="container-fluid">
-
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br><br>
             <h1 class="block-title text-align-center"><span
@@ -96,12 +40,12 @@
                             class="side-img right-side-img"><i></i><i></i><i></i></span></h4>
                     <div class="menu-list mb-5">
                         <div class="menu-card" v-for="item in item.dishes" :key="item.id"
-                             style="background-image:url('/images/gallery-6.png')">
-                            <h5 class="menu-card-title" >{{ item.name }}</h5>
+                             style="background-image:url('/images/dish-loading.gif')">
+                            <h5 class="menu-card-title">{{ item.name }}</h5>
                             <span class="menu-card-price">{{ item.price }} ₴</span>
                             <div class="menu-card-description">
                                 <p class="card-subtitle mb-2 text-muted">{{ item.name }}</p>
-                                <p class="card-text" >{{ item.weight }} г</p>
+                                <p class="card-text">{{ item.weight }} г</p>
                                 <p class="card-text">{{ item.ingredients }}</p>
                             </div>
                         </div>
@@ -137,12 +81,21 @@
                     .sort((a, b) => a.categoryOrder < b.categoryOrder)
                     .filter(category => this.items.some(item => item.categoryId === category.id))
                     .map(category => ({
-                    categoryName: category.name,
-                    dishes: this.items.filter(item => item.categoryId === category.id)
-                }))
+                        categoryName: category.name,
+                        dishes: this.items.filter(item => item.categoryId === category.id)
+                    }))
             }
         }
     })
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+        integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+        crossorigin="anonymous"></script>
 </body>
 </html>
