@@ -1,14 +1,28 @@
 package ua.cafe.entities;
 
 import lombok.Data;
+import org.junit.Ignore;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ua.cafe.controllers.DishController;
+import ua.cafe.services.CategoriesService;
+import ua.cafe.services.DishService;
+import ua.cafe.services.UserService;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "details")
 @Data
+@Component
 public class Detail {
+    private static DishService dishService;
+
+    @Autowired
+    public void setService(DishService service) {
+        dishService = service;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -61,6 +75,9 @@ public class Detail {
     }
 
     public Dish getDish() {
+        if (dish == null && dish_id!=-1) {
+            dish = dishService.getById(dish_id);
+        }
         return dish;
     }
 

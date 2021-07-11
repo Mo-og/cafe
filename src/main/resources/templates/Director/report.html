@@ -16,26 +16,6 @@
     <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet"/>
     <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
     <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
-    <style>
-        .b-popup {
-            width: 100%;
-            min-height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            position: fixed;
-            top: 0;
-        }
-
-        .b-popup .b-popup-content { /*настройки формы*/
-            margin: 15% auto 0 auto;
-            width: 80%;
-            height: 100%;
-            padding: 10px;
-            background-color: #fdfdfd; /*заливка формы*/
-            border-radius: 15px;
-            box-shadow: 0 0 10px #000; /*тень от всплывающего окна*/
-        }
-    </style>
 
 
 </head>
@@ -113,7 +93,7 @@
     </header>
     <!-- Header Section Ends -->
     <h2 class="block-title text-align-center pad-top-100 pad-bottom-50"><span class="side-img left-side-img"><i></i><i></i><i></i></span>
-        Отчет по продажам<span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
+        Отчет по продажам <span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
     <section class="reservation-block pad-top-50 pad-bottom-100">
         <form class="reservation-block" enctype="multipart/form-data" th:action="@{/order_update}"
               method="post">
@@ -132,7 +112,7 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="detail, state : ${order.details}">
-                                        <td class="align-middle"><span th:text="${detail.dish.name}"></span></td>
+                                        <td class="align-middle"><span th:if="${detail.dish!=null}" th:text="${detail.dish.name}"></span></td>
                                         <td class="align-middle"><span th:text="${detail.quantity}"></span></td>
                                         <td class="align-middle"><span th:text="${detail.cost}"></span></td>
                                     </tr>

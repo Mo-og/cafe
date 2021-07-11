@@ -63,16 +63,17 @@ public class Order {
         Detail present = getDetailsIfPresent(detail.getDish_id());
         if (present != null) {
             present.setQuantity(detail.getQuantity() + present.getQuantity());
-            System.out.println("Увеличеваем количество блюд: quantity(" + present.getDish().getName() + ") = " + detail.getQuantity());
+            if (present.getDish() != null)
+                System.out.println("Увеличеваем количество блюд: quantity(" + present.getDish().getName() + ") = " + detail.getQuantity());
 
         } else {
             details.add(detail);
-            System.out.println("Добавляем блюдо: (" + detail.getDish().getName() + ") в количестве: " + detail.getQuantity());
+            if (detail.getDish() != null)
+                System.out.println("Добавляем блюдо: (" + detail.getDish().getName() + ") в количестве: " + detail.getQuantity());
         }
     }
 
     public String getDishNames() {
-/** Использовать toString к details противопоказано - будет переполнение стека и метод сломается*/
         String dishNames = "";
         for (Detail d : details) {
             dishNames = dishNames.concat(", " + d.getDish().getName() + " (" + d.getQuantity() + " шт.)");

@@ -45,7 +45,7 @@
                                     <ul class="nav navbar-nav navbar-right">
                                         <li><a th:href="@{/}"><span style="color: #ff7f50;">Главная</span></a></li>
                                         <li><a th:href="@{/orders}"><span style="color: #ff7f50;">Заказы</span></a></li>
-                                        <li><a th:href="@{/workers}"><span style="color: #ff7f50;">Сотрудники</span></a></li>
+                                        <li><a th:href="@{/users}"><span style="color: #ff7f50;">Сотрудники</span></a></li>
                                         <li>
                                             <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
                                                th:href="@{/logout}"><span style="color: #ff7f50;">Выход</span></a></li>
@@ -85,7 +85,7 @@
                                     <!--<td class="align-middle"><span th:text="${dish.id}"/></td>-->
                                     <td class="align-middle"><span th:text="${state.count}"></span></td>
                                     <td class="align-middle"><span th:text="${dish.name}"></span></td>
-                                    <td class="align-middle"><span th:text="${dish.category}"></span></td>
+                                    <td class="align-middle"><span th:text="${dish.categoryId}"></span></td>
                                     <td class="align-middle"><span th:text="${dish.weight}"></span></td>
                                     <td class="align-middle"><span th:text="${dish.price}"></span></td>
                                     <td class="align-middle"><span th:text="${dish.ingredients}"></span></td>
