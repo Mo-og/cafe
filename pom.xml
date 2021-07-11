@@ -86,6 +86,10 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${compiler.plugin.version}</version>
@@ -94,28 +98,13 @@
                     <target>${target.version}</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <!-- Build an executable JAR -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>ua.cafe.CafeApplication</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
     <properties>
         <compiler.plugin.version>3.6.2</compiler.plugin.version>
-        <source.version>16</source.version>
-        <target.version>16</target.version>
+        <source.version>15</source.version>
+        <target.version>15</target.version>
     </properties>
 
 </project>
