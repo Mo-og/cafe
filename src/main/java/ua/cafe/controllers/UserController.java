@@ -20,21 +20,18 @@ import java.util.NoSuchElementException;
 @Controller
 public class UserController {
 
-    private UserService service;
+    private UserService userService;
 
     @Autowired
-    public void setService(UserService service) {
-        this.service = service;
+    public void setUserService(UserService service) {
+        userService = service;
     }
-
-    @Autowired
-    UserService userService;
 
     @GetMapping("/users")
     public String getUsers(Model model, Principal principal) {
 
         try {
-            model.addAttribute("users", service.getAllUsers());
+            model.addAttribute("users", userService.getAllUsers());
 
             final UserDetails user = userService.loadUserByUsername(principal.getName());
 
@@ -54,7 +51,7 @@ public class UserController {
 
     @GetMapping("/user_edit")
     public String editUser(Model model, @RequestParam Long id) {
-        User user = service.getById(id);
+        User user = userService.getById(id);
         model.addAttribute("user", user);
         return "Director/edit_user";
     }
@@ -66,8 +63,8 @@ public class UserController {
         user.setRoles("ROLE_ADMIN");
         user.setPassword(new BCryptPasswordEncoder().encode("74553211"));
         user.setId(0);
-        service.removeByUsername("991122334455");
-        service.saveUser(user);
+        userService.removeByUsername("991122334455");
+        userService.saveUser(user);
 
         return "redirect:/entrance";
     }
@@ -75,9 +72,9 @@ public class UserController {
 
     @GetMapping("/user_remove")
     public String removeUser(@RequestParam Long id) {
-        if (!service.existsWithId(id))
+        if (!userService.existsWithId(id))
             throw new NoSuchElementException();
-        service.removeById(id);
+        userService.removeById(id);
         return "redirect:/users";
     }
 
@@ -94,9 +91,9 @@ public class UserController {
         }
         //если пароль не поменяли, то хешировать снова не стоит, если поменяли, то хешируем
         if (user.getPassword().equals("")) {
-            user.setPassword(service.getById(user.getId()).getPassword());
+            user.setPassword(userService.getById(user.getId()).getPassword());
         } else user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        service.saveUser(user);
+        userService.saveUser(user);
         return "redirect:/users";
     }
 
@@ -117,7 +114,7 @@ public class UserController {
                 break;
         }
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        service.saveUser(user);
+        userService.saveUser(user);
         return "redirect:/users";
     }
 }

@@ -8,8 +8,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ua.cafe.entities.Detail;
 import ua.cafe.services.DishService;
-import ua.cafe.entities.Details;
 import ua.cafe.entities.Dish;
 import ua.cafe.entities.Order;
 import ua.cafe.services.DetailsService;
@@ -37,16 +37,16 @@ public class DetailsController {
     @GetMapping("/dish_exclude")
     public String removeDishFromOrder(@RequestParam Long dish_id, @RequestParam Long order_id, Model model) {
         detailsService.removeByOrderIdAndDishID(order_id, dish_id);
-        model.addAttribute("order", OrderController.service.getById(order_id));
+        model.addAttribute("order", OrderController.orderService.getById(order_id));
         model.addAttribute("dishes", dishService.getAllDishes());
-        model.addAttribute("container", new Details());
+        model.addAttribute("container", new Detail());
         return "redirect:/order_edit?id=" + order_id;
     }
 
     @PostMapping("/order_dish_add")
-    public String addDishToOrder(Details container, BindingResult result, Model model) {
+    public String addDishToOrder(Detail container, BindingResult result, Model model) {
         System.out.println("ПОЛУЧЕНО container: " + container);
-        Order order = OrderController.service.getById(container.getOrder_id());
+        Order order = OrderController.orderService.getById(container.getOrder_id());
         Dish dish_toSave = dishService.getById(container.getDish_id());
 //        container.setDish_id(dish_toSave.getId());
         container.setDish(dish_toSave);
@@ -68,22 +68,22 @@ public class DetailsController {
 
     @GetMapping("/order_dish_edit")
     public String viewDishFromOrder(Model model, @RequestParam Long dish_id, @RequestParam Long order_id) {
-        Details detail = detailsService.findByOrderIdAndDishID(order_id, dish_id);
+        Detail detail = detailsService.findByOrderIdAndDishID(order_id, dish_id);
         model.addAttribute("order", detail.getOrder());
         model.addAttribute("dish", detail.getDish());
-        model.addAttribute("dishes", DishController.getAllDishes());
+        model.addAttribute("dishes", dishService.getAllDishes());
         model.addAttribute("container", detail);
         return "Waiter/edit_order_dish";
     }
 
     @PostMapping("/order_dish_edit")
-    public String editDishFromOrder(@RequestParam Long dish_id, Details container, BindingResult result, Model model) {
+    public String editDishFromOrder(@RequestParam Long dish_id, Detail container, BindingResult result, Model model) {
         System.out.println("ПОЛУЧЕНО container: " + container);
-        Order order = OrderController.service.getById(container.getOrder_id());
-        Dish dish_toSave = DishController.getDishById(container.getDish_id());
+        Order order = OrderController.orderService.getById(container.getOrder_id());
+        Dish dish_toSave = dishService.getById(container.getDish_id());
         if (result.hasErrors()) {
             model.addAttribute("order", order);
-            model.addAttribute("dishes", DishController.getAllDishes());
+            model.addAttribute("dishes", dishService.getAllDishes());
             model.addAttribute("container", container);
             return "Waiter/edit_order_dish";
         }
@@ -93,7 +93,7 @@ public class DetailsController {
         detailsService.saveDetail(container);
         model.addAttribute("order", order);
         model.addAttribute("dish", dish_toSave);
-        model.addAttribute("dishes", DishController.getAllDishes());
+        model.addAttribute("dishes", dishService.getAllDishes());
         model.addAttribute("container", container);
         return "redirect:/order_edit?id=" + container.getOrder_id();
     }

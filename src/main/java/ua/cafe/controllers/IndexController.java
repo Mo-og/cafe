@@ -22,12 +22,10 @@ public class IndexController {
 
 
     @GetMapping("/")
-    public String entrance(Principal principal, Model model) {
+    public String entrance(Principal principal) {
         try {
             final UserDetails user = userService.loadUserByUsername(principal.getName());
-            model.addAttribute("userStatus", new Role(user.getAuthorities().toString()));
             switch (user.getAuthorities().toString()) {
-
                 case "[ROLE_WAITER]":
                     return "Waiter/index";
                 case "[ROLE_COOK]":

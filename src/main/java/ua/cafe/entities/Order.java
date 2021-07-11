@@ -1,7 +1,6 @@
 package ua.cafe.entities;
 
 import lombok.Data;
-import ua.cafe.controllers.DishController;
 
 import javax.persistence.*;
 import java.util.*;
@@ -20,26 +19,26 @@ public class Order {
     private String status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<Details> details;
+    private List<Detail> details;
 
 
     public Order() {
     }
 
-    public Order(ArrayList<Details> details) {
+    public Order(ArrayList<Detail> details) {
         this.details = details;
     }
 
     public void sortByQuantity() {
-        details.sort(Comparator.comparingInt(Details::getQuantity).reversed());
+        details.sort(Comparator.comparingInt(Detail::getQuantity).reversed());
     }
 
-    public Details getDetailsIfPresent(long id) {
+    public Detail getDetailsIfPresent(long id) {
         return details.stream().filter(i -> i.getDish_id() == id).findFirst().orElse(null);
     }
 
     public boolean removeFromOrder(long id) {
-        Details detail = details.stream().filter(i -> i.getDish().getId() == id
+        Detail detail = details.stream().filter(i -> i.getDish().getId() == id
                 || i.getDish_id() == id).findFirst().orElse(null);
         if (detail == null)
             throw new NoSuchElementException();
@@ -47,7 +46,7 @@ public class Order {
         return details.remove(detail);
     }
 
-    public void removeDetail(Details detail) {
+    public void removeDetail(Detail detail) {
         details.remove(detail);
     }
 
@@ -59,28 +58,9 @@ public class Order {
         this.status = status;
     }
 
-    public void addDetail(Details detail) {
-        Details present = getDetailsIfPresent(detail.getDish_id());
-        if (present != null) {
-            present.setQuantity(detail.getQuantity() + present.getQuantity());
-            if (present.getQuantity() == 0)
-                details.remove(detail);
-            System.out.println("Изменяем количество блюд: quantity(" + present.getDish().getName() + ") = " + detail.getQuantity());
-        } else {
-            if (detail.getQuantity() == 0) {
-                System.out.println("Количество блюда = 0 - пропускаем");
-                return;
-            }
-            //detail.setOrder(this);
-            DishController.getDishById(detail.getDish_id()).addDetail(detail);
-            details.add(detail);
-            System.out.println("Добавляем блюдо: (" + detail.getDish().getName() + ") в количестве: " + detail.getQuantity());
-        }
-    }
-
-    public void techAddDetail(Details detail) {
+    public void addDetail(Detail detail) {
         if (details == null) details = new ArrayList<>();
-        Details present = getDetailsIfPresent(detail.getDish_id());
+        Detail present = getDetailsIfPresent(detail.getDish_id());
         if (present != null) {
             present.setQuantity(detail.getQuantity() + present.getQuantity());
             System.out.println("Увеличеваем количество блюд: quantity(" + present.getDish().getName() + ") = " + detail.getQuantity());
@@ -94,20 +74,20 @@ public class Order {
     public String getDishNames() {
 /** Использовать toString к details противопоказано - будет переполнение стека и метод сломается*/
         String dishNames = "";
-        for (Details d : details) {
+        for (Detail d : details) {
             dishNames = dishNames.concat(", " + d.getDish().getName() + " (" + d.getQuantity() + " шт.)");
         }
         dishNames = dishNames.replaceFirst(", ", "");
         return dishNames;
     }
 
-    public List<Details> getDetails() {
+    public List<Detail> getDetails() {
         return details;
     }
 
     public double getCost() {
         double cost = 0;
-        for (Details d : details) {
+        for (Detail d : details) {
             cost += d.getCost();
         }
         return cost;

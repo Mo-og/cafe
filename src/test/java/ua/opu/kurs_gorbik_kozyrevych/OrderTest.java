@@ -1,7 +1,7 @@
 package ua.opu.kurs_gorbik_kozyrevych;
 
 import org.junit.jupiter.api.Test;
-import ua.cafe.entities.Details;
+import ua.cafe.entities.Detail;
 import ua.cafe.entities.Dish;
 import ua.cafe.entities.Order;
 
@@ -17,21 +17,21 @@ class OrderTest {
     @Test
     void sortByQuantity() {
         Order order = new Order();
-        List<Details> details = new ArrayList<>();
+        List<Detail> details = new ArrayList<>();
         List<Integer> expectedList = new ArrayList<>();
         int[] actual = new int[iterations];
         int[] expected = new int[iterations];
 
         for (int i = 0; i < iterations; i++) {
             int randQuantity = ThreadLocalRandom.current().nextInt(1, 10);
-            details.add(new Details(i, 1, randQuantity));
+            details.add(new Detail(i, 1, randQuantity));
             expectedList.add(randQuantity);
         }
 
         expectedList.sort(Collections.reverseOrder());
         order.setDetails(details);
         order.sortByQuantity();
-        List<Details> temp = order.getDetails();
+        List<Detail> temp = order.getDetails();
         for (int i = 0; i < iterations; i++) {
             actual[i] = temp.get(i).getQuantity();
             expected[i] = expectedList.get(i);
@@ -50,20 +50,20 @@ class OrderTest {
     @Test
     void removeFromOrder() {
         Order order = new Order();
-        List<Details> details = new ArrayList<>();
-        List<Details> expectedList = new ArrayList<>();
+        List<Detail> details = new ArrayList<>();
+        List<Detail> expectedList = new ArrayList<>();
         for (int i = 0; i < iterations; i++) {
             int randQuantity = ThreadLocalRandom.current().nextInt(1, 11);
             //System.out.print(randQuantity+"; ");
-            details.add(new Details(i, 1, randQuantity, new Dish(i)));
+            details.add(new Detail(i, 1, randQuantity, new Dish(i)));
             if (i != 1)
-                expectedList.add(new Details(i, i, randQuantity, new Dish(i)));
+                expectedList.add(new Detail(i, i, randQuantity, new Dish(i)));
         }
         order.setDetails(details);
         order.removeFromOrder(1);
         long[] actual = new long[iterations];
         long[] expected = new long[iterations];
-        List<Details> temp = order.getDetails();
+        List<Detail> temp = order.getDetails();
         for (int i = 0; i < iterations - 1; i++) {
             actual[i] = temp.get(i).getId();
             expected[i] = expectedList.get(i).getId();
@@ -75,11 +75,11 @@ class OrderTest {
     @Test
     void removeFromOrderNotExisting() {
         Order order = new Order();
-        List<Details> details = new ArrayList<>();
-        List<Details> expectedList = new ArrayList<>();
+        List<Detail> details = new ArrayList<>();
+        List<Detail> expectedList = new ArrayList<>();
         for (int i = 0; i < iterations; i++) {
             int randQuantity = ThreadLocalRandom.current().nextInt(1, 11);
-            details.add(new Details(i, 1, randQuantity, new Dish(i)));
+            details.add(new Detail(i, 1, randQuantity, new Dish(i)));
         }
         order.setDetails(details);
         assertThrows(NoSuchElementException.class, () -> order.removeFromOrder(35));
@@ -92,10 +92,10 @@ class OrderTest {
 
     @Test
     void getDishNames() {
-        Details details1 = new Details(new Dish("dish1"), 2);
-        Details details2 = new Details(new Dish("dish2"), 1);
-        Details details3 = new Details(new Dish("dish3"), 2);
-        Order order = new Order(new ArrayList<>(Arrays.asList(details1, details2, details3)));
+        Detail detail1 = new Detail(new Dish("dish1"), 2);
+        Detail detail2 = new Detail(new Dish("dish2"), 1);
+        Detail detail3 = new Detail(new Dish("dish3"), 2);
+        Order order = new Order(new ArrayList<>(Arrays.asList(detail1, detail2, detail3)));
         String actual = order.getDishNames();
         String expected = "dish1 (2 шт.), dish2 (1 шт.), dish3 (2 шт.)";
         System.out.println("Expected: " + expected);

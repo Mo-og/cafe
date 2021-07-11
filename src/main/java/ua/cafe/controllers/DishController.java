@@ -1,8 +1,5 @@
 package ua.cafe.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ua.cafe.entities.Dish;
+import ua.cafe.entities.JsonMaker;
 import ua.cafe.services.CategoriesService;
 import ua.cafe.services.DishService;
 import ua.cafe.services.UserService;
@@ -26,6 +24,7 @@ import java.util.NoSuchElementException;
 @Controller
 public class DishController {
 
+    //Services assignment
     private static DishService dishService;
     private static UserService userService;
     private static CategoriesService categoriesService;
@@ -45,37 +44,35 @@ public class DishController {
         categoriesService = service;
     }
 
-    public static List<Dish> getAllDishes() {
-        return dishService.getAllDishes();
-    }
-
-    public static Dish getDishById(long id) {
-        return dishService.getById(id);
-    }
-
     @GetMapping("/menuJSON")
     public ResponseEntity<String> getMenuJson() {
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String json;
-        try {
-            List<Dish> dishes = dishService.getAllDishes();
-            for (Dish dish : dishes) {
-                dish.setDetails(null);
-            }
-            json = ow.writeValueAsString(dishes);
-            return new ResponseEntity<>(json, HttpStatus.OK);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        List<Dish> dishes = dishService.getAllDishes();
+        for (Dish dish : dishes) {
+            dish.setDetails(null);
         }
+        return JsonMaker.getJsonResponse(dishes);
+    }
+
+    @GetMapping("/dishJSON")
+    public ResponseEntity<String> getDishById(@RequestParam Long id) {
+        return JsonMaker.getJsonResponse(dishService.getById(id));
+    }
+
+    @PostMapping("/dish_update")
+    public ResponseEntity<String> updateDish(@Valid Dish dish, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+        }
+        dishService.saveDish(dish);
+        System.out.println("Dish updated: " + dish);
+        return ResponseEntity.ok("Dish updated!");
     }
 
     @GetMapping("/menu")
-    public String getMenu(Model model, Principal principal) {
+    public String getMenu(Principal principal) {
         try {
-//            model.addAttribute("dishes", dishService.getAllDishes());
             final UserDetails user = userService.loadUserByUsername(principal.getName());
-
             switch (user.getAuthorities().toString()) {
                 case "[ROLE_WAITER]":
                     return "Waiter/menu";
@@ -89,8 +86,7 @@ public class DishController {
         }
         return "User/menu";
     }
-
-
+////////////////////////
     @GetMapping("/add_dish")
     public String addDish(Model model) {
         model.addAttribute("dish", new Dish());
@@ -107,8 +103,8 @@ public class DishController {
         return "Director/edit_dish";
     }
 
-    @PostMapping("/dish_update")
-    public String updateDish(@Valid Dish dish, BindingResult result, Model model) {
+    @PostMapping("/dish_update1")
+    public String updateDish1(@Valid Dish dish, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("categories", categoriesService.getAllCategories());
             return "Director/edit_dish";

@@ -11,7 +11,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MultipartException.class)
     public String handleError1(MultipartException e, RedirectAttributes redirectAttributes) {
         if (e.getCause().getMessage().startsWith("org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException"))
-            redirectAttributes.addFlashAttribute("message", "Отказано: размер загружаемого файла превышает 10МБ.");
+            redirectAttributes.addFlashAttribute("message", "Uploading file size exceeds 10MB.");
         else
             redirectAttributes.addFlashAttribute("message", e.getCause().getMessage());
         return "redirect:/uploadStatus";

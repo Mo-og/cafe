@@ -3,8 +3,8 @@ package ua.cafe.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ua.cafe.entities.Detail;
 import ua.cafe.repositories.DetailsOfOrderedDishRepository;
-import ua.cafe.entities.Details;
 
 import java.util.List;
 
@@ -19,8 +19,8 @@ public class DetailsService {
         this.repository = repository;
     }
 
-    public void saveDetail(Details detail) {
-        Details det = repository.findByOrder_idAndDish_id(detail.getOrder_id(), detail.getDish_id());
+    public void saveDetail(Detail detail) {
+        Detail det = repository.findByOrder_idAndDish_id(detail.getOrder_id(), detail.getDish_id());
         if (det != null) {
             det.setQuantity(det.getQuantity() + detail.getQuantity());
             repository.save(det);
@@ -29,28 +29,28 @@ public class DetailsService {
         repository.save(detail);
     }
 
-    public void forceSaveDetail(Details detail) {
+    public void forceSaveDetail(Detail detail) {
         repository.save(detail);
     }
 
-    public Details findByOrderIdAndDishID(long order_id, long dish_id) {
+    public Detail findByOrderIdAndDishID(long order_id, long dish_id) {
         return repository.findByOrder_idAndDish_id(order_id, dish_id);
     }
 
     public void removeByOrderIdAndDishID(long order_id, long dish_id) {
-        Details detail = repository.findByOrder_idAndDish_id(order_id, dish_id);
+        Detail detail = repository.findByOrder_idAndDish_id(order_id, dish_id);
         detail.setDish(null);
         detail.setOrder(null);
         repository.delete(detail);
     }
 
-    public void remove(Details detail) {
+    public void remove(Detail detail) {
         detail.setDish(null);
         detail.setOrder(null);
         repository.delete(detail);
     }
 
-    public List<Details> getAllDishes() {
+    public List<Detail> getAllDishes() {
         return repository.findAll();
     }
 
@@ -62,7 +62,7 @@ public class DetailsService {
         return repository.existsById(id);
     }
 
-    public Details getById(long id) {
+    public Detail getById(long id) {
         return repository.getOne(id);
     }
 

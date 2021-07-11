@@ -23,9 +23,12 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
-    @Autowired
-    UserService userDetailsService;
+    private UserService userDetailsService;
 
+    @Autowired
+    public void setService(UserService service) {
+        this.userDetailsService = service;
+    }
 
     @Bean
     public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
@@ -41,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()).and()
-                .csrf().disable()
+//                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/**", "static/css", "static/js").permitAll().
                 antMatchers("/User/**").permitAll().

@@ -26,10 +26,10 @@ public class Dish {
     private String imagePath = null;
 
     @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL)
-    private List<Details> details;
+    private List<Detail> details;
 
-    public void addDetail(Details detail) {
-        for (Details d : details) {
+    public void addDetail(Detail detail) {
+        for (Detail d : details) {
             if (d.getOrder_id() != detail.getOrder_id())
                 details.add(detail);
         }
