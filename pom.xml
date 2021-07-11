@@ -14,17 +14,6 @@
     <name>CafeApplication</name>
     <description>Web application for cafe staff</description>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-            </plugin>
-        </plugins>
-    </build>
-
-
     <dependencies>
         <!--<dependency>
             <groupId>org.apache.maven</groupId>
@@ -93,4 +82,25 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin.version}</version>
+                <configuration>
+                    <source>${source.version}</source>
+                    <target>${target.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <properties>
+        <compiler.plugin.version>3.8.1</compiler.plugin.version>
+        <source.version>16</source.version>
+        <target.version>16</target.version>
+    </properties>
+
 </project>
