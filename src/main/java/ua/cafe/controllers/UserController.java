@@ -27,6 +27,11 @@ public class UserController {
         userService = service;
     }
 
+    @GetMapping("/workers")
+    public String getWorkers() {
+        return "redirect:/users";
+    }
+
     @GetMapping("/users")
     public String getUsers(Model model, Principal principal) {
 
@@ -66,7 +71,7 @@ public class UserController {
         userService.removeByUsername("991122334455");
         userService.saveUser(user);
 
-        return "redirect:/entrance";
+        return "redirect: /entrance";
     }
 
 

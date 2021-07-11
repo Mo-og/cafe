@@ -70,16 +70,15 @@ public class DishController {
     }
 
     @GetMapping("/menu")
-    public String getMenu(Principal principal) {
-        try {
+    public String getMenu(Model model, Principal principal ) {
+        try{
+            model.addAttribute("dishes", dishService.getAllDishes());
             final UserDetails user = userService.loadUserByUsername(principal.getName());
-            switch (user.getAuthorities().toString()) {
-                case "[ROLE_WAITER]":
-                    return "Waiter/menu";
-                case "[ROLE_COOK]":
-                    return "Cook/menu";
-                case "[ROLE_ADMIN]":
-                    return "Director/menu";
+
+            switch(user.getAuthorities().toString()) {
+                case "[ROLE_WAITER]":  return "Waiter/menu";
+                case "[ROLE_COOK]":  return "Cook/menu";
+                case "[ROLE_ADMIN]":  return "Director/menu";
             }
         } catch (NullPointerException e) {
             return "User/menu";
