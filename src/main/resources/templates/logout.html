@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>logout</title>
+</head>
+<body>
+<form name="logout" th:action="@{/logout}"
+      method="post">
+  <input type="hidden" name="${_csrf.parameterName}"
+         value="${_csrf.token}"/>
+</form>
+<script>document.logout.submit()</script>
+</body>
+</html>

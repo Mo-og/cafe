@@ -53,7 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 antMatchers("/Cook/**").hasAnyRole("ADMIN", "COOK")
                 .and().formLogin().loginPage("/entrance")
                 .successHandler(myAuthenticationSuccessHandler())
-                .failureForwardUrl("/entrance");
+                .failureForwardUrl("/entrance").and()
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+        ;
 
     }
 
