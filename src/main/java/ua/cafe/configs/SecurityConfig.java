@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()).and()
 //                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/**", "static/css", "static/js").permitAll().
+                .antMatchers("static/css", "static/js").permitAll().
                 antMatchers("/User/**").permitAll().
                 antMatchers("/Director/**").hasRole("ADMIN").
                 antMatchers("/Waiter/**").hasAnyRole("ADMIN", "WAITER").

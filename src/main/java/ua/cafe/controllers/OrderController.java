@@ -46,7 +46,7 @@ public class OrderController {
     @GetMapping("/ordersJSON")
     public ResponseEntity<String> getOrdersJSON(Principal principal) {
             final UserDetails user = userService.loadUserByUsername(principal.getName());
-            if (!Role.isAuthorised(user.getAuthorities().toString()))
+            if (!Role.checkIfAuthorised(user.getAuthorities().toString()))
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         return JsonMaker.getJsonResponse(orderService.getAllOrders());
     }
@@ -68,9 +68,9 @@ public class OrderController {
                     return "Cook/orders";
             }
         } catch (NullPointerException e) {
-            return "User/index";
+            return "redirect:/";
         }
-        return "User/index";
+        return "redirect:/";
     }
 
 
@@ -95,7 +95,7 @@ public class OrderController {
 
             return "redirect:/orders";
         } catch (NullPointerException e) {
-            return "User/index";
+            return "/index";
         }
     }
 

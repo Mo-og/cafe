@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ua.cafe.entities.Role;
 import ua.cafe.entities.User;
 import ua.cafe.services.UserService;
 
@@ -49,13 +50,16 @@ public class UserController {
                     return "Director/users";
             }
         } catch (NullPointerException e) {
-            return "User/menu";
+            return "/permissionDenied";
         }
-        return "User/menu";
+        return "/permissionDenied";
     }
 
     @GetMapping("/user_edit")
-    public String editUser(Model model, @RequestParam Long id) {
+    public String editUser(Model model, @RequestParam Long id, Principal principal) {
+        Role role = new Role(principal);
+        if (!role.isAdmin())
+            return "/permissionDenied";
         User user = userService.getById(id);
         model.addAttribute("user", user);
         return "Director/edit_user";
@@ -63,20 +67,22 @@ public class UserController {
 
     //на случай сброса базы - добавляет сотрудника
     @GetMapping("/supersecretrequest7355")
-    public String addAdmin(Model model) {
+    public String addAdmin() {
         User user = new User("admin", "admin", "admin", "a@b.c", "991122334455", "address", "директор", "password");
         user.setRoles("ROLE_ADMIN");
         user.setPassword(new BCryptPasswordEncoder().encode("74553211"));
         user.setId(0);
         userService.removeByUsername("991122334455");
         userService.saveUser(user);
-
-        return "redirect: /entrance";
+        return "redirect:/entrance";
     }
 
 
     @GetMapping("/user_remove")
-    public String removeUser(@RequestParam Long id) {
+    public String removeUser(@RequestParam Long id, Principal principal) {
+        Role role = new Role(principal);
+        if (!role.isAdmin())
+            return "/permissionDenied";
         if (!userService.existsWithId(id))
             throw new NoSuchElementException();
         userService.removeById(id);
@@ -84,13 +90,19 @@ public class UserController {
     }
 
     @GetMapping("/add_user")
-    public String addUser(Model model) {
+    public String addUser(Model model, Principal principal) {
+        Role role = new Role(principal);
+        if (!role.isAdmin())
+            return "/permissionDenied";
         model.addAttribute("user", new User());
         return "Director/add_user";
     }
 
     @PostMapping("/user_update")
-    public String editingSubmit(@Valid User user, BindingResult result) {
+    public String editingSubmit(@Valid User user, BindingResult result, Principal principal) {
+        Role role = new Role(principal);
+        if (!role.isAdmin())
+            return "/permissionDenied";
         if (result.hasErrors() && !user.getPassword().equals("")) {
             return "Director/edit_user";
         }
@@ -103,7 +115,10 @@ public class UserController {
     }
 
     @PostMapping("/add_user")
-    public String greetingSubmit(@Valid User user, BindingResult result) {
+    public String greetingSubmit(@Valid User user, BindingResult result, Principal principal) {
+        Role role = new Role(principal);
+        if (!role.isAdmin())
+            return "/permissionDenied";
         if (result.hasErrors()) {
             return "Director/add_user";
         }

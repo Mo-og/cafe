@@ -9,14 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.cafe.entities.Dish;
 import ua.cafe.services.CategoriesService;
 import ua.cafe.services.UserService;
 import ua.cafe.entities.DishCategory;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @Controller
@@ -62,9 +60,9 @@ public class CategoriesController {
                     return "Waiter/categories";
             }
         } catch (NullPointerException e) {
-            return "User/index";
+            return "/index";
         }
-        return "User/index";
+        return "/index";
     }
 
     @GetMapping("/add_category")

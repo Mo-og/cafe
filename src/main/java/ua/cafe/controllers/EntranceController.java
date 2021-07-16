@@ -7,25 +7,34 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 import ua.cafe.entities.EntranceForm;
+import ua.cafe.entities.Role;
 import ua.cafe.services.UserService;
 
 import javax.validation.Valid;
+import java.security.Principal;
+
 @CrossOrigin
 @Controller
 public class EntranceController {
 
-    private UserService userService;
+    private static UserService userService;
 
     @Autowired
     public void setService(UserService service) {
         userService = service;
     }
 
+    @GetMapping("/")
+    public String entrance(Principal principal, Model model) {
+        model.addAttribute("role", new Role(principal));
+        return "/index";
+    }
+
     @GetMapping("/logout")
-    public String logOut() {
-        return "User/index";
+    public String logOut(Model model) {
+        model.addAttribute("role", new Role());
+        return "/index";
     }
 
     @GetMapping("/entrance")
