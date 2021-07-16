@@ -2085,8 +2085,9 @@ p {
     height: 200px;
     border-radius: 3px;
     overflow: hidden;
-    border: transparent;
+    border: 1px solid transparent;
     transition: border-bottom-color 1s, border-top-color 1s, border-right-color 1s, border-left-color 1s;
+    box-sizing: border-box;
 }
 
 .menu-card:hover .menu-card-description {
