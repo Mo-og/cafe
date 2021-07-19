@@ -43,7 +43,7 @@ public class OrderController {
         orderService = service;
     }
 
-    @GetMapping("/ordersJSON")
+    @GetMapping("/api/orders")
     public ResponseEntity<String> getOrdersJSON(Principal principal) {
             final UserDetails user = userService.loadUserByUsername(principal.getName());
             if (!Role.checkIfAuthorised(user.getAuthorities().toString()))

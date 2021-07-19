@@ -1,17 +1,18 @@
 package ua.cafe.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ua.cafe.entities.DishCategory;
+import ua.cafe.entities.JsonMaker;
+import ua.cafe.entities.Role;
 import ua.cafe.services.CategoriesService;
 import ua.cafe.services.UserService;
-import ua.cafe.entities.DishCategory;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -33,23 +34,64 @@ public class CategoriesController {
         categoriesService = service;
     }
 
-    @RequestMapping(value = "/categoriesJSON", method = RequestMethod.GET,
-            produces = "application/json")
-    @ResponseBody
-    public String getMenuJson() {
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = null;
-        try {
-            json = ow.writeValueAsString(categoriesService.getAllCategories());
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return json;
+    ///////////////////////////////////
+    //             API               //
+    ///////////////////////////////////
+    @GetMapping("/api/categories")
+    public ResponseEntity<String> getCategories() {
+        return JsonMaker.getJsonResponse(categoriesService.getAllCategories());
     }
 
-    @GetMapping("/categories")
-    public String getCategory(Model model, Principal principal) {
+    @GetMapping("/api/category")
+    public ResponseEntity<String> getCategoryJson(@RequestParam Long id) {
+        DishCategory category = categoriesService.getById(id);
+        if (category != null)
+            return JsonMaker.getJsonResponse(category);
+        return new ResponseEntity<>("No category found by given id", HttpStatus.NOT_FOUND);
+    }
 
+    //update
+    @RequestMapping(value = "/api/category", method = RequestMethod.PUT)
+    public ResponseEntity<String> apiUpdateCategory(@Valid DishCategory category, BindingResult result, Principal principal) {
+        Role role = new Role(principal);
+        if (!role.isAdmin())
+            return new ResponseEntity<>("You have no permission to change categories",HttpStatus.FORBIDDEN);
+        if (result.hasErrors())
+            return new ResponseEntity<>(JsonMaker.getJson(category), HttpStatus.NOT_ACCEPTABLE);
+        categoriesService.saveCategory(category);
+        System.out.println("Обновлено " + category);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //add
+    @PostMapping("/api/category")
+    public ResponseEntity<String> apiAddDishCategory(@Valid DishCategory category, BindingResult result, Principal principal) {
+        Role role = new Role(principal);
+        if (!role.isAdmin())
+            return new ResponseEntity<>("You have no permission to add categories",HttpStatus.FORBIDDEN);
+        if (result.hasErrors())
+            return new ResponseEntity<>(JsonMaker.getJson(result.getAllErrors()), HttpStatus.NOT_ACCEPTABLE);
+        categoriesService.saveCategory(category);
+        System.out.println("Успешно добавлено " + category);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //remove
+    @RequestMapping(value = "/api/category", method = RequestMethod.DELETE)
+    public ResponseEntity<String> apiRemoveCategory(@RequestParam Long id, Principal principal) {
+        Role role = new Role(principal);
+        if (!role.isAdmin())
+            return new ResponseEntity<>("You have no permission to remove categories",HttpStatus.FORBIDDEN);
+        if (!categoriesService.existsWithId(id))
+            return new ResponseEntity<>("No category found by given id", HttpStatus.NOT_FOUND);
+        categoriesService.removeById(id);
+        System.out.println("Removed category with id = "+id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    ////////////////////////////////////////////////////////////////////////////
+
+    @GetMapping("/categories")
+    public String getCategories(Model model, Principal principal) {
         try {
             final UserDetails user = userService.loadUserByUsername(principal.getName());
             model.addAttribute("categories", categoriesService.getAllCategories());
@@ -72,7 +114,7 @@ public class CategoriesController {
     }
 
     @GetMapping("/category_edit")
-    public String editDish(Model model, @RequestParam Long id) {
+    public String editDishCategory(Model model, @RequestParam Long id) {
         DishCategory category = categoriesService.getById(id);
         model.addAttribute("category", category);
         System.out.println("Получено " + category);

@@ -7,9 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ua.cafe.entities.Dish;
 import ua.cafe.entities.JsonMaker;
 import ua.cafe.entities.Role;
@@ -45,7 +43,7 @@ public class DishController {
         categoriesService = service;
     }
 
-    @GetMapping("/menuJSON")
+    @GetMapping("/api/menu")
     public ResponseEntity<String> getMenuJson() {
         List<Dish> dishes = dishService.getAllDishes();
         for (Dish dish : dishes) {
@@ -54,24 +52,49 @@ public class DishController {
         return JsonMaker.getJsonResponse(dishes);
     }
 
-    @GetMapping("/dishJSON")
+    @GetMapping("/api/dish")
     public ResponseEntity<String> getDishById(@RequestParam Long id) {
         return JsonMaker.getJsonResponse(dishService.getById(id));
     }
 
-    @PostMapping("/dish_update_direct")
+    //update
+    @RequestMapping(value = "/api/dish", method = RequestMethod.PUT)
     public ResponseEntity<String> updateDish(@Valid Dish dish, BindingResult result, Principal principal) {
         Role role = new Role(principal);
         if (!role.isAdmin())
-            return new ResponseEntity<>("You have no permission to change dishes.",HttpStatus.FORBIDDEN);
-        if (result.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-        }
+            return new ResponseEntity<>("You have no permission to change dishes.", HttpStatus.FORBIDDEN);
+        if (result.hasErrors())
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         dishService.saveDish(dish);
         System.out.println("Dish updated: " + dish);
         return ResponseEntity.ok("Dish updated!");
     }
 
+    //add
+    @PostMapping("/api/dish")
+    public ResponseEntity<String> apiAddDish(@Valid Dish dish, BindingResult result, Principal principal) {
+        Role role = new Role(principal);
+        if (!role.isAdmin())
+            return new ResponseEntity<>("You have no permission to add dishes.", HttpStatus.FORBIDDEN);
+        if (result.hasErrors()) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+        dishService.saveDish(dish);
+        return ResponseEntity.ok("Dish saved!");
+    }
+
+    @RequestMapping(value = "/api/dish", method = RequestMethod.DELETE)
+    public ResponseEntity<String> apiRemoveDish(@RequestParam Long id, Principal principal) {
+        Role role = new Role(principal);
+        if (!role.isAdmin())
+            return new ResponseEntity<>("You have no permission to remove dishes.", HttpStatus.FORBIDDEN);
+        if (!dishService.existsWithId(id))
+            return new ResponseEntity<>("No dish was found by given id",HttpStatus.NOT_FOUND);
+        dishService.removeById(id);
+        return ResponseEntity.ok("Dish removed!");
+    }
+
+    /////////////////////////////////////////////////////
     @GetMapping("/menu")
     public String getMenu(Model model, Principal principal) {
         try {
@@ -92,7 +115,7 @@ public class DishController {
         return "User/menu";
     }
 
-    ////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
     @GetMapping("/add_dish")
     public String addDish(Model model, Principal principal) {
         Role role = new Role(principal);

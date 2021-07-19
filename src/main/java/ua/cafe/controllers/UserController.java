@@ -1,14 +1,15 @@
 package ua.cafe.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import ua.cafe.entities.JsonMaker;
 import ua.cafe.entities.Role;
 import ua.cafe.entities.User;
 import ua.cafe.services.UserService;
@@ -28,12 +29,16 @@ public class UserController {
         userService = service;
     }
 
-    @GetMapping("/workers")
-    public String getWorkers() {
-        return "redirect:/users";
+    @RequestMapping(value = {"/users"}, method = RequestMethod.GET)
+    public ResponseEntity<String> apiGetUsers(Principal principal) {
+        Role role = new Role(principal);
+        if (!role.isAdmin())
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        return JsonMaker.getJsonResponse(userService.getAllUsers());
     }
 
-    @GetMapping("/users")
+
+    @RequestMapping(value = {"/users", "/workers"}, method = RequestMethod.GET)
     public String getUsers(Model model, Principal principal) {
 
         try {
@@ -55,7 +60,7 @@ public class UserController {
         return "/permissionDenied";
     }
 
-    @GetMapping("/user_edit")
+    @GetMapping("/user")
     public String editUser(Model model, @RequestParam Long id, Principal principal) {
         Role role = new Role(principal);
         if (!role.isAdmin())
