@@ -52,10 +52,14 @@ public class UserService implements UserDetailsService {
         return repository.findByUsername(username).isPresent();
     }
 
+    public User getByUsername(String username){
+        Optional<User> user = repository.findByUsername(username);
+        return user.orElse(null);
+    }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = repository.findByUsername(username);
-        System.out.println(user);
+        System.out.println("Loaded user: "+user);
         user.orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
         return user.map(MyUserDetails::new).get();
     }

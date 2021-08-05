@@ -1,19 +1,19 @@
 package ua.cafe.entities;
 
-import lombok.Data;
-import org.junit.Ignore;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ua.cafe.controllers.DishController;
-import ua.cafe.services.CategoriesService;
 import ua.cafe.services.DishService;
-import ua.cafe.services.UserService;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import java.util.Objects;
 
 @Entity
 @Table(name = "details")
-@Data
+@Getter
+@Setter
 @Component
 public class Detail {
     private static DishService dishService;
@@ -25,10 +25,13 @@ public class Detail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Min(1)
     private long id;
     @Column(insertable = false, updatable = false)
+    @Min(1)
     private long dish_id = -1;
     @Column(insertable = false, updatable = false)
+    @Min(1)
     private long order_id = -1;
     private int quantity;
 
@@ -75,6 +78,7 @@ public class Detail {
     }
 
     public Dish getDish() {
+        //TODO: remove database interaction
         if (dish == null && dish_id!=-1) {
             dish = dishService.getById(dish_id);
         }
@@ -119,6 +123,11 @@ public class Detail {
         return dish.getPrice() * quantity;
     }
 
+    public void clear(){
+        this.order=null;
+        this.dish.setDetails(null);
+    }
+
     @Override
     public String toString() {
         return "Detail{" +
@@ -127,6 +136,19 @@ public class Detail {
                 ", id=" + id +
                 ", quantity=" + quantity +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Detail detail = (Detail) o;
+        return id == detail.id && dish_id == detail.dish_id && order_id == detail.order_id && quantity == detail.quantity;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, dish_id, order_id, quantity);
     }
 }
 

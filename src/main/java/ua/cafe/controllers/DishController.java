@@ -60,9 +60,9 @@ public class DishController {
     //update
     @RequestMapping(value = "/api/dish", method = RequestMethod.PUT)
     public ResponseEntity<String> updateDish(@Valid Dish dish, BindingResult result, Principal principal) {
-        Role role = new Role(principal);
+        /*Role role = new Role(principal);
         if (!role.isAdmin())
-            return new ResponseEntity<>("You have no permission to change dishes.", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("You have no permission to change dishes.", HttpStatus.FORBIDDEN);*/
         if (result.hasErrors())
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         dishService.saveDish(dish);
@@ -73,9 +73,9 @@ public class DishController {
     //add
     @PostMapping("/api/dish")
     public ResponseEntity<String> apiAddDish(@Valid Dish dish, BindingResult result, Principal principal) {
-        Role role = new Role(principal);
+        /*Role role = new Role(principal);
         if (!role.isAdmin())
-            return new ResponseEntity<>("You have no permission to add dishes.", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("You have no permission to add dishes.", HttpStatus.FORBIDDEN);*/
         if (result.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
@@ -85,9 +85,9 @@ public class DishController {
 
     @RequestMapping(value = "/api/dish", method = RequestMethod.DELETE)
     public ResponseEntity<String> apiRemoveDish(@RequestParam Long id, Principal principal) {
-        Role role = new Role(principal);
+        /*Role role = new Role(principal);
         if (!role.isAdmin())
-            return new ResponseEntity<>("You have no permission to remove dishes.", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("You have no permission to remove dishes.", HttpStatus.FORBIDDEN);*/
         if (!dishService.existsWithId(id))
             return new ResponseEntity<>("No dish was found by given id",HttpStatus.NOT_FOUND);
         dishService.removeById(id);

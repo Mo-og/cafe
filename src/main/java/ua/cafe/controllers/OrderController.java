@@ -7,9 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ua.cafe.entities.*;
 import ua.cafe.services.DishService;
 import ua.cafe.services.OrderService;
@@ -43,14 +41,70 @@ public class OrderController {
         orderService = service;
     }
 
-    @GetMapping("/api/orders")
-    public ResponseEntity<String> getOrdersJSON(Principal principal) {
-            final UserDetails user = userService.loadUserByUsername(principal.getName());
-            if (!Role.checkIfAuthorised(user.getAuthorities().toString()))
-                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        return JsonMaker.getJsonResponse(orderService.getAllOrders());
+    @RequestMapping(value = "/api/orders", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<String> apiGetOrders(Principal principal) {
+        /*if (!Role.isAuthorized(principal))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);*/
+        List<Order> orders = orderService.getAllOrders();
+        orders.forEach(
+                order -> order.getDetails()
+                        .forEach(Detail::clear)
+        );
+        return JsonMaker.getJsonResponse(orders);
     }
 
+    @GetMapping("/api/order")
+    public ResponseEntity<String> apiGetOrder(@RequestParam Long id, Principal principal) {
+        Role role = new Role(principal);
+        if (!role.isAuthorised())
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        Order order = orderService.getById(id);
+        if (order == null)
+            return new ResponseEntity<>("No order found by given id", HttpStatus.NOT_FOUND);
+        return JsonMaker.getJsonResponse(order);
+    }
+
+    //add
+    @PostMapping("/api/order")
+    public ResponseEntity<String> apiSaveOrder(@Valid Order order, BindingResult result, Principal principal) {
+        Role role = new Role(principal);
+        if (!role.isAuthorised())
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if (result.hasErrors())
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        if (order.getDate_ordered() == null) {
+            order.setDate_ordered(new Date(System.currentTimeMillis()));
+        }
+        orderService.saveOrder(order);
+        System.out.println("Added order: " + order.getDishNames());
+        return ResponseEntity.ok("Order was saved!");
+    }
+
+    //update
+    @RequestMapping(value = "/api/order", method = RequestMethod.PUT)
+    public ResponseEntity<String> apiUpdateOrder(@Valid Order order, BindingResult result, Principal principal) {
+        Role role = new Role(principal);
+        if (!role.isAuthorised())
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if (result.hasErrors())
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        orderService.saveOrder(order);
+        return ResponseEntity.ok("Order was updated!");
+    }
+
+    //remove
+    @RequestMapping(value = "/api/order", method = RequestMethod.DELETE)
+    public ResponseEntity<String> apiRemoveOrder(@RequestParam Long id, Principal principal) {
+        Role role = new Role(principal);
+        if (!role.isAuthorised())
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        orderService.removeById(id);
+        System.out.println("Removed order with id " + id);
+        return ResponseEntity.ok("Removed order " + id);
+    }
+
+    ///////////////////////////////////////////////////////////
     @GetMapping("/orders")
     public String getOrders(Model model, Principal principal) {
         try {

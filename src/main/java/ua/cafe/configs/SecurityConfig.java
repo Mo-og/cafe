@@ -3,6 +3,7 @@ package ua.cafe.configs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -31,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     }
 
     @Bean
-    public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
+    public AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
         return new MySimpleUrlAuthenticationSuccessHandler();
     }
 
@@ -45,12 +47,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         http
                 .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()).and()
 //                .csrf().disable()
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
                 .authorizeRequests()
-                .antMatchers("static/css", "static/js").permitAll().
-                antMatchers("/User/**").permitAll().
-                antMatchers("/Director/**").hasRole("ADMIN").
-                antMatchers("/Waiter/**").hasAnyRole("ADMIN", "WAITER").
-                antMatchers("/Cook/**").hasAnyRole("ADMIN", "COOK")
+                .antMatchers("static/css", "static/js").permitAll()
+                .antMatchers("/User/**").permitAll()
+
+                .antMatchers(HttpMethod.GET, "/api/menu").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/dish").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/dish").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/api/dish").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/dish").hasRole("ADMIN")
+
+                .antMatchers(HttpMethod.GET, "/api/orders").hasAnyRole("ADMIN", "WAITER", "COOK")
+                .antMatchers(HttpMethod.GET, "/api/order").hasAnyRole("ADMIN", "WAITER", "COOK")
+                .antMatchers(HttpMethod.POST, "/api/order").hasAnyRole("ADMIN", "WAITER")
+                .antMatchers(HttpMethod.PUT, "/api/order").hasAnyRole("ADMIN", "WAITER")
+                .antMatchers(HttpMethod.DELETE, "/api/order").hasAnyRole("ADMIN", "WAITER")
+
+                .antMatchers(HttpMethod.GET, "/api/detail").hasAnyRole("ADMIN", "WAITER", "COOK")
+                .antMatchers(HttpMethod.POST, "/api/detail").hasAnyRole("ADMIN", "WAITER")
+                .antMatchers(HttpMethod.PUT, "/api/detail").hasAnyRole("ADMIN", "WAITER")
+                .antMatchers(HttpMethod.DELETE, "/api/detail").hasAnyRole("ADMIN", "WAITER")
+
+                .antMatchers("/Director/**").hasRole("ADMIN")
+                .antMatchers("/Waiter/**").hasAnyRole("ADMIN", "WAITER")
+                .antMatchers("/Cook/**").hasAnyRole("ADMIN", "COOK")
                 .and().formLogin().loginPage("/entrance")
                 .successHandler(myAuthenticationSuccessHandler())
                 .failureForwardUrl("/entrance").and()
@@ -77,7 +98,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
 //        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());

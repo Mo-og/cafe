@@ -15,8 +15,15 @@ import java.util.Arrays;
 public class Role {
     public static final String[] ROLES = {"[ROLE_WAITER]", "[ROLE_ADMIN]", "[ROLE_COOK]"};
 
-    public static boolean checkIfAuthorised(String inputAuthorities) {
+    public static boolean isAuthorized(String inputAuthorities) {
         return Arrays.stream(ROLES).anyMatch(inputAuthorities::contains);
+    }
+
+    public static boolean isAuthorized(Principal principal) {
+        if (principal == null)
+            return false;
+        User user = userService.getByUsername(principal.getName());
+        return isAuthorized(user.getRoles());
     }
 
     private static UserService userService;
@@ -33,17 +40,17 @@ public class Role {
 
     public Role() {
         isAuthorised = false;
-        user=null;
+        user = null;
     }
 
     public Role(Principal principal) {
         if (principal == null) {
             isAuthorised = false;
-            user=null;
+            user = null;
             return;
         }
         user = userService.loadUserByUsername(principal.getName());
-        String roleName=user.getAuthorities().toString();
+        String roleName = user.getAuthorities().toString();
         switch (roleName) {
             case "[ROLE_ADMIN]" -> {
                 isAuthorised = true;

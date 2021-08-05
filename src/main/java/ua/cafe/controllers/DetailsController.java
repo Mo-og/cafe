@@ -2,17 +2,18 @@ package ua.cafe.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import ua.cafe.entities.Detail;
+import org.springframework.web.bind.annotation.*;
+import ua.cafe.entities.*;
 import ua.cafe.services.DishService;
-import ua.cafe.entities.Dish;
-import ua.cafe.entities.Order;
 import ua.cafe.services.DetailsService;
+
+import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class DetailsController {
@@ -25,15 +26,59 @@ public class DetailsController {
         dishService = service;
     }
 
-    public static void removeDishFromOrder(long dish_id, long order_id) {
-        detailsService.removeByOrderIdAndDishID(order_id, dish_id);
-    }
-
     @Autowired
     public void setDetailsService(DetailsService service) {
         DetailsController.detailsService = service;
     }
 
+    //get
+    @GetMapping("/api/detail")
+    public ResponseEntity<String> apiViewOrderDetail(@RequestParam Long dish_id, @RequestParam Long order_id, Principal principal) {
+        if (!Role.isAuthorized(principal))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        Detail detail = detailsService.findByOrderIdAndDishID(order_id, dish_id);
+        if (detail == null)
+            return new ResponseEntity<>("No such order or dish in it", HttpStatus.NOT_FOUND);
+        detail.clear();
+        return JsonMaker.getJsonResponse(detail);
+    }
+
+    //add
+    @PostMapping("/api/detail")
+    public ResponseEntity<String> apiAddDishToOrder(@Valid Detail detail, BindingResult result, Principal principal) {
+        /*if (!Role.isAuthorized(principal))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);*/
+        if (result.hasErrors())
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        detailsService.saveDetail(detail);
+        return ResponseEntity.ok("Detail was saved successfully");
+    }
+
+    //update | add dish to order
+    @RequestMapping(value = "/api/detail", method = RequestMethod.PUT)
+    public ResponseEntity<String> apiUpdateDetail(@Valid Detail detail, BindingResult result) {
+        if (result.hasErrors())
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+//TODO: simplify or optimise
+        Order order = OrderController.orderService.getById(detail.getOrder_id());
+        Dish dish_toSave = dishService.getById(detail.getDish_id());
+        detailsService.remove(detail);
+        detail.setDish(dish_toSave);
+        detail.setOrder(order);
+        detailsService.saveDetail(detail);
+        return ResponseEntity.ok("Detail was updated successfully");
+    }
+
+    //delete
+    @RequestMapping(value = "/api/detail", method = RequestMethod.DELETE)
+    public ResponseEntity<String> apiRemoveDishFromOrder(@RequestParam Long dish_id, @RequestParam Long order_id, Principal principal) {
+        /*if (!Role.isAuthorized(principal))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);*/
+        detailsService.removeByOrderIdAndDishID(order_id, dish_id);
+        return ResponseEntity.ok("Dish was removed from order!");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping("/dish_exclude")
     public String removeDishFromOrder(@RequestParam Long dish_id, @RequestParam Long order_id, Model model) {
         detailsService.removeByOrderIdAndDishID(order_id, dish_id);
