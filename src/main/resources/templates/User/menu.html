@@ -11,6 +11,21 @@
           integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light ">
+    <div class="container-fluid">
+        <div style="flex: 1 1 100%;"></div>
+        <a class="navbar-brand zoom" th:href="@{/}" style="color: #ff7f50;">Главная</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav zoom">
+                <li><a class="nav-link" th:href="@{/entrance}" style="color: #ff7f50;">Вход</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br><br>
@@ -53,10 +68,10 @@
             categories: []
         },
         created() {
-            fetch('/categoriesJSON')
+            fetch('/api/categories')
                 .then(r => r.json())
                 .then(data => this.categories = data);
-            fetch('/menuJSON')
+            fetch('/api/menu')
                 .then(r => r.json())
                 .then(data => this.items = data)
         },

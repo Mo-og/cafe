@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 //                .csrf().disable()
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
                 .authorizeRequests()
-                .antMatchers("static/css", "static/js").permitAll()
+                .antMatchers("static/**").permitAll()
                 .antMatchers("/User/**").permitAll()
 
                 .antMatchers(HttpMethod.GET, "/api/menu").permitAll()
