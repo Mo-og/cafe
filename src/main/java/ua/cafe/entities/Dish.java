@@ -25,6 +25,7 @@ public class Dish {
     private boolean available = true;
     private String imagePath = null;
 
+
     @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL)
     private List<Detail> details;
 

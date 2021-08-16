@@ -19,6 +19,7 @@
     <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
 </head>
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#navbarNav" data-offset="100">
+<!-- Navigation Bar -->
 <header id="header" class="header-block" data-top="0" data-scroll="100">
     <div class="menuBar">
         <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light">
@@ -48,7 +49,7 @@
         </nav>
     </div>
 </header>
-<!-- Header Section Ends -->
+<!-- NavBar Section Ends -->
 
 <section class="reservation-block pad-top-100 pad-bottom-100">
     <div class="container-fluid">
@@ -102,28 +103,8 @@
                                         <a th:href="@{/categories}">
                                             <img src="../images/conf.png" height="20px" width="20px"
                                                  style="margin-left: 5px;">
-
                                         </a>
-                                        <!--                            <button type="button" class="btn btn-secondary btn-sm">настроить</button>-->
                                     </div>
-                                    <!--<select th:field="*{category}" class="form-control" id="category" required
-                                    <select th:field="*{category}" class="form-control" id="category" required
-                                            th:default="${dish.category}">
-                                        &lt;!&ndash;<option value="noalcococktail">Безалкогольный коктейль</option>
-                                        <option value="alcococktail">Алкогольный коктейль</option>
-                                        <option value="hotdrink">Горячий напиток</option>
-                                        <option value="alcohol">Спиртной напиток</option>
-                                        <option value="dessert">Дессерт</option>
-                                        <option value="first">Первое блюдо</option>
-                                        <option value="salad">Салат</option>&ndash;&gt;
-                                        <option value="Безалкогольный коктейль">Безалкогольный коктейль</option>
-                                        <option value="Алкогольный коктейль">Алкогольный коктейль</option>
-                                        <option value="Горячий напиток">Горячий напиток</option>
-                                        <option value="Спиртной напиток">Спиртной напиток</option>
-                                        <option value="Дессерт">Дессерт</option>
-                                        &lt;!&ndash;<option value="Первое блюдо">Первое блюдо</option>
-                                        <option value="Салат">Салат</option>&ndash;&gt;
-                                    </select>-->
                                     <select th:field="*{categoryId}" class="form-control" id="category" required
                                             th:default="${dish.categoryId}">
                                         <option th:each="cat : ${categories}"
@@ -138,134 +119,21 @@
                                            placeholder="" th:value="${dish.ingredients}" required>
                                 </div>
                             </div>
-                            <hr class="mb-4">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-12 col-md-6">
-                                        <button class="btn btn-warning btn-lg btn-block" type="submit"
-                                                value="Submit">Сохранить
-                                            блюдо
-                                        </button>
-                                    </div>
-                                    <div class="col-12 col-md-6">
-                                        <button type="button" class="btn btn-danger btn-lg btn-block"
-                                                th:onclick="'javascript:sure(\'' + ${dish.id} + '\');'">Удалить
-                                        </button>
-                                    </div>
-                                </div>
+                            <div class="mb-3">
+                                <label for="inputFile">Изображение блюда</label>
+                                <img th:src="@{'data:image/jpeg;base64,'+${image}}" alt="Изображение блюда">
+                                <input type="file" name="file" class="form-control" id="inputFile" aria-describedby="inputFileButton" aria-label="Upload" placeholder="Выберите изображение">
                             </div>
-                            <!--                <input type="hidden" name="_method" value="delete">-->
+                            <hr class="mb-4">
+                            <div class="d-grid gap-2 col-6 mx-auto">
+                            <button class="btn btn-warning btn-lg" type="submit"
+                                    value="Submit">Сохранить блюдо
+                            </button>
+
+                            <button type="button" class="btn btn-danger btn-lg"
+                                    th:onclick="'javascript:sure(\'' + ${dish.id} + '\');'">Удалить
+                            </button>
                         </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
-<section class="reservation-block pad-top-100 pad-bottom-100">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
-                <h2 class="block-title text-align-center"><span
-                        class="side-img left-side-img"><i></i><i></i><i></i></span>
-                    Изменение данных блюда<span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
-                <br><h4 class="block-title text-align-center">Измените необходимые поля и нажмите кнопку 'Сохранить
-                    блюдо'</h4>
-                <br>
-                <form enctype="multipart/form-data" th:action="@{/dish_update}" th:object="${dish}" method="post"
-                      novalidate>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h4 class="mb-3">Поля для заполнения</h4>
-                            <div class="col"><label for="id"><input th:field="*{id}" type="hidden"
-                                                                    class="form-control" id="id"
-                                                                    th:value="${dish.id}"></label></div>
-                            <div class="row mb-3">
-                                <div class="col-md-4 mb-3">
-                                    <label for="name">Название блюда</label>
-                                    <input th:field="*{name}" type="text" class="form-control" id="name"
-                                           placeholder=""
-                                           th:value="${dish.name}" required>
-                                    <small class="text-danger" th:if="${#fields.hasErrors('name')}"
-                                           th:errors="*{name}"></small>
-                                </div>
-
-                                <div class="col-md-4 mb-3">
-                                    <label for="price">Цена</label>
-                                    <input th:field="*{price}" type="number" class="form-control" id="price"
-                                           th:value="${dish.price}" required>
-                                    <small class="text-danger" th:if="${#fields.hasErrors('price')}"
-                                           th:errors="*{price}"></small>
-                                </div>
-
-                                <div class="col-md-4 mb-3">
-                                    <label for="weight">Вес</label>
-                                    <input th:field="*{weight}" type="number" class="form-control" id="weight"
-                                           placeholder=""
-                                           th:value="${dish.weight}" required>
-                                    <small class="text-danger" th:if="${#fields.hasErrors('weight')}"
-                                           th:errors="*{weight}"></small>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-6 mb-3">
-                                    <div class="btn-toolbar"><label for="category">Категория </label>
-                                        <a th:href="@{/categories}">
-                                            <img src="../images/conf.png" height="20px" width="20px">
-
-                                        </a>
-                                        <!--                            <button type="button" class="btn btn-secondary btn-sm">настроить</button>-->
-                                    </div>
-                                    <!--<select th:field="*{category}" class="form-control" id="category" required
-                                    <select th:field="*{category}" class="form-control" id="category" required
-                                            th:default="${dish.category}">
-                                        &lt;!&ndash;<option value="noalcococktail">Безалкогольный коктейль</option>
-                                        <option value="alcococktail">Алкогольный коктейль</option>
-                                        <option value="hotdrink">Горячий напиток</option>
-                                        <option value="alcohol">Спиртной напиток</option>
-                                        <option value="dessert">Дессерт</option>
-                                        <option value="first">Первое блюдо</option>
-                                        <option value="salad">Салат</option>&ndash;&gt;
-                                        <option value="Безалкогольный коктейль">Безалкогольный коктейль</option>
-                                        <option value="Алкогольный коктейль">Алкогольный коктейль</option>
-                                        <option value="Горячий напиток">Горячий напиток</option>
-                                        <option value="Спиртной напиток">Спиртной напиток</option>
-                                        <option value="Дессерт">Дессерт</option>
-                                        &lt;!&ndash;<option value="Первое блюдо">Первое блюдо</option>
-                                        <option value="Салат">Салат</option>&ndash;&gt;
-                                    </select>-->
-                                    <select th:field="*{categoryId}" class="form-control" id="category" required
-                                            th:default="${dish.categoryId}">
-                                        <option th:each="cat : ${categories}"
-                                                th:value="${cat.id}" th:text="${cat.name}"></option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="ingredients">Ингредиенты</label>
-                                    <input th:field="*{ingredients}" type="text" class="form-control"
-                                           id="ingredients"
-                                           placeholder="" th:value="${dish.ingredients}" required>
-                                </div>
-                            </div>
-                            <hr class="mb-4">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-12 col-md-6">
-                                        <button class="btn btn-warning btn-lg btn-block" type="submit"
-                                                value="Submit">Сохранить
-                                            блюдо
-                                        </button>
-                                    </div>
-                                    <div class="col-12 col-md-6">
-                                        <button type="button" class="btn btn-danger btn-lg btn-block"
-                                                th:onclick="'javascript:sure(\'' + ${dish.id} + '\');'">Удалить
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--                <input type="hidden" name="_method" value="delete">-->
                         </div>
                     </div>
                 </form>
@@ -278,22 +146,6 @@
 <br/><br/><br/>
 <script>
     function sure(id) {
-        /*
-                var path = "/dish_remove?id=" + id;
-                var form = document.createElement("form");
-                form.setAttribute("method", "delete");
-                form.setAttribute("action", path);
-
-                var hiddenField = document.createElement("input");
-                hiddenField.setAttribute("type", "hidden");
-                hiddenField.setAttribute("name", "1");
-                hiddenField.setAttribute("value", '1');
-
-                form.appendChild(hiddenField);
-
-                document.body.appendChild(form);
-        */
-
         var sured = confirm("Вы уверены, что хотите удалить блюдо?");
         if (sured) {
             // form.submit();

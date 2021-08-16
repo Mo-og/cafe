@@ -2,6 +2,10 @@ package ua.cafe;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 /*import org.apache.coyote.http11.AbstractHttp11Protocol;
 import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
@@ -9,7 +13,10 @@ import org.springframework.context.annotation.Bean;*/
 
 @SpringBootApplication
 public class CafeApplication {
-
+    private static DateFormat dateFormat = new SimpleDateFormat(" - dd.MM.yyyy HH.mm.ss");
+    public static String getDateString(){
+        return dateFormat.format(new Date());
+    }
     public static void main(String[] args) {
         SpringApplication.run(CafeApplication.class, args);
     }

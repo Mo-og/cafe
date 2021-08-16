@@ -70,6 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .antMatchers(HttpMethod.DELETE, "/api/detail").hasAnyRole("ADMIN", "WAITER")
 
                 .antMatchers("/Director/**").hasRole("ADMIN")
+                .antMatchers("/dish_edit","/add_dish","/dish_remove").hasRole("ADMIN")
                 .antMatchers("/Waiter/**").hasAnyRole("ADMIN", "WAITER")
                 .antMatchers("/Cook/**").hasAnyRole("ADMIN", "COOK")
                 .and().formLogin().loginPage("/entrance")
