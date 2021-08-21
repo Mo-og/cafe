@@ -40,7 +40,7 @@
                             class="side-img right-side-img"><i></i><i></i><i></i></span></h4>
                     <div class="menu-list mb-5">
                         <div class="menu-card" v-for="item in item.dishes" :key="item.id"
-                             style="background-image:url('/images/dish-loading.gif')">
+                             :style="`background-image:url(${item.imagePath || '/images/dish-loading.gif'})`">
                             <h5 class="menu-card-title">{{ item.name }}</h5>
                             <span class="menu-card-price">{{ item.price }} ₴</span>
                             <div class="menu-card-description">

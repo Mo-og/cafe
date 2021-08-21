@@ -125,6 +125,7 @@
                                 <thead>
                                 <tr>
                                     <th class="text-justify">#</th>
+                                    <th class="text-justify">#</th>
                                     <th class="text-justify">Название</th>
                                     <th class="text-justify">Категория</th>
                                     <th class="text-justify">Порция (г)</th>
@@ -138,6 +139,7 @@
                                     th:onclick="'javascript:rowClicked(\'' + ${dish.id} + '\');'">
                                     <!--<td class="align-middle"><span th:text="${dish.id}"/></td>-->
                                     <td class="align-middle"><span th:text="${state.count}"></span></td>
+                                    <td class="align-middle"><img class="image" style="height: 25px; width: 25px" th:src="${dish.imagePath}" alt="dish image"></td>
                                     <td class="align-middle"><span th:text="${dish.name}"></span></td>
                                     <td class="align-middle"><span th:text="${dish.categoryId}"></span></td>
                                     <td class="align-middle"><span th:text="${dish.weight}"></span></td>

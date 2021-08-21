@@ -1,6 +1,5 @@
 package ua.cafe.controllers;
 
-import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,7 +16,6 @@ import ua.cafe.entities.JsonMaker;
 import ua.cafe.entities.Role;
 import ua.cafe.services.CategoriesService;
 import ua.cafe.services.DishService;
-import ua.cafe.services.ImageFileService;
 import ua.cafe.services.UserService;
 
 import javax.validation.Valid;
@@ -28,6 +26,7 @@ import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Controller
 public class DishController {
@@ -35,18 +34,12 @@ public class DishController {
 
     //Services assignment
     private static DishService dishService;
-    private static ImageFileService imageService;
     private static UserService userService;
     private static CategoriesService categoriesService;
 
     @Autowired
     public void setService(DishService service) {
         dishService = service;
-    }
-
-    @Autowired
-    public void setService(ImageFileService service) {
-        imageService = service;
     }
 
     @Autowired
@@ -69,12 +62,12 @@ public class DishController {
         return JsonMaker.getJsonResponse(dishes);
     }
 
-    @GetMapping(value = "/api/image", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/DishImages/{image}", produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody
-    ResponseEntity<byte[]> getImage(@RequestParam String path) {
+    ResponseEntity<byte[]> getImage(@PathVariable String image) {
         byte[] bytes;
         try {
-            bytes = Files.readAllBytes(Paths.get(IMAGES_FOLDER_PATH.substring(0, 33), path));
+            bytes = Files.readAllBytes(Paths.get(IMAGES_FOLDER_PATH, image));
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.notFound().build();
@@ -92,7 +85,7 @@ public class DishController {
     public ResponseEntity<String> updateDish(@Valid Dish dish, BindingResult result) {
         if (result.hasErrors())
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        dish.setName(dish.getName().replace("\"","'"));
+        dish.setName(dish.getName().replace("\"", "'"));
         dishService.saveDish(dish);
         System.out.println("Dish updated: " + dish);
         return ResponseEntity.ok("Dish updated!");
@@ -104,7 +97,7 @@ public class DishController {
         if (result.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
-        dish.setName(dish.getName().replace("\"","'"));
+        dish.setName(dish.getName().replace("\"", "'"));
         dishService.saveDish(dish);
         return ResponseEntity.ok("Dish saved!");
     }
@@ -114,7 +107,7 @@ public class DishController {
         /*Role role = new Role(principal);
         if (!role.isAdmin())
             return new ResponseEntity<>("You have no permission to remove dishes.", HttpStatus.FORBIDDEN);*/
-        if (!dishService.existsWithId(id))
+        if (dishService.isNoneWithId(id))
             return new ResponseEntity<>("No dish was found by given id", HttpStatus.NOT_FOUND);
         dishService.removeById(id);
         return ResponseEntity.ok("Dish removed!");
@@ -156,12 +149,12 @@ public class DishController {
     public String editDish(Model model, @RequestParam Long id) {
         Dish dish = dishService.getById(id);
         model.addAttribute("dish", dish);
-        if (dish.getImagePath() != null)
+        /*if (dish.getImagePath() != null)
             try {
                 model.addAttribute("image", Base64.encodeBase64String(Files.readAllBytes(Paths.get(IMAGES_FOLDER_PATH + dish.getImagePath().substring(11)))));
             } catch (IOException e) {
                 System.out.println("Incorrect image path for dish " + dish.getName());
-            }
+            }*/
         model.addAttribute("categories", categoriesService.getAllCategories());
         System.out.println("Edited " + dish);
         return "Director/edit_dish";
@@ -173,24 +166,26 @@ public class DishController {
             model.addAttribute("categories", categoriesService.getAllCategories());
             return "Director/edit_dish";
         }
-        dish.setName(dish.getName().replace("\"","'"));
-        Path path = Paths.get(IMAGES_FOLDER_PATH + dish.getName() + CafeApplication.getDateString());
+        dish.setName(dish.getName().replace("\"", "'"));
+        Path path;
         try {
             /*String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
             image = new FileDB(fileName, file.getContentType(), file.getBytes());*/
-
+            path = Paths.get(IMAGES_FOLDER_PATH + dish.getName() + CafeApplication.getDateString() + Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf('.')));
             byte[] bytes = file.getBytes();
             Files.write(path, bytes);
-        } catch (IOException e) {
-            System.out.println("Dish image update wasn't successful due to invalid image file");
+        } catch (IOException | NullPointerException e) {
+            System.out.println("*-Dish image update wasn't successful due to invalid image file.\n*-Error: " + e.getMessage());
             model.addAttribute("categories", categoriesService.getAllCategories());
             return "Director/edit_dish";
         }
         try {
-            if (dish.getImagePath() != null)
+            if (dish.getImagePath() != null && dish.getImagePath().length() > 11) {
                 Files.delete(Paths.get(IMAGES_FOLDER_PATH, dish.getImagePath().substring(11)));
+                System.out.println("Removed old dish image: " + dish.getImagePath().substring(11));
+            }
         } catch (IOException e) {
-            System.out.println("Unable to delete old DishImage");
+            System.out.println("Unable to delete old DishImage: " + e.getMessage());
             e.printStackTrace();
         }
         dish.setImagePath(path.toString().substring(28).replace("\\", "/"));
@@ -205,14 +200,14 @@ public class DishController {
             model.addAttribute("categories", categoriesService.getAllCategories());
             return "Director/add_dish";
         }
-        dish.setName(dish.getName().replace("\"","'"));
+        dish.setName(dish.getName().replace("\"", "'"));
         dishService.saveDish(dish);
         return "redirect:/menu";
     }
 
     @GetMapping("/dish_remove")
     public String removeDish(@RequestParam Long id) {
-        if (!dishService.existsWithId(id))
+        if (dishService.isNoneWithId(id))
             throw new NoSuchElementException();
         dishService.removeById(id);
         return "redirect:/menu";

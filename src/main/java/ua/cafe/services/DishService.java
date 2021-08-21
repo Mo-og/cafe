@@ -25,7 +25,7 @@ public class DishService {
     Comparator<Dish> comparator = (o1, o2) -> {
         if (o1.getCategoryId() == o2.getCategoryId())
             return o1.getName().compareToIgnoreCase(o2.getName());
-        return 0;
+        else return (int) (o1.getCategoryId() - o2.getCategoryId());
     };
 
     public List<Dish> getAllDishes() {
@@ -38,8 +38,8 @@ public class DishService {
         repository.deleteById(id);
     }
 
-    public boolean existsWithId(long id) {
-        return repository.existsById(id);
+    public boolean isNoneWithId(long id) {
+        return !repository.existsById(id);
     }
 
     public Dish getById(long id) {

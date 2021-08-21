@@ -41,7 +41,7 @@
                             <a th:href="@{/report}"><span>Отчет</span></a></li>
                         <li class="nav-item">
                             <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
-                                th:href="@{/logout}"><span>Выход</span></a></li>
+                               th:href="@{/logout}"><span>Выход</span></a></li>
                     </ul>
                 </div>
 
@@ -102,7 +102,7 @@
                                     <div class="btn-toolbar"><label for="category">Категория </label>
                                         <a th:href="@{/categories}">
                                             <img src="../images/conf.png" height="20px" width="20px"
-                                                 style="margin-left: 5px;">
+                                                 style="margin-left: 5px;" alt="gear icon">
                                         </a>
                                     </div>
                                     <select th:field="*{categoryId}" class="form-control" id="category" required
@@ -120,20 +120,27 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="inputFile">Изображение блюда</label>
-                                <img th:src="@{'data:image/jpeg;base64,'+${image}}" alt="Изображение блюда">
-                                <input type="file" name="file" class="form-control" id="inputFile" aria-describedby="inputFileButton" aria-label="Upload" placeholder="Выберите изображение">
+                                <label for="inputFile" class="mb-3">
+                                    <div class="up mb-1">Изображение блюда</div>
+                                    <img class="image zoom" th:src="${dish.imagePath}" alt="Изображение блюда"
+                                         style="height: 200px;">
+                                </label>
+                                <input type="hidden" th:value="${dish.imagePath}" name="imagePath">
+                                <input type="file" name="file" class="form-control" id="inputFile"
+                                       aria-describedby="inputFileButton" aria-label="Upload"
+                                       placeholder="Выберите изображение">
                             </div>
                             <hr class="mb-4">
-                            <div class="d-grid gap-2 col-6 mx-auto">
-                            <button class="btn btn-warning btn-lg" type="submit"
-                                    value="Submit">Сохранить блюдо
-                            </button>
+                            <div class="d-flex">
+                                <div style="flex: 1"></div>
+                                <button class="btn btn-warning btn-md" style="margin-right: 1rem;" type="submit"
+                                        value="Submit">Сохранить блюдо
+                                </button>
 
-                            <button type="button" class="btn btn-danger btn-lg"
-                                    th:onclick="'javascript:sure(\'' + ${dish.id} + '\');'">Удалить
-                            </button>
-                        </div>
+                                <button type="button" class="btn btn-danger btn-md"
+                                        th:onclick="'javascript:sure(\'' + ${dish.id} + '\');'">Удалить
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </form>

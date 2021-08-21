@@ -2149,8 +2149,19 @@ p {
     transition: /*text-shadow .2s,*/ transform .2s;
 }
 
-.nav-item:hover, .zoom:hover {
-    transform: scale(1.1) translateY(-1px);
+.nav-item:hover {
+    transform: scale(1.1) translateY(-5%) skewY(-1deg);
+    /*text-shadow:  2px 2px 3px rgba(11, 11, 11, 0.5)*/
+}
+
+@media (max-width: 768px) {
+    .nav-item:hover {
+        transform: scale(1.1) translateY(-5%) translateX(5%);
+    }
+}
+
+.zoom:hover {
+    transform: scale(1.1) translateY(-5%) translateX(5%);
     /*text-shadow:  2px 2px 3px rgba(11, 11, 11, 0.5)*/
 }
 
@@ -2166,4 +2177,14 @@ p {
 
 .navbar-brand:hover {
     border-bottom: 4px solid #868686;
+}
+
+.image {
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+h2 {
+    font-size: 4vw;
 }
