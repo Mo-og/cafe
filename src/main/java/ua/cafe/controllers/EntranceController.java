@@ -28,7 +28,7 @@ public class EntranceController {
     @GetMapping("/")
     public String entrance(Principal principal, Model model) {
         model.addAttribute("role", new Role(principal));
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/logout")
