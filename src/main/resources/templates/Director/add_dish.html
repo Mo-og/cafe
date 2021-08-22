@@ -137,7 +137,7 @@
                                             &lt;!&ndash;<option value="Первое блюдо">Первое блюдо</option>
                                             <option value="Салат">Салат</option>&ndash;&gt;
                                         </select>-->
-                                        <select th:field="*{category}" class="form-control" id="category" required>
+                                        <select th:field="*{categoryId}" class="form-control" id="category" required>
                                             <option th:each="cat : ${categories}"
                                                     th:value="${cat.name}" th:text="${cat.name}"></option>
                                         </select>
