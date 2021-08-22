@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
                 .authorizeRequests()
                 .antMatchers("static/**", "/DishImages/**").permitAll()
-                .antMatchers("/User/**").permitAll()
+                .antMatchers("/","/User/**").permitAll()
 
                 .antMatchers(HttpMethod.GET, "/api/menu").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/dish").permitAll()
