@@ -11,14 +11,17 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   datasource:
     platform: postgres
-#    url: jdbc:postgresql://localhost:5432/cafe
+    #    url: jdbc:postgresql://localhost:5432/cafe
     url: jdbc:postgresql://ec2-176-34-97-213.eu-west-1.compute.amazonaws.com:5432/d4pg98hmf7jfhe
     #    username: postgres
     username: fjrijccybllkws
-#    password: '74553211'
+    #    password: '74553211'
     password: '887c12b9587287499cd233e1ae9e6b500bd0c449cfda6632276c6464d61c0a95'
     driverClassName: org.postgresql.Driver
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
