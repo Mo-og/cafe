@@ -82,7 +82,7 @@ public class DishController {
 
     //update
     @RequestMapping(value = "/api/dish", method = RequestMethod.PUT)
-    public ResponseEntity<String> updateDish(@Valid Dish dish, BindingResult result) {
+    public ResponseEntity<String> apiUpdateDish(@Valid Dish dish, BindingResult result) {
         if (result.hasErrors())
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         dish.setName(dish.getName().replace("\"", "'"));
@@ -136,10 +136,7 @@ public class DishController {
 
     ///////////////////////////////////////////////////////////////////////////
     @GetMapping("/add_dish")
-    public String addDish(Model model, Principal principal) {
-        Role role = new Role(principal);
-        if (!role.isAdmin())
-            return "/permissionDenied";
+    public String addDish(Model model) {
         model.addAttribute("dish", new Dish());
         model.addAttribute("categories", categoriesService.getAllCategories());
         return "Director/add_dish";
@@ -161,11 +158,27 @@ public class DishController {
     }
 
     @PostMapping("/dish_update")
-    public String updateDish1(@RequestParam("file") MultipartFile file, @Valid Dish dish, BindingResult result, Model model) {
+    public String updateDish(@RequestParam("file") MultipartFile file, @Valid Dish dish, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("categories", categoriesService.getAllCategories());
             return "Director/edit_dish";
         }
+        if (operateDish(file, dish, model)) return "Director/edit_dish";
+        System.out.println("Обновлено " + dish);
+        return "redirect:/menu";
+    }
+
+    @PostMapping("/add_dish")
+    public String greetingSubmit(@RequestParam("file") MultipartFile file, @Valid Dish dish, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("categories", categoriesService.getAllCategories());
+            return "Director/add_dish";
+        }
+        if (operateDish(file, dish, model)) return "Director/edit_dish";
+        return "redirect:/menu";
+    }
+
+    private boolean operateDish(@RequestParam("file") MultipartFile file, @Valid Dish dish, Model model) {
         dish.setName(dish.getName().replace("\"", "'"));
         Path path;
         try {
@@ -177,7 +190,7 @@ public class DishController {
         } catch (IOException | NullPointerException e) {
             System.out.println("*-Dish image update wasn't successful due to invalid image file.\n*-Error: " + e.getMessage());
             model.addAttribute("categories", categoriesService.getAllCategories());
-            return "Director/edit_dish";
+            return true;
         }
         try {
             if (dish.getImagePath() != null && dish.getImagePath().length() > 11) {
@@ -190,19 +203,7 @@ public class DishController {
         }
         dish.setImagePath(path.toString().substring(28).replace("\\", "/"));
         dishService.saveDish(dish);
-        System.out.println("Обновлено " + dish);
-        return "redirect:/menu";
-    }
-
-    @PostMapping("/add_dish")
-    public String greetingSubmit(@Valid Dish dish, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("categories", categoriesService.getAllCategories());
-            return "Director/add_dish";
-        }
-        dish.setName(dish.getName().replace("\"", "'"));
-        dishService.saveDish(dish);
-        return "redirect:/menu";
+        return false;
     }
 
     @GetMapping("/dish_remove")

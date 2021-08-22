@@ -139,7 +139,7 @@
                                         </select>-->
                                         <select th:field="*{categoryId}" class="form-control" id="category" required>
                                             <option th:each="cat : ${categories}"
-                                                    th:value="${cat.name}" th:text="${cat.name}"></option>
+                                                    th:value="${cat.id}" th:text="${cat.name}"></option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 mb-3">
@@ -149,12 +149,14 @@
                                                placeholder="" value="" required>
                                     </div>
                                 </div>
-                                <div class="form-file form-file-lg mb-3">
-                                    <input type="file" class="form-file-input" id="customFileLg">
-                                    <label class="form-file-label" for="customFileLg">
-                                        <span class="form-file-text">Добавить изображение...</span>
-                                        <span class="form-file-button">Выбрать на компьютере</span>
+                                <div class="mb-3">
+                                    <label for="inputFile" class="mb-3">
+                                        <div class="up mb-1">Изображение блюда</div>
                                     </label>
+                                    <input type="hidden" th:value="${dish.imagePath}" name="imagePath">
+                                    <input type="file" name="file" class="form-control" id="inputFile"
+                                           aria-describedby="inputFileButton" aria-label="Upload"
+                                           placeholder="Выберите изображение">
                                 </div>
                                 <hr class="mb-4">
                                 <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">Добавить
