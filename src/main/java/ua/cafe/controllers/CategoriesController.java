@@ -102,9 +102,9 @@ public class CategoriesController {
                     return "Waiter/categories";
             }
         } catch (NullPointerException e) {
-            return "/index";
+            return "index";
         }
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/add_category")

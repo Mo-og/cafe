@@ -37,7 +37,6 @@ public class UserController {
         return JsonMaker.getJsonResponse(userService.getAllUsers());
     }
 
-
     @RequestMapping(value = {"/users", "/workers"}, method = RequestMethod.GET)
     public String getUsers(Model model, Principal principal) {
 
@@ -55,16 +54,16 @@ public class UserController {
                     return "Director/users";
             }
         } catch (NullPointerException e) {
-            return "/permissionDenied";
+            return "permissionDenied";
         }
-        return "/permissionDenied";
+        return "permissionDenied";
     }
 
     @GetMapping("/user")
     public String editUser(Model model, @RequestParam Long id, Principal principal) {
         Role role = new Role(principal);
         if (!role.isAdmin())
-            return "/permissionDenied";
+            return "permissionDenied";
         User user = userService.getById(id);
         model.addAttribute("user", user);
         return "Director/edit_user";

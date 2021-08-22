@@ -34,7 +34,7 @@ public class EntranceController {
     @GetMapping("/logout")
     public String logOut(Model model) {
         model.addAttribute("role", new Role());
-        return "/logout";
+        return "logout";
     }
 
     @GetMapping("/entrance")

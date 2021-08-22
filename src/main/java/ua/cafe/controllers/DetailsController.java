@@ -31,6 +31,7 @@ public class DetailsController {
         DetailsController.detailsService = service;
     }
 
+    //API
     //get
     @GetMapping("/api/detail")
     public ResponseEntity<String> apiViewOrderDetail(@RequestParam Long dish_id, @RequestParam Long order_id, Principal principal) {

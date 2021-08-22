@@ -22,6 +22,7 @@ import java.util.NoSuchElementException;
 @Controller
 public class OrderController {
 
+    //Services setting
     public static OrderService orderService;
     private static DishService dishService;
     private static UserService userService;
@@ -41,6 +42,7 @@ public class OrderController {
         orderService = service;
     }
 
+    //API
     @RequestMapping(value = "/api/orders", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<String> apiGetOrders(Principal principal) {
@@ -149,7 +151,7 @@ public class OrderController {
 
             return "redirect:/orders";
         } catch (NullPointerException e) {
-            return "/index";
+            return "index";
         }
     }
 
