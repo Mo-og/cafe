@@ -1,5 +1,6 @@
 package ua.cafe;
 
+import com.ibm.icu.text.Transliterator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,10 +14,17 @@ import org.springframework.context.annotation.Bean;*/
 
 @SpringBootApplication
 public class CafeApplication {
-    private static DateFormat dateFormat = new SimpleDateFormat(" - dd.MM.yyyy HH.mm.ss");
-    public static String getDateString(){
+    private static final DateFormat dateFormat = new SimpleDateFormat(" - dd.MM.yyyy HH.mm.ss");
+    private static final Transliterator toLatin = Transliterator.getInstance("Cyrillic-Latin");
+
+    public static String getDateString() {
         return dateFormat.format(new Date());
     }
+
+    public static String transliterate(String s) {
+        return toLatin.transliterate(s);
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(CafeApplication.class, args);
     }
