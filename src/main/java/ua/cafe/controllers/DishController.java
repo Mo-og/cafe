@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.cafe.CafeApplication;
+import ua.cafe.Translit;
 import ua.cafe.entities.Dish;
 import ua.cafe.entities.JsonMaker;
 import ua.cafe.services.CategoriesService;
@@ -183,7 +184,7 @@ public class DishController {
         try {
             /*String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
             image = new FileDB(fileName, file.getContentType(), file.getBytes());*/
-            path = Paths.get(IMAGES_FOLDER_PATH + CafeApplication.transliterate(dish.getName()) + CafeApplication.getDateString() + Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf('.')));
+            path = Paths.get(IMAGES_FOLDER_PATH + Translit.cyr2lat(dish.getName()) + CafeApplication.getDateString() + Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf('.')));
             byte[] bytes = file.getBytes();
             Files.write(path, bytes);
         } catch (IOException | NullPointerException e) {
