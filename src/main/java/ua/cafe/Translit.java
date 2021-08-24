@@ -12,7 +12,7 @@ public class Translit {
             case 'Ё':
             case 'Э':
                 return "E";
-            case 'Ж': return "ZH";
+            case 'Ж': return "Zh";
             case 'З': return "Z";
             case 'И': return "I";
             case 'Й': return "I";
@@ -27,16 +27,52 @@ public class Translit {
             case 'Т': return "T";
             case 'У': return "U";
             case 'Ф': return "F";
-            case 'Х': return "KH";
-            case 'Ц': return "TS";
-            case 'Ч': return "CH";
-            case 'Ш': return "SH";
-            case 'Щ': return "SHCH";
+            case 'Х': return "Kh";
+            case 'Ц': return "Ts";
+            case 'Ч': return "Ch";
+            case 'Ш': return "Sh";
+            case 'Щ': return "Shch";
             case 'Ъ': return "″";
             case 'Ы': return "Y";
             case 'Ь': return "′";
-            case 'Ю': return "IU";
-            case 'Я': return "IA";
+            case 'Ю': return "Iu";
+            case 'Я': return "Ia";
+            case 'а': return "a";
+            case 'б': return "b";
+            case 'в': return "v";
+            case 'г': return "g";
+            case 'д': return "d";
+            case 'е':
+            case 'ё':
+            case 'э':
+                return "e";
+            case 'ж': return "zh";
+            case 'з': return "z";
+            case 'и': return "i";
+            case 'й': return "i";
+            case 'к': return "k";
+            case 'л': return "l";
+            case 'м': return "m";
+            case 'н': return "n";
+            case 'о': return "o";
+            case 'п': return "p";
+            case 'р': return "r";
+            case 'с': return "s";
+            case 'т': return "t";
+            case 'у': return "u";
+            case 'ф': return "f";
+            case 'х': return "kh";
+            case 'ц': return "ts";
+            case 'ч': return "ch";
+            case 'ш': return "sh";
+            case 'щ': return "shch";
+            case 'ъ': return "″";
+            case 'ы': return "y";
+            case 'ь': return "′";
+            case 'ю': return "iu";
+            case 'я': return "ia";
+            case '.': return ".";
+            case ',': return ",";
             default: return "_";
         }
     }

@@ -163,7 +163,7 @@ public class DishController {
             model.addAttribute("categories", categoriesService.getAllCategories());
             return "Director/edit_dish";
         }
-        if (operateDish(file, dish, model)) return "Director/edit_dish";
+        operateDish(file, dish, model);
         System.out.println("Обновлено " + dish);
         return "redirect:/menu";
     }
@@ -174,36 +174,37 @@ public class DishController {
             model.addAttribute("categories", categoriesService.getAllCategories());
             return "Director/add_dish";
         }
-        if (operateDish(file, dish, model)) return "Director/edit_dish";
+        operateDish(file, dish, model);
         return "redirect:/menu";
     }
 
-    private boolean operateDish(@RequestParam("file") MultipartFile file, @Valid Dish dish, Model model) {
+    private void operateDish(@RequestParam("file") MultipartFile file, @Valid Dish dish, Model model) {
         dish.setName(dish.getName().replace("\"", "'"));
-        Path path;
+        Path path = null;
         try {
             /*String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
             image = new FileDB(fileName, file.getContentType(), file.getBytes());*/
-            path = Paths.get(IMAGES_FOLDER_PATH + Translit.cyr2lat(dish.getName()) + CafeApplication.getDateString() + Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf('.')));
+            if (file.isEmpty()) throw new NullPointerException();
+            int index = Objects.requireNonNull(file.getOriginalFilename()).lastIndexOf('.');
+            if (index == -1) index = 0;
+            path = Paths.get(IMAGES_FOLDER_PATH + Translit.cyr2lat(dish.getName()) + CafeApplication.getDateString() + Objects.requireNonNull(file.getOriginalFilename()).substring(index));
             byte[] bytes = file.getBytes();
             Files.write(path, bytes);
         } catch (IOException | NullPointerException e) {
             System.out.println("*-Dish image update wasn't successful due to invalid image file.\n*-Error: " + e.getMessage());
             model.addAttribute("categories", categoriesService.getAllCategories());
-            return true;
         }
         try {
-            if (dish.getImagePath() != null && dish.getImagePath().length() > 11) {
+            if (path != null && dish.getImagePath() != null && dish.getImagePath().length() > 11) {
                 Files.delete(Paths.get(IMAGES_FOLDER_PATH, dish.getImagePath().substring(11)));
+                dish.setImagePath(path.toString().substring(28).replace("\\", "/"));
                 System.out.println("Removed old dish image: " + dish.getImagePath().substring(11));
             }
         } catch (IOException e) {
             System.out.println("Unable to delete old DishImage: " + e.getMessage());
             e.printStackTrace();
         }
-        dish.setImagePath(path.toString().substring(28).replace("\\", "/"));
         dishService.saveDish(dish);
-        return false;
     }
 
     @GetMapping("/dish_remove")
