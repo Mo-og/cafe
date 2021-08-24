@@ -29,7 +29,7 @@ public class UserController {
         userService = service;
     }
 
-    @RequestMapping(value = {"/users"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/api/users"}, method = RequestMethod.GET)
     public ResponseEntity<String> apiGetUsers(Principal principal) {
         Role role = new Role(principal);
         if (!role.isAdmin())
@@ -59,7 +59,7 @@ public class UserController {
         return "permissionDenied";
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user_edit")
     public String editUser(Model model, @RequestParam Long id, Principal principal) {
         Role role = new Role(principal);
         if (!role.isAdmin())
