@@ -195,15 +195,16 @@ public class DishController {
             System.out.println("*-Dish image update wasn't successful due to invalid image file.\n*-Error: " + e.getMessage());
             model.addAttribute("categories", categoriesService.getAllCategories());
         }
-        try {
-            if (path != null && dish.getImagePath() != null && dish.getImagePath().length() > 11) {
+
+        if (path != null && dish.getImagePath() != null && dish.getImagePath().length() > 11) {
+            try {
                 Files.delete(Paths.get(IMAGES_FOLDER_PATH, dish.getImagePath().substring(11)));
-                dish.setImagePath(path.toString().substring(28).replace("\\", "/"));
-                System.out.println("Removed old dish image: " + dish.getImagePath().substring(11));
+            } catch (IOException | InvalidPathException e) {
+                System.out.println("Unable to delete old DishImage: " + e.getMessage());
+                e.printStackTrace();
             }
-        } catch (IOException | InvalidPathException e) {
-            System.out.println("Unable to delete old DishImage: " + e.getMessage());
-            e.printStackTrace();
+            dish.setImagePath(path.toString().substring(28).replace("\\", "/"));
+            System.out.println("Removed old dish image: " + dish.getImagePath().substring(11));
         }
         dishService.saveDish(dish);
     }
