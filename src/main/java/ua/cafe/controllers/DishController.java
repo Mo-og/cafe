@@ -21,6 +21,7 @@ import ua.cafe.services.UserService;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
@@ -200,7 +201,7 @@ public class DishController {
                 dish.setImagePath(path.toString().substring(28).replace("\\", "/"));
                 System.out.println("Removed old dish image: " + dish.getImagePath().substring(11));
             }
-        } catch (IOException e) {
+        } catch (IOException | InvalidPathException e) {
             System.out.println("Unable to delete old DishImage: " + e.getMessage());
             e.printStackTrace();
         }
