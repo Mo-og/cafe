@@ -32,9 +32,7 @@ public class Translit {
             case 'Ч': return "Ch";
             case 'Ш': return "Sh";
             case 'Щ': return "Shch";
-            case 'Ъ': return "″";
             case 'Ы': return "Y";
-            case 'Ь': return "′";
             case 'Ю': return "Iu";
             case 'Я': return "Ia";
             case 'а': return "a";
