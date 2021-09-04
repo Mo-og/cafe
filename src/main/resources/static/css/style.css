@@ -2119,6 +2119,7 @@ p {
 .menu-card-description {
     position: absolute;
     background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(1px);
     top: 100%;
     left: 0;
     right: 0;
@@ -2127,12 +2128,17 @@ p {
     transition: top 0.5s, opacity 0.5s;
     padding: 0.5rem;
 }
-
+.card-subtitle{
+    max-width: 87.5%;
+}
 .menu-card-title {
     position: absolute;
     bottom: 0;
     background: rgba(255, 255, 255, 0.5);
     padding: 0.5rem;
+    backdrop-filter: blur(1px);
+    border-radius: 0 3px 3px 0;
+    max-width: 98%;
 }
 
 .menu-card-price {
