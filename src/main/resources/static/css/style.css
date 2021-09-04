@@ -2120,6 +2120,7 @@ p {
     position: absolute;
     background-color: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
     top: 100%;
     left: 0;
     right: 0;
@@ -2137,6 +2138,7 @@ p {
     background: rgba(255, 255, 255, 0.5);
     padding: 0.5rem;
     backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
     border-radius: 0 3px 3px 0;
     max-width: 98%;
 }
