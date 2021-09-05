@@ -32,7 +32,6 @@ import java.util.Objects;
 @Controller
 public class DishController {
     private static final String IMAGES_FOLDER_PATH = ".//src//main//resources//static//DishImages//";
-
     //Services assignment
     private static DishService dishService;
     private static UserService userService;
@@ -69,11 +68,21 @@ public class DishController {
         byte[] bytes;
         try {
             bytes = Files.readAllBytes(Paths.get(IMAGES_FOLDER_PATH, image));
+            return ResponseEntity.ok(bytes);
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("* No image found with name '" + image + "'");
+            /*try {
+                bytes = Files.readAllBytes(Paths.get(".//src//main//resources//static//images//dish-loading.gif"));
+                return ResponseEntity.ok(bytes);
+            } catch (IOException ex) {
+                System.out.println("* Broken link for spinner");
+                ex.printStackTrace();
+            }*/
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(bytes);
+        /*System.out.println("* Something went wrong in getImage controller");
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);*/
     }
 
     @GetMapping("/api/dish")

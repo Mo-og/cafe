@@ -1,6 +1,6 @@
 spring:
   main:
-    lazy-initialization: false
+    lazy-initialization: true
   jpa:
     database: POSTGRESQL
     show-sql: true

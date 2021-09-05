@@ -2,6 +2,7 @@ package ua.cafe.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import ua.cafe.services.DetailsService;
 import javax.validation.Valid;
 import java.security.Principal;
 
+@Lazy
 @Controller
 public class DetailsController {
 

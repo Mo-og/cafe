@@ -2091,11 +2091,11 @@ p {
 }
 
 .menu-card:hover .menu-card-title {
-    display: none;
+    opacity: 0;
 }
 
 .menu-card:hover {
-    border: 1px rgba(94, 94, 94, 0.5) solid;
+    border: 1px rgba(94, 94, 94, 1) solid;
 }
 
 @media (max-width: 1092px) {
@@ -2141,6 +2141,8 @@ p {
     -webkit-backdrop-filter: blur(1px);
     border-radius: 0 3px 3px 0;
     max-width: 98%;
+    opacity: 1;
+    transition: opacity 0.3s;
 }
 
 .menu-card-price {

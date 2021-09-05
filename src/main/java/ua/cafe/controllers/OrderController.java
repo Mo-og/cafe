@@ -1,6 +1,7 @@
 package ua.cafe.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@Lazy
 @Controller
 public class OrderController {
 
@@ -149,6 +151,7 @@ public class OrderController {
             }
             orderService.saveOrder(order);
 
+            //noinspection SpringMVCViewInspection
             return "redirect:/orders";
         } catch (NullPointerException e) {
             return "index";
@@ -220,6 +223,7 @@ public class OrderController {
         if (!orderService.existsWithId(id))
             throw new NoSuchElementException();
         orderService.removeById(id);
+        //noinspection SpringMVCViewInspection
         return "redirect:/orders";
     }
 
