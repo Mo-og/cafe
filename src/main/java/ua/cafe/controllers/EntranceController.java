@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import ua.cafe.entities.EntranceForm;
 import ua.cafe.entities.Role;
+import ua.cafe.entities.User;
 import ua.cafe.services.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 
@@ -26,8 +28,8 @@ public class EntranceController {
     }
 
     @GetMapping("/")
-    public String entrance(Principal principal, Model model) {
-        model.addAttribute("role", new Role(principal));
+    public String entrance(HttpServletRequest request, Model model) {
+        model.addAttribute("role", new Role(request));
         return "index";
     }
 

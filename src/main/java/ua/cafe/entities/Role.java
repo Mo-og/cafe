@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import ua.cafe.services.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Arrays;
 
@@ -14,6 +15,13 @@ import java.util.Arrays;
 @Component
 public class Role {
     public static final String[] ROLES = {"[ROLE_WAITER]", "[ROLE_ADMIN]", "[ROLE_COOK]"};
+
+    public Role(HttpServletRequest request) {
+        isAuthorised = request.isUserInRole("ROLE_WAITER")||request.isUserInRole("ROLE_ADMIN")||request.isUserInRole("ROLE_COOK");
+        isAdmin = request.isUserInRole("ROLE_ADMIN");
+        user = null;
+        System.out.println(request.getUserPrincipal().getClass());
+    }
 
     public static boolean isAuthorized(String inputAuthorities) {
         return Arrays.stream(ROLES).anyMatch(inputAuthorities::contains);

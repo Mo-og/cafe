@@ -60,10 +60,7 @@ public class UserController {
     }
 
     @GetMapping("/user_edit")
-    public String editUser(Model model, @RequestParam Long id, Principal principal) {
-        Role role = new Role(principal);
-        if (!role.isAdmin())
-            return "permissionDenied";
+    public String editUser(Model model, @RequestParam Long id) {
         User user = userService.getById(id);
         model.addAttribute("user", user);
         return "Director/edit_user";
@@ -84,9 +81,6 @@ public class UserController {
 
     @GetMapping("/user_remove")
     public String removeUser(@RequestParam Long id, Principal principal) {
-        Role role = new Role(principal);
-        if (!role.isAdmin())
-            return "/permissionDenied";
         if (!userService.existsWithId(id))
             throw new NoSuchElementException();
         userService.removeById(id);
@@ -95,18 +89,12 @@ public class UserController {
 
     @GetMapping("/add_user")
     public String addUser(Model model, Principal principal) {
-        Role role = new Role(principal);
-        if (!role.isAdmin())
-            return "/permissionDenied";
         model.addAttribute("user", new User());
         return "Director/add_user";
     }
 
     @PostMapping("/user_update")
     public String editingSubmit(@Valid User user, BindingResult result, Principal principal) {
-        Role role = new Role(principal);
-        if (!role.isAdmin())
-            return "/permissionDenied";
         if (result.hasErrors() && !user.getPassword().equals("")) {
             return "Director/edit_user";
         }
@@ -120,9 +108,6 @@ public class UserController {
 
     @PostMapping("/add_user")
     public String greetingSubmit(@Valid User user, BindingResult result, Principal principal) {
-        Role role = new Role(principal);
-        if (!role.isAdmin())
-            return "/permissionDenied";
         if (result.hasErrors()) {
             return "Director/add_user";
         }
