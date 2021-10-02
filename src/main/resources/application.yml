@@ -22,3 +22,5 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+#  server:
+#    address = 172.20.10.2

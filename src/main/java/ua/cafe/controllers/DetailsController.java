@@ -42,7 +42,6 @@ public class DetailsController {
         Detail detail = detailsService.findByOrderIdAndDishID(order_id, dish_id);
         if (detail == null)
             return new ResponseEntity<>("No such order or dish in it", HttpStatus.NOT_FOUND);
-        detail.clear();
         return JsonMaker.getJsonResponse(detail);
     }
 

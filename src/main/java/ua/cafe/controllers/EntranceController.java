@@ -1,12 +1,14 @@
 package ua.cafe.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import ua.cafe.configs.MyUserDetails;
 import ua.cafe.entities.EntranceForm;
 import ua.cafe.entities.Role;
 import ua.cafe.entities.User;
@@ -28,7 +30,9 @@ public class EntranceController {
     }
 
     @GetMapping("/")
-    public String entrance(HttpServletRequest request, Model model) {
+    public String entrance(HttpServletRequest request, Model model, Authentication authentication, Principal principal) {
+//        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
+//        System.out.println(user.);
         model.addAttribute("role", new Role(request));
         return "index";
     }

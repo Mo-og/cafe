@@ -1,5 +1,6 @@
 package ua.cafe.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
@@ -27,6 +28,7 @@ public class Dish {
 
 
     @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Detail> details;
 
     public void addDetail(Detail detail) {

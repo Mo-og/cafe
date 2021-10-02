@@ -57,17 +57,22 @@
             location.href = "order_remove?id=" + id;
         }
     }
+
     function PopUpShow(id) {
         $('#' + id).fadeIn(300);
-        setTimeout(function(){$('#inner').slideDown(400);},301);
+        setTimeout(function () {
+            $('#inner').slideDown(400);
+        }, 301);
     }
 
     function PopUpHide(id) {
         $('#inner').slideUp(400);
-        setTimeout(function(){$('#' + id).fadeOut(300)},300);
+        setTimeout(function () {
+            $('#' + id).fadeOut(300)
+        }, 300);
     }
 </script>
-<div id="site-head">
+<div id="app">
     <!-- Header Section Begins -->
     <header id="header" class="header-block" data-top="0" data-scroll="100">
         <div class="container-fluid">
@@ -90,7 +95,8 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li class="active"><a th:href="@{/}"><span style="color: #ff7f50;">Главная</span></a>
+                                        <li class="active"><a th:href="@{/}"><span
+                                                style="color: #ff7f50;">Главная</span></a>
                                         </li>
                                         <li><a th:href="@{/orders}"><span
                                                 style="color: #ff7f50;">Заказы</span></a></li>
@@ -113,138 +119,134 @@
     <!-- Header Section Ends -->
 
     <section class="reservation-block pad-top-100 pad-bottom-100">
-        <form class="reservation-block" enctype="multipart/form-data" th:action="@{/order_update}"
-              method="post">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-20" th:object="${order}"><br>
-                        <h2 class="block-title text-align-center"><span
-                                class="side-img left-side-img"><i></i><i></i><i></i></span>
-                            Заказ №[[${order.id}]]<span class="side-img right-side-img"><i></i><i></i><i></i></span>
-                        </h2>
-                        <input type="number" name="id" id="id" hidden th:value="${order.id}">
-                        <br>
-                        <h3 class="block-title text-align-center">Столик -
-                            <input type="number" name="table_num" id="table_num" style="width: 2em" size="2"
-                                   th:value="${order.table_num}">
-                        </h3>
-                        <br>
-                        <h4 class="block-title text-align-center"><textarea cols="30" id="comments"
-                                                                            placeholder="Комментарий к заказу"
-                                                                            name="comments">[[${order.comments}]]</textarea>
-                        </h4>
-                        <br>
-                        <h4 class="block-title text-align-center">
-                            <div class="row" style="display: flex; justify-content: center">
-                                <div class="col-md-4">
-                                    <button class="btn btn-lg btn-block" type="submit" value="Submit">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-20"><br>
+                    <h2 class="block-title text-align-center"><span
+                            class="side-img left-side-img"><i></i><i></i><i></i></span>
+                        Заказ №{{ order.id }}<span class="side-img right-side-img"><i></i><i></i><i></i></span>
+                    </h2>
+                    <br>
+                    <h3 class="block-title text-align-center">Столик -
+                        <input type="number" name="table_num" id="table_num" style="width: 2em" size="2"
+                               v-model="order.table_num">
+                    </h3>
+                    <br>
+                    <h4 class="block-title text-align-center">
+                            <textarea cols="30" id="comments"
+                                      placeholder="Комментарий к заказу"
+                                      name="comments"
+                                      v-model="order.comments"
+                            ></textarea>
+                    </h4>
+                    <br>
+                    <h4 class="block-title text-align-center">
+                        <div class="row" style="display: flex; justify-content: center">
+                            <div class="col-md-4">
+                                <button class="btn btn-warning btn-lg btn-block" type="button"
+                                        @click="showAddDish">
+                                    Добавить блюдо в заказ
+                                </button>
+                            </div>
+                        </div>
+                    </h4>
+                    <br>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th class="text-justify">Блюдо</th>
+                                <th class="text-justify">Количество</th>
+                                <th class="text-justify">Стоимость (грн.)</th>
+                                <th class="text-justify"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(detail,i) in order.details"
+                                :key="i"
+                                @click="editDish(detail.id)"
+                                style="cursor: pointer">
+                                <td class="align-middle"><span>{{detail.dish.name}}</span></td>
+                                <td class="align-middle"><span>{{detail.quantity}}</span></td>
+                                <td class="align-middle"><span>{{detail.cost}}</span></td>
+                                <td @click.stop="deleteDish(detail.id)">
+                                    <svg class="bi bi-x-square-fill" width="1em" height="1em"
+                                         viewBox="0 0 16 16"
+                                         fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                                         style="display: inline; cursor: pointer">
+                                        <path fill-rule="evenodd"
+                                              d="M2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2zm9.854 4.854a.5.5 0 00-.708-.708L8 7.293 4.854 4.146a.5.5 0 10-.708.708L7.293 8l-3.147 3.146a.5.5 0 00.708.708L8 8.707l3.146 3.147a.5.5 0 00.708-.708L8.707 8l3.147-3.146z"
+                                              clip-rule="evenodd"/>
+                                    </svg>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <hr class="mb-4">
+                        <div class="container">
+                            <div class="row" style="display: flex; justify-content: space-between">
+                                <div class="col-4 col-md-8">
+                                    <button class="btn btn-lg btn-block" @click="saveOrder">
                                         Сохранить изменения
+                                    </button>
+
+                                </div>
+                                <div class="col-4 col-md-8">
+                                    <button type="button" class="btn btn-danger btn-lg btn-block"
+                                            @click="resetOrder">
+                                        Отменить заказ
                                     </button>
                                 </div>
                             </div>
-                        </h4>
-                        <br>
-
-                        <form class="reservation-block">
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th class="text-justify">Блюдо</th>
-                                        <th class="text-justify">Количество</th>
-                                        <th class="text-justify">Стоимость (грн.)</th>
-                                        <th class="text-justify"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="detail, state : ${order.details}"
-                                        th:ondblclick="'javascript:clickedToEdit(\'' + ${detail.dish_id} + '\', \'' + ${order.id}+'\' );'"
-                                        style="cursor: pointer">
-                                        <td class="align-middle"><span th:text="${detail.dish.name}"></span></td>
-                                        <td class="align-middle"><span th:text="${detail.quantity}"></span></td>
-                                        <td class="align-middle"><span th:text="${detail.cost}"></span></td>
-                                        <td th:onclick="'javascript:clickedToDelete(\'' + ${detail.dish.id} + '\', \'' + ${order.id}+'\' );'">
-                                            <svg class="bi bi-x-square-fill" width="1em" height="1em"
-                                                 viewBox="0 0 16 16"
-                                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                                 style="display: inline; cursor: pointer">
-                                                <path fill-rule="evenodd"
-                                                      d="M2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2zm9.854 4.854a.5.5 0 00-.708-.708L8 7.293 4.854 4.146a.5.5 0 10-.708.708L7.293 8l-3.147 3.146a.5.5 0 00.708.708L8 8.707l3.146 3.147a.5.5 0 00.708-.708L8.707 8l3.147-3.146z"
-                                                      clip-rule="evenodd"/>
-                                            </svg>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <hr class="mb-4">
-                                <div class="container">
-                                    <div class="row" style="display: flex; justify-content: space-between">
-                                        <div class="col-4 col-md-8">
-                                            <button class="btn btn-warning btn-lg btn-block" type="button"
-                                                    onclick="PopUpShow('addDish')">
-                                                Добавить блюдо в заказ
-                                            </button>
-                                        </div>
-                                        <div class="col-4 col-md-8">
-                                            <button type="button" class="btn btn-danger btn-lg btn-block"
-                                                    th:onclick="'javascript:remove(\'' + ${order.getId()} + '\');'">
-                                                Отменить заказ
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        </div>
                     </div>
+
                 </div>
             </div>
-        </form>
+        </div>
     </section>
-</div>
 
-<div class="b-popup creamBg" id="addDish" style="display: none;">
-    <div class="b-popup-content" id="inner">
-        <br>
-        <h3 class="block-title text-align-center">Добавьте блюдо в заказ</h3>
-        <br>
-        <form class="reservation-block" enctype="multipart/form-data" th:action="@{/order_dish_add}"
-              method="post">
+    <div class="b-popup creamBg" id="addDish" v-show="isShowEditDish">
+        <div class="b-popup-content" id="inner">
+            <br>
+            <h3 class="block-title text-align-center">Добавьте блюдо в заказ</h3>
+            <br>
             <div class="form-row" style="margin-left: 3%;margin-right: 3%">
                 <div class="col mb-3" align="left">
                     <h4><label for="dish">Выберите блюдо</label></h4>
-                    <select th:object="${container}" th:field="*{dish_id}" class="form-control" id="dish"
+                    <select v-model="dish.id" class="form-control" id="dish"
                             required>
-                        <option th:each="dish_row : ${dishes}"
-                                th:value="${dish_row.id}" th:text="${dish_row.name}"></option>
+                        <option v-for="dish in dishes" :key="dish.id" :value="dish.id">{{ dish.name }}</option>
                     </select>
                 </div>
                 <div class="col mb-3" align="left">
                     <h4><label for="quantity">Количество</label></h4>
-                    <input type="number" class="form-control" id="quantity" name="quantity"
+                    <input type="number" class="form-control" id="quantity" v-model="dish.quantity"
                            value="1" required>
-<!--                    <small class="text-danger" th:if="${#fields.hasErrors('quantity')}"-->
-<!--                           th:errors="*{container.quantity}"></small>-->
+                    <!--                    <small class="text-danger" th:if="${#fields.hasErrors('quantity')}"-->
+                    <!--                           th:errors="*{container.quantity}"></small>-->
                 </div>
                 <br>
-                <input th:object="${container}" type="number" id="order_id" name="order_id" class="form-control"
-                       hidden style="display:none;" th:value="${order.id}">
             </div>
             <hr class="mb-4">
             <div class="row">
                 <div class="col-8 col-md-6">
-                    <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">
+                    <button class="btn btn-warning btn-lg btn-block" @click="saveDish">
                         Добавить блюдо
                     </button>
                 </div>
                 <div class="col-8 col-md-6">
-                    <button onclick="PopUpHide('addDish')" type="button"
+                    <button @click="isShowEditDish=false" type="button"
                             class="btn btn-secondary btn-lg btn-block">
                         Отменить
                     </button>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
+
+
 </div>
 
 
@@ -274,5 +276,71 @@
 <script type="text/javascript" src="../js/moment-with-locales.js"></script>
 <script type="text/javascript" src="../js/bootstrap-datetimepicker.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            isShowEditDish: false,
+            dishes: [],
+            order: {
+                comments: '',
+                cost: 0,
+                date_ordered: 0,
+                details: [],
+                table_num: 1,
+                id: null,
+                status: '',
+
+            },
+            dish: { id: null, quantity: 1 }
+        },
+        created() {
+            const url = new URL(window.location);
+            const id = url.searchParams.get('id');
+            fetch(`/api/order?id=${id}`).then(r => r.json()).then(d => {
+                this.order = d;
+            });
+
+            fetch('/api/menu')
+            .then(r => r.json())
+            .then(d => {
+                this.dishes = d;
+            })
+        },
+        methods: {
+            showAddDish() { this.isShowEditDish = true; },
+            editDish(detailId) {
+              this.dish = {
+                  id: detailId,
+                  
+              }
+            },
+            saveDish() {
+                this.order.details.push({
+                    dish: this.dishes.find(d => d.id === this.dish.id),
+                    id: this.order.details.length + 1,
+                    quantity: this.dish.quantity
+                });
+                this.dish = {
+                    id: null,
+                    quantity: 1
+                }
+                this.isShowEditDish = false;
+            },
+            deleteDish(detailId) {
+                this.order.details = this.order.details.filter(d => d.id !== detailId)
+            },
+            saveOrder() {
+                fetch({
+                    url: '/order',
+                    method: 'POST',
+                    data: this.order
+                })
+            },
+            resetOrder() {}
+        }
+    })
+</script>
 </body>
 </html>

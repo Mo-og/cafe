@@ -1,5 +1,6 @@
 package ua.cafe.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class Detail {
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private Order order;
 
     public Detail(Dish dish, int quantity) {
@@ -119,13 +121,8 @@ public class Detail {
 
     public double getCost() {
         if (dish == null)
-            return -0.1;
+            return -0.001;
         return dish.getPrice() * quantity;
-    }
-
-    public void clear(){
-        this.order=null;
-        this.dish.setDetails(null);
     }
 
     @Override

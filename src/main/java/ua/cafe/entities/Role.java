@@ -20,7 +20,7 @@ public class Role {
         isAuthorised = request.isUserInRole("ROLE_WAITER")||request.isUserInRole("ROLE_ADMIN")||request.isUserInRole("ROLE_COOK");
         isAdmin = request.isUserInRole("ROLE_ADMIN");
         user = null;
-        System.out.println(request.getUserPrincipal().getClass());
+//        System.out.println(request.getUserPrincipal().getClass());
     }
 
     public static boolean isAuthorized(String inputAuthorities) {

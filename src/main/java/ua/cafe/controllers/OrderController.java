@@ -47,14 +47,8 @@ public class OrderController {
     //API
     @RequestMapping(value = "/api/orders", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<String> apiGetOrders(Principal principal) {
-        /*if (!Role.isAuthorized(principal))
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);*/
+    public ResponseEntity<String> apiGetOrders() {
         List<Order> orders = orderService.getAllOrders();
-        orders.forEach(
-                order -> order.getDetails()
-                        .forEach(Detail::clear)
-        );
         return JsonMaker.getJsonResponse(orders);
     }
 
