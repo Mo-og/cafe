@@ -1,13 +1,13 @@
 package ua.cafe.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ua.cafe.configs.MyUserDetails;
 import ua.cafe.entities.EntranceForm;
 import ua.cafe.entities.Role;
@@ -16,6 +16,9 @@ import ua.cafe.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.Principal;
 
 @CrossOrigin
@@ -34,7 +37,29 @@ public class EntranceController {
 //        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
 //        System.out.println(user.);
         model.addAttribute("role", new Role(request));
-        return "index";
+        return "test2";
+    }
+    @GetMapping(value = "/img/{image}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody
+    ResponseEntity<byte[]> getImage(@PathVariable String image) {
+        byte[] bytes;
+        try {
+            bytes = Files.readAllBytes(Paths.get(".//src//main//resources//static//img//", image));
+            return ResponseEntity.ok(bytes);
+        } catch (IOException e) {
+//            e.printStackTrace();
+            System.out.println("* No image found with name '" + image + "'");
+            /*try {
+                bytes = Files.readAllBytes(Paths.get(".//src//main//resources//static//images//dish-loading.gif"));
+                return ResponseEntity.ok(bytes);
+            } catch (IOException ex) {
+                System.out.println("* Broken link for spinner");
+                ex.printStackTrace();
+            }*/
+            return ResponseEntity.notFound().build();
+        }
+        /*System.out.println("* Something went wrong in getImage controller");
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);*/
     }
 
     @GetMapping("/logout")

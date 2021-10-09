@@ -13,6 +13,7 @@ import ua.cafe.entities.*;
 import ua.cafe.services.DishService;
 import ua.cafe.services.DetailsService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 
@@ -36,8 +37,8 @@ public class DetailsController {
     //API
     //get
     @GetMapping("/api/detail")
-    public ResponseEntity<String> apiViewOrderDetail(@RequestParam Long dish_id, @RequestParam Long order_id, Principal principal) {
-        if (!Role.isAuthorized(principal))
+    public ResponseEntity<String> apiViewOrderDetail(@RequestParam Long dish_id, @RequestParam Long order_id, HttpServletRequest httpServletRequest) {
+        if (new Role(httpServletRequest).isAuthorised())
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         Detail detail = detailsService.findByOrderIdAndDishID(order_id, dish_id);
         if (detail == null)
@@ -47,9 +48,9 @@ public class DetailsController {
 
     //add
     @PostMapping("/api/detail")
-    public ResponseEntity<String> apiAddDishToOrder(@Valid Detail detail, BindingResult result, Principal principal) {
-        /*if (!Role.isAuthorized(principal))
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);*/
+    public ResponseEntity<String> apiAddDishToOrder(@Valid Detail detail, BindingResult result, HttpServletRequest httpServletRequest) {
+        if (new Role(httpServletRequest).isAuthorised())
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         if (result.hasErrors())
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         detailsService.saveDetail(detail);

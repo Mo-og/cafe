@@ -13,12 +13,16 @@ import org.springframework.web.multipart.MultipartFile;
 import ua.cafe.CafeApplication;
 import ua.cafe.Translit;
 import ua.cafe.entities.Dish;
+import ua.cafe.entities.ImageProcessor;
 import ua.cafe.entities.JsonMaker;
+import ua.cafe.entities.Role;
 import ua.cafe.services.CategoriesService;
 import ua.cafe.services.DishService;
 import ua.cafe.services.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
@@ -32,19 +36,15 @@ import java.util.Objects;
 @Controller
 public class DishController {
     private static final String IMAGES_FOLDER_PATH = ".//src//main//resources//static//DishImages//";
+    public static final String IMAGES_THUMBNAILS_PATH = ".//src//main//resources//static//DishImages//thumbnails//";
+    public static final String URL_THUMBNAILS_PATH = "/DishImages/thumbnails/";
     //Services assignment
     private static DishService dishService;
-    private static UserService userService;
     private static CategoriesService categoriesService;
 
     @Autowired
     public void setService(DishService service) {
         dishService = service;
-    }
-
-    @Autowired
-    public void setService(UserService service) {
-        userService = service;
     }
 
     @Autowired
@@ -56,9 +56,14 @@ public class DishController {
     @GetMapping("/api/menu")
     public ResponseEntity<String> getMenuJson() {
         List<Dish> dishes = dishService.getAllDishes();
-        for (Dish dish : dishes) {
-            dish.setDetails(null); //to avoid cyclic referencing in JSON [dish->details->dish...]
-        }
+        return JsonMaker.getJsonResponse(dishes);
+    }
+
+    @GetMapping("/api/menu_th")
+    public ResponseEntity<String> getMenuWithThumbnailJson() {
+        List<Dish> dishes = dishService.getAllDishes();
+        for (Dish dish : dishes)
+            dish.setThumb(true);
         return JsonMaker.getJsonResponse(dishes);
     }
 
@@ -68,6 +73,28 @@ public class DishController {
         byte[] bytes;
         try {
             bytes = Files.readAllBytes(Paths.get(IMAGES_FOLDER_PATH, image));
+            return ResponseEntity.ok(bytes);
+        } catch (IOException e) {
+//            e.printStackTrace();
+            System.out.println("* No image found with name '" + image + "'");
+            /*try {
+                bytes = Files.readAllBytes(Paths.get(".//src//main//resources//static//images//dish-loading.gif"));
+                return ResponseEntity.ok(bytes);
+            } catch (IOException ex) {
+                System.out.println("* Broken link for spinner");
+                ex.printStackTrace();
+            }*/
+            return ResponseEntity.notFound().build();
+        }
+        /*System.out.println("* Something went wrong in getImage controller");
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);*/
+    }
+    @GetMapping(value = URL_THUMBNAILS_PATH+"{image}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody
+    ResponseEntity<byte[]> getThumbnail(@PathVariable String image) {
+        byte[] bytes;
+        try {
+            bytes = Files.readAllBytes(Paths.get(IMAGES_THUMBNAILS_PATH, image));
             return ResponseEntity.ok(bytes);
         } catch (IOException e) {
 //            e.printStackTrace();
@@ -125,23 +152,26 @@ public class DishController {
 
     /////////////////////////////////////////////////////
     @GetMapping("/menu")
-    public String getMenu(Model model, Principal principal) {
-        try {
-            model.addAttribute("dishes", dishService.getAllDishes());
-            final UserDetails user = userService.loadUserByUsername(principal.getName());
-
-            switch (user.getAuthorities().toString()) {
-                case "[ROLE_WAITER]":
-                    return "Waiter/menu";
-                case "[ROLE_COOK]":
-                    return "Cook/menu";
-                case "[ROLE_ADMIN]":
-                    return "Director/menu";
+    public String getMenu(Model model, HttpServletRequest httpServletRequest) {
+        int role_id = -1;
+        for (int i = 0; i < Role.ROLES.length; i++)
+            if (httpServletRequest.isUserInRole(Role.ROLES[i])) {
+                role_id = i;
+                break;
             }
-        } catch (NullPointerException e) {
-            return "User/menu";
+        if (role_id != -1) {
+            var dishes = dishService.getAllDishes();
+            for (Dish i : dishes)
+                i.setThumb(true);
+            model.addAttribute("dishes", dishes);
         }
-        return "User/menu";
+        System.out.println(role_id);
+        return switch (role_id) {
+            case 0 -> "Waiter/menu";
+            case 1 -> "Director/menu";
+            case 2 -> "Cook/menu";
+            default -> "User/menu";
+        };
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -188,32 +218,37 @@ public class DishController {
         return "redirect:/menu";
     }
 
-    private void operateDish(@RequestParam("file") MultipartFile file, @Valid Dish dish, Model model) {
+    private void operateDish(MultipartFile file, Dish dish, Model model) {
         dish.setName(dish.getName().replace("\"", "'"));
         Path path = null;
         try {
-            /*String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-            image = new FileDB(fileName, file.getContentType(), file.getBytes());*/
             if (file.isEmpty()) throw new NullPointerException();
             int index = Objects.requireNonNull(file.getOriginalFilename()).lastIndexOf('.');
             if (index == -1) index = 0;
-            path = Paths.get(IMAGES_FOLDER_PATH + Translit.cyr2lat(dish.getName()) + CafeApplication.getDateString() + Objects.requireNonNull(file.getOriginalFilename()).substring(index));
+            //generating file name
+            String pathString = Translit.cyr2lat(dish.getName()) + CafeApplication.getDateString() + Objects.requireNonNull(file.getOriginalFilename()).substring(index);
+            path = Paths.get(IMAGES_FOLDER_PATH + pathString);
             byte[] bytes = file.getBytes();
             Files.write(path, bytes);
+            ImageProcessor.saveThumbnail(file.getInputStream(), pathString);
+            System.out.println("Saved thumnail successfully");
         } catch (IOException | NullPointerException e) {
             System.out.println("*-Dish image update wasn't successful due to invalid image file.\n*-Error: " + e.getMessage());
             model.addAttribute("categories", categoriesService.getAllCategories());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         if (path != null && dish.getImagePath() != null && dish.getImagePath().length() > 11) {
             try {
                 Files.delete(Paths.get(IMAGES_FOLDER_PATH, dish.getImagePath().substring(11)));
+                Files.delete(Paths.get(IMAGES_THUMBNAILS_PATH, dish.getImagePath().substring(11)));
+                System.out.println("Removed old dish images: " + dish.getImagePath().substring(11));
             } catch (IOException | InvalidPathException e) {
                 System.out.println("Unable to delete old DishImage: " + e.getMessage());
                 e.printStackTrace();
             }
             dish.setImagePath(path.toString().substring(28).replace("\\", "/"));
-            System.out.println("Removed old dish image: " + dish.getImagePath().substring(11));
         }
         dishService.saveDish(dish);
     }

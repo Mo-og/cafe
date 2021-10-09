@@ -3,6 +3,7 @@ package ua.cafe.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
+import ua.cafe.controllers.DishController;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -25,6 +26,9 @@ public class Dish {
     private String ingredients;
     private boolean available = true;
     private String imagePath = null;
+    @Transient
+    @JsonIgnore
+    private boolean isThumb = false;
 
 
     @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL)
@@ -47,6 +51,13 @@ public class Dish {
 
     public Dish(@NotBlank(message = "У блюда должно быть название!") String name) {
         this.name = name;
+    }
+
+    public String getImagePath() {
+        if (isThumb)
+            if (imagePath != null && imagePath.length() > 11)
+                return DishController.URL_THUMBNAILS_PATH + imagePath.substring(11);
+        return imagePath;
     }
 
     @Override

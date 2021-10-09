@@ -14,25 +14,26 @@ import java.util.Arrays;
 @Getter
 @Component
 public class Role {
-    public static final String[] ROLES = {"[ROLE_WAITER]", "[ROLE_ADMIN]", "[ROLE_COOK]"};
+//    public static final String[] ROLES = {"[ROLE_WAITER]", "[ROLE_ADMIN]", "[ROLE_COOK]"};
+//    public static final String[] ROLES1 = {"ROLE_WAITER", "ROLE_ADMIN", "ROLE_COOK"};
+    public static final String[] ROLES = {"WAITER", "ADMIN", "COOK"};
 
     public Role(HttpServletRequest request) {
         isAuthorised = request.isUserInRole("ROLE_WAITER")||request.isUserInRole("ROLE_ADMIN")||request.isUserInRole("ROLE_COOK");
         isAdmin = request.isUserInRole("ROLE_ADMIN");
         user = null;
-//        System.out.println(request.getUserPrincipal().getClass());
     }
 
-    public static boolean isAuthorized(String inputAuthorities) {
+    public static boolean isAuthorised(String inputAuthorities) {
         return Arrays.stream(ROLES).anyMatch(inputAuthorities::contains);
     }
 
-    public static boolean isAuthorized(Principal principal) {
+    /*public static boolean isAuthorized(Principal principal) {
         if (principal == null)
             return false;
         User user = userService.getByUsername(principal.getName());
         return isAuthorized(user.getRoles());
-    }
+    }*/
 
     private static UserService userService;
 
