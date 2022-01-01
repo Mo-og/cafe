@@ -164,4 +164,10 @@ public class User {
                 ", roles='" + roles + '\'' +
                 '}';
     }
+
+    public String toStringShort() {
+        return "{(" + id +
+                ") " + lastName + ' ' + firstName + ' ' + patronymic +
+                " - " + roles + '\'' + '}';
+    }
 }

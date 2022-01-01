@@ -32,13 +32,21 @@ public class EntranceController {
         userService = service;
     }
 
-    @GetMapping("/")
-    public String entrance(HttpServletRequest request, Model model, Authentication authentication, Principal principal) {
-//        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-//        System.out.println(user.);
-        model.addAttribute("role", new Role(request));
-        return "test2";
+    @RequestMapping(value = "/username", method = RequestMethod.GET)
+    public String currentUserName(Authentication authentication, Model model) {
+        model.addAttribute("name",authentication.getName());
+        MyUserDetails details = (MyUserDetails) authentication.getPrincipal();
+        System.out.println(details.getUsername());
+        System.out.println(authentication.getAuthorities());
+        return "test";
     }
+
+    @GetMapping("/")
+    public String entrance(HttpServletRequest request, Model model) {
+        model.addAttribute("role", new Role(request));
+        return "index";
+    }
+
     @GetMapping(value = "/img/{image}", produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody
     ResponseEntity<byte[]> getImage(@PathVariable String image) {
@@ -47,19 +55,16 @@ public class EntranceController {
             bytes = Files.readAllBytes(Paths.get(".//src//main//resources//static//img//", image));
             return ResponseEntity.ok(bytes);
         } catch (IOException e) {
-//            e.printStackTrace();
             System.out.println("* No image found with name '" + image + "'");
-            /*try {
-                bytes = Files.readAllBytes(Paths.get(".//src//main//resources//static//images//dish-loading.gif"));
+            try {
+                bytes = Files.readAllBytes(Paths.get(".//src//main//resources//static//images//no-dish-image.png"));
                 return ResponseEntity.ok(bytes);
             } catch (IOException ex) {
-                System.out.println("* Broken link for spinner");
+                System.out.println("* Broken link for no-dish-image icon");
                 ex.printStackTrace();
-            }*/
+            }
             return ResponseEntity.notFound().build();
         }
-        /*System.out.println("* Something went wrong in getImage controller");
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);*/
     }
 
     @GetMapping("/logout")

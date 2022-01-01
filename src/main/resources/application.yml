@@ -12,15 +12,16 @@ spring:
   datasource:
     platform: postgres
     #    url: jdbc:postgresql://localhost:5432/cafe
-    url: jdbc:postgresql://ec2-176-34-97-213.eu-west-1.compute.amazonaws.com:5432/d4pg98hmf7jfhe
+    url: jdbc:postgresql://ec2-52-31-201-170.eu-west-1.compute.amazonaws.com:5432/d2d8d57ghtt4gq
     #    username: postgres
-    username: fjrijccybllkws
+    username: jtwicqhtmnwkyw
     #    password: '74553211'
-    password: '887c12b9587287499cd233e1ae9e6b500bd0c449cfda6632276c6464d61c0a95'
+    password: 'c8d17b9e6c8a6e4d7247e675c198337263fd5ef3638736f564f7609e76ec3e23'
     driverClassName: org.postgresql.Driver
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
-  server:
-    address = 192.168.111.218
+#server:
+##  port: 80
+#  address: 192.168.88.254

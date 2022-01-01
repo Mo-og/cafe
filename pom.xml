@@ -72,6 +72,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>2.5.5</version>
         </dependency>
 
         <!-- PostgreSQL -->
@@ -98,11 +99,27 @@
 
     </dependencies>
 
+
+
     <build>
         <plugins>
+            <!--<plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>fully.qualified.MainClass</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.5.5</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
