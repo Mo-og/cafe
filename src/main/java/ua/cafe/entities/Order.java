@@ -1,25 +1,34 @@
 package ua.cafe.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import java.util.*;
+
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "orders")
-@Data
+@Getter
+@Setter
+@ToString
 public class Order {
-
+    public static final int TABLES_COUNT = 100;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private Date date_ordered;
+    private Date dateOrdered;
     private String comments;
-    private int table_num;
+    @Range(min = 1, max = TABLES_COUNT)
+    private int tableNum;
     private String status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Detail> details;
 
 
@@ -31,6 +40,7 @@ public class Order {
     }
 
     public void sortByQuantity() {
+        if (details == null) return;
         details.sort(Comparator.comparingInt(Detail::getQuantity).reversed());
     }
 
@@ -96,13 +106,15 @@ public class Order {
     }
 
     @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", date_ordered=" + date_ordered +
-                ", comments='" + comments + '\'' +
-                ", table_num=" + table_num +
-                ", details=" + details +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Order order = (Order) o;
+        return id != 0 && Objects.equals(id, order.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

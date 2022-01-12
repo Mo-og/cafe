@@ -3,8 +3,8 @@ package ua.cafe.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import ua.cafe.repositories.OrderRepository;
 import ua.cafe.entities.Order;
+import ua.cafe.repositories.OrderRepository;
 
 import java.util.Comparator;
 import java.util.List;
@@ -38,9 +38,9 @@ public class OrderService {
     }
 
     Comparator<Order> comparator = (o1, o2) -> {
-        if (o1.getTable_num() == o2.getTable_num())
-            return Long.compare(o1.getDate_ordered().getTime(), o2.getDate_ordered().getTime());
-        return Long.compare(o1.getTable_num(), o2.getTable_num());
+        if (o1.getTableNum() == o2.getTableNum())
+            return Long.compare(o1.getDateOrdered().getTime(), o2.getDateOrdered().getTime());
+        return Long.compare(o1.getTableNum(), o2.getTableNum());
     };
 
 

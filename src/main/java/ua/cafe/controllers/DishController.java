@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,14 +15,11 @@ import ua.cafe.Translit;
 import ua.cafe.entities.Dish;
 import ua.cafe.entities.ImageProcessor;
 import ua.cafe.entities.JsonMaker;
-import ua.cafe.entities.Role;
+import ua.cafe.entities.User;
 import ua.cafe.services.CategoriesService;
 import ua.cafe.services.DishService;
-import ua.cafe.services.UserService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
@@ -89,7 +86,8 @@ public class DishController {
         /*System.out.println("* Something went wrong in getImage controller");
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);*/
     }
-    @GetMapping(value = URL_THUMBNAILS_PATH+"{image}", produces = MediaType.IMAGE_JPEG_VALUE)
+
+    @GetMapping(value = URL_THUMBNAILS_PATH + "{image}", produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody
     ResponseEntity<byte[]> getThumbnail(@PathVariable String image) {
         byte[] bytes;
@@ -152,25 +150,16 @@ public class DishController {
 
     /////////////////////////////////////////////////////
     @GetMapping("/menu")
-    public String getMenu(Model model, HttpServletRequest httpServletRequest) {
-        int role_id = -1;
-        for (int i = 0; i < Role.ROLES.length; i++)
-            if (httpServletRequest.isUserInRole(Role.ROLES[i])) {
-                role_id = i;
-                break;
-            }
-        if (role_id != -1) {
+    public String getMenu(Model model, Authentication authentication) {
+        if (authentication != null) {
             var dishes = dishService.getAllDishes();
-            for (Dish i : dishes)
-                i.setThumb(true);
+            dishes.forEach(d -> d.setThumb(true));
             model.addAttribute("dishes", dishes);
-        }
-        System.out.println(role_id);
-        return switch (role_id) {
-            case 0 -> "Waiter/menu";
-            case 1 -> "Director/menu";
-            case 2 -> "Cook/menu";
-            default -> "User/menu";
+        } else return "User/menu";
+        return switch (((User) authentication.getPrincipal()).getAuthorities().get(0)) {
+            case WAITER -> "Waiter/menu";
+            case DIRECTOR -> "Director/menu";
+            case COOK -> "Cook/menu";
         };
     }
 

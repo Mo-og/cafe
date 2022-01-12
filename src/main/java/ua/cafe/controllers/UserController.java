@@ -3,12 +3,13 @@ package ua.cafe.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ua.cafe.entities.Authority;
 import ua.cafe.entities.JsonMaker;
 import ua.cafe.entities.Role;
 import ua.cafe.entities.User;
@@ -38,25 +39,15 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/users", "/workers"}, method = RequestMethod.GET)
-    public String getUsers(Model model, Principal principal) {
+    public String getUsers(Model model, Authentication authentication) {
+        if (authentication == null) return "permissionDenied";
+        model.addAttribute("users", userService.getAllUsers());
+        return switch (((User) authentication.getPrincipal()).getPosition()) {
+            case WAITER -> "Waiter/users";
+            case COOK -> "Cook/users";
+            case DIRECTOR -> "Director/users";
+        };
 
-        try {
-            model.addAttribute("users", userService.getAllUsers());
-
-            final UserDetails user = userService.loadUserByUsername(principal.getName());
-
-            switch (user.getAuthorities().toString()) {
-                case "[ROLE_WAITER]":
-                    return "Waiter/users";
-                case "[ROLE_COOK]":
-                    return "Cook/users";
-                case "[ROLE_ADMIN]":
-                    return "Director/users";
-            }
-        } catch (NullPointerException e) {
-            return "permissionDenied";
-        }
-        return "permissionDenied";
     }
 
     @GetMapping("/user_edit")
@@ -69,8 +60,7 @@ public class UserController {
     //на случай сброса базы - добавляет сотрудника
     @GetMapping("/supersecretrequest7355")
     public String addAdmin() {
-        User user = new User("admin", "admin", "admin", "a@b.c", "991122334455", "address", "директор", "password");
-        user.setRoles("ROLE_ADMIN");
+        User user = new User("admin", "admin", "admin", "a@b.c", "991122334455", "address", Authority.DIRECTOR, "password");
         user.setPassword(new BCryptPasswordEncoder().encode("74553211"));
         user.setId(0);
         userService.removeByUsername("991122334455");
@@ -94,7 +84,7 @@ public class UserController {
     }
 
     @PostMapping("/user_update")
-    public String editingSubmit(@Valid User user, BindingResult result, Principal principal) {
+    public String editingSubmit(@Valid User user, BindingResult result) {
         if (result.hasErrors() && !user.getPassword().equals("")) {
             return "Director/edit_user";
         }
@@ -107,20 +97,9 @@ public class UserController {
     }
 
     @PostMapping("/add_user")
-    public String greetingSubmit(@Valid User user, BindingResult result, Principal principal) {
+    public String greetingSubmit(@Valid User user, BindingResult result) {
         if (result.hasErrors()) {
             return "Director/add_user";
-        }
-        switch (user.getPosition().toLowerCase()) {
-            case "повар":
-                user.setRoles("ROLE_COOK");
-                break;
-            case "официант":
-                user.setRoles("ROLE_WAITER");
-                break;
-            case "директор":
-                user.setRoles("ROLE_ADMIN");
-                break;
         }
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userService.saveUser(user);

@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 
     @Bean
     public AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
-        return new MySimpleUrlAuthenticationSuccessHandler();
+        return new MySimpleUrlAuthenticationSuccessHandler("/");
     }
 
     @Override
@@ -51,10 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
                 .authorizeRequests()
                 .antMatchers("static/**", "/DishImages/**").permitAll()
-                .antMatchers("/","/User/**").permitAll()
+                .antMatchers("/", "/User/**").permitAll()
 
                 .antMatchers(HttpMethod.GET, "/api/menu").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/dish").permitAll()
+//                .antMatchers(HttpMethod.PUT, "/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/dish").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/api/dish").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/dish").hasRole("ADMIN")
@@ -71,15 +72,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .antMatchers(HttpMethod.DELETE, "/api/detail").hasAnyRole("ADMIN", "WAITER")
 
                 .antMatchers("/Director/**").hasRole("ADMIN")
-                .antMatchers("/dish_edit","/add_dish","/dish_remove").hasRole("ADMIN")
-                .antMatchers("/Waiter/**").hasAnyRole("ADMIN", "WAITER")
+                .antMatchers("/dish_edit", "/add**", "/dish_remove").hasRole("ADMIN")
+                .antMatchers("/order**").hasAnyRole("ADMIN", "WAITER", "COOK")
                 .antMatchers("/Cook/**").hasAnyRole("ADMIN", "COOK")
+
                 .and().formLogin().loginPage("/entrance")
                 .successHandler(myAuthenticationSuccessHandler())
                 .failureForwardUrl("/entrance").and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
+
+                .and().rememberMe().key("gwehable").tokenValiditySeconds(36000) //10 hours
         ;
 
     }

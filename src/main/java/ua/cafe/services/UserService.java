@@ -5,9 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ua.cafe.repositories.UserRepository;
-import ua.cafe.configs.MyUserDetails;
 import ua.cafe.entities.User;
+import ua.cafe.repositories.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +26,6 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> getAllUsers() {
-        System.out.println(repository.findAll());
         return repository.findAll();
     }
 
@@ -61,7 +59,6 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = repository.findByUsername(username);
         user.orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
-        System.out.println("Loaded user: " + user.get().toStringShort());
-        return user.map(MyUserDetails::new).get();
+        return user.get();
     }
 }

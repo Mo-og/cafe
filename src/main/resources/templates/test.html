@@ -19,6 +19,6 @@
 </head>
 <body>
 <p>Hello,</p>
-<p th:value="${name}"></p>
+<p th:unless="${name==null}" th:text="${name}"></p>
 </body>
 </html>

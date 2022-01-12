@@ -108,16 +108,17 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <div class="btn-toolbar"><label for="category">Категория</label><a
-                                                th:href="@{/categories}">
-                                            <svg class="bi bi-gear-fill" width="1.4em" height="1.4em"
-                                                 viewBox="-4 -4 20 20"
-                                                 fill="black" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd"
-                                                      d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 01-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 01.872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 012.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 012.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 01.872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 01-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 01-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 100-5.86 2.929 2.929 0 000 5.858z"
-                                                      clip-rule="evenodd"/>
-                                            </svg>
-                                        </a></div>
+                                        <div class="btn-toolbar"><label for="category"><a th:href="@{/categories}" style="color: #686868; text-decoration: underline; margin-left: 0.5em">Категория</a></label>
+                                            <a th:href="@{/categories}">
+                                                <svg class="bi bi-gear-fill" width="1em" height="1em" style="margin-bottom: -2px"
+                                                     viewBox="-4 -4 20 20"
+                                                     fill="black" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd"
+                                                          d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 01-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 01.872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 012.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 012.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 01.872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 01-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 01-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 100-5.86 2.929 2.929 0 000 5.858z"
+                                                          clip-rule="evenodd"/>
+                                                </svg>
+                                            </a>
+                                        </div>
 
                                         <!--<select th:field="*{category}" class="form-control" id="category" required>
                                             &lt;!&ndash;<option value="noalcococktail">Безалкогольный коктейль</option>
@@ -137,7 +138,12 @@
                                             &lt;!&ndash;<option value="Первое блюдо">Первое блюдо</option>
                                             <option value="Салат">Салат</option>&ndash;&gt;
                                         </select>-->
-                                        <select th:field="*{categoryId}" class="form-control" id="category" required>
+                                        <!--suppress XmlDuplicatedId -->
+                                        <a th:if="${categories.isEmpty()}" type="button" th:href="@{/categories}"
+                                           class="form-control" id="category">Настройте категории</a>
+                                        <!--suppress XmlDuplicatedId -->
+                                        <select th:unless="${categories.isEmpty()}" th:field="*{categoryId}"
+                                                class="form-control" id="category" required>
                                             <option th:each="cat : ${categories}"
                                                     th:value="${cat.id}" th:text="${cat.name}"></option>
                                         </select>

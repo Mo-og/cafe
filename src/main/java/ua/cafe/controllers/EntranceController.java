@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.cafe.configs.MyUserDetails;
 import ua.cafe.entities.EntranceForm;
 import ua.cafe.entities.Role;
 import ua.cafe.entities.User;
@@ -19,7 +18,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.Principal;
 
 @CrossOrigin
 @Controller
@@ -34,15 +32,17 @@ public class EntranceController {
 
     @RequestMapping(value = "/username", method = RequestMethod.GET)
     public String currentUserName(Authentication authentication, Model model) {
-        model.addAttribute("name",authentication.getName());
-        MyUserDetails details = (MyUserDetails) authentication.getPrincipal();
-        System.out.println(details.getUsername());
+        if (authentication == null) return "test";
+        User user = (User) authentication.getPrincipal();
+        System.out.println(user);
+        model.addAttribute("name", user.getUsername());
         System.out.println(authentication.getAuthorities());
+        System.out.println(user.getAuthorities().iterator().next());
         return "test";
     }
 
     @GetMapping("/")
-    public String entrance(HttpServletRequest request, Model model) {
+    public String entrance(HttpServletRequest request, Model model, Authentication authentication) {
         model.addAttribute("role", new Role(request));
         return "index";
     }

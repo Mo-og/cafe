@@ -28,12 +28,12 @@ public class Detail {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Min(1)
     private long id;
-    @Column(insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false, nullable = false)
     @Min(1)
-    private long dish_id = -1;
-    @Column(insertable = false, updatable = false)
+    private Long dish_id = (long) -1;
+    @Column(insertable = false, updatable = false, nullable = false)
     @Min(1)
-    private long order_id = -1;
+    private Long order_id = (long) -1;
     private int quantity;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
@@ -47,7 +47,7 @@ public class Detail {
 
     public Detail(Dish dish, int quantity) {
         this.quantity = quantity;
-        this.dish = dish;
+        setDish(dish);
     }
 
     public Detail() {
@@ -71,17 +71,17 @@ public class Detail {
 //        }
     }
 
-    public void setDish_id(long dish_id) {
+    public void setDish_id(Long dish_id) {
         this.dish_id = dish_id;
     }
 
-    public void setOrder_id(long order_id) {
+    public void setOrder_id(Long order_id) {
         this.order_id = order_id;
     }
 
     public Dish getDish() {
         //TODO: remove database interaction
-        if (dish == null && dish_id!=-1) {
+        if (dish == null && dish_id != -1) {
             dish = dishService.getById(dish_id);
         }
         return dish;
@@ -89,6 +89,9 @@ public class Detail {
 
     public void setDish(Dish dish) {
         this.dish = dish;
+        if (dish != null) {
+            dish_id = dish.getId();
+        }
     }
 
     public Order getOrder() {
@@ -97,6 +100,9 @@ public class Detail {
 
     public void setOrder(Order order) {
         this.order = order;
+        if (order != null) {
+            this.order_id = order.getId();
+        }
     }
 
     public long getOrder_id() {
@@ -128,8 +134,8 @@ public class Detail {
     @Override
     public String toString() {
         return "Detail{" +
-                "dish_id=" + dish_id +
-                ", order_id=" + order_id +
+                "dish_id=" + dish_id + (dish == null ? "" : ('(' + dish.getName() + ')')) +
+                ", order_id=" + order_id + (order == null ? "" : "(order obj set)") +
                 ", id=" + id +
                 ", quantity=" + quantity +
                 '}';
@@ -140,7 +146,7 @@ public class Detail {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Detail detail = (Detail) o;
-        return id == detail.id && dish_id == detail.dish_id && order_id == detail.order_id && quantity == detail.quantity;
+        return id == detail.id && Objects.equals(dish_id, detail.dish_id) && Objects.equals(order_id, detail.order_id) && quantity == detail.quantity;
     }
 
     @Override

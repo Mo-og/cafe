@@ -10,18 +10,17 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.cafe.entities.*;
+import ua.cafe.services.DetailService;
 import ua.cafe.services.DishService;
-import ua.cafe.services.DetailsService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.security.Principal;
 
 @Lazy
 @Controller
 public class DetailsController {
 
-    private static DetailsService detailsService;
+    private static DetailService detailService;
     private static DishService dishService;
 
     @Autowired
@@ -30,8 +29,8 @@ public class DetailsController {
     }
 
     @Autowired
-    public void setDetailsService(DetailsService service) {
-        DetailsController.detailsService = service;
+    public void setDetailsService(DetailService service) {
+        DetailsController.detailService = service;
     }
 
     //API
@@ -40,7 +39,7 @@ public class DetailsController {
     public ResponseEntity<String> apiViewOrderDetail(@RequestParam Long dish_id, @RequestParam Long order_id, HttpServletRequest httpServletRequest) {
         if (new Role(httpServletRequest).isAuthorised())
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        Detail detail = detailsService.findByOrderIdAndDishID(order_id, dish_id);
+        Detail detail = detailService.findByOrderIdAndDishID(order_id, dish_id);
         if (detail == null)
             return new ResponseEntity<>("No such order or dish in it", HttpStatus.NOT_FOUND);
         return JsonMaker.getJsonResponse(detail);
@@ -53,7 +52,7 @@ public class DetailsController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         if (result.hasErrors())
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        detailsService.saveDetail(detail);
+        detailService.saveDetail(detail);
         return ResponseEntity.ok("Detail was saved successfully");
     }
 
@@ -65,26 +64,24 @@ public class DetailsController {
 //TODO: simplify or optimise
         Order order = OrderController.orderService.getById(detail.getOrder_id());
         Dish dish_toSave = dishService.getById(detail.getDish_id());
-        detailsService.remove(detail);
+        detailService.remove(detail);
         detail.setDish(dish_toSave);
         detail.setOrder(order);
-        detailsService.saveDetail(detail);
+        detailService.saveDetail(detail);
         return ResponseEntity.ok("Detail was updated successfully");
     }
 
     //delete
     @RequestMapping(value = "/api/detail", method = RequestMethod.DELETE)
-    public ResponseEntity<String> apiRemoveDishFromOrder(@RequestParam Long dish_id, @RequestParam Long order_id, Principal principal) {
-        /*if (!Role.isAuthorized(principal))
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);*/
-        detailsService.removeByOrderIdAndDishID(order_id, dish_id);
-        return ResponseEntity.ok("Dish was removed from order!");
+    public ResponseEntity<String> apiRemoveDishFromOrder(@RequestParam Long dish_id, @RequestParam Long order_id) {
+        detailService.removeByOrderIdAndDishID(order_id, dish_id);
+        return ResponseEntity.ok("Dish was removed from order if existed!");
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping("/dish_exclude")
     public String removeDishFromOrder(@RequestParam Long dish_id, @RequestParam Long order_id, Model model) {
-        detailsService.removeByOrderIdAndDishID(order_id, dish_id);
+        detailService.removeByOrderIdAndDishID(order_id, dish_id);
         model.addAttribute("order", OrderController.orderService.getById(order_id));
         model.addAttribute("dishes", dishService.getAllDishes());
         model.addAttribute("container", new Detail());
@@ -106,7 +103,7 @@ public class DetailsController {
             model.addAttribute("container", container);
             return "Waiter/edit_order_dish";
         }
-        detailsService.saveDetail(container);
+        detailService.saveDetail(container);
         model.addAttribute("order", order);
         model.addAttribute("dish", dish_toSave);
         model.addAttribute("dishes", dishService.getAllDishes());
@@ -116,7 +113,7 @@ public class DetailsController {
 
     @GetMapping("/order_dish_edit")
     public String viewDishFromOrder(Model model, @RequestParam Long dish_id, @RequestParam Long order_id) {
-        Detail detail = detailsService.findByOrderIdAndDishID(order_id, dish_id);
+        Detail detail = detailService.findByOrderIdAndDishID(order_id, dish_id);
         model.addAttribute("order", detail.getOrder());
         model.addAttribute("dish", detail.getDish());
         model.addAttribute("dishes", dishService.getAllDishes());
@@ -135,10 +132,10 @@ public class DetailsController {
             model.addAttribute("container", container);
             return "Waiter/edit_order_dish";
         }
-        detailsService.remove(container);
+        detailService.remove(container);
         container.setDish(dish_toSave);
         container.setOrder(order);
-        detailsService.saveDetail(container);
+        detailService.saveDetail(container);
         model.addAttribute("order", order);
         model.addAttribute("dish", dish_toSave);
         model.addAttribute("dishes", dishService.getAllDishes());

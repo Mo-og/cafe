@@ -20,7 +20,7 @@ public class JsonMaker {
     public static <T> ResponseEntity<String> getJsonResponse(T t){
         String json = getJson(t);
         if (json == null)
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         return new ResponseEntity<>(json, HttpStatus.OK);
     }
 

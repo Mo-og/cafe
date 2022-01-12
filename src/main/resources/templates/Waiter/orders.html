@@ -10,7 +10,6 @@
     <title>Добавление заказа</title>
     <!-- CSS -->
     <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css"/>
-    <link type="text/css" rel="stylesheet" href="../css/owl.carousel.min.css">
     <link type="text/css" rel="stylesheet" href="../css/font-awesome.css">
     <link type="text/css" href="../css/animate.css" rel="stylesheet"/>
     <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet"/>
@@ -139,8 +138,8 @@
                                     th:ondblclick="'javascript:rowClickedToEdit(\'' + ${order.id} + '\');'"
                                     style="cursor: pointer">
                                     <td class="align-middle"><span th:text="${order.id}"></span></td>
-                                    <td class="align-middle"><span th:text="${order.table_num}"></span></td>
-                                    <td class="align-middle"><span th:text="${order.date_ordered}"></span></td>
+                                    <td class="align-middle"><span th:text="${order.getTableNum}"></span></td>
+                                    <td class="align-middle"><span th:text="${order.getDateOrdered}"></span></td>
                                     <td class="align-middle"><span th:text="${order.getDishNames()}"></span></td>
                                     <td class="align-middle"><span th:text="${order.cost}"></span></td>
                                     <td class="align-middle"><span th:text="${order.status}"></span></td>
@@ -178,9 +177,9 @@
                 <div class="col">
                     <h4><label for="tabl_num">Номер столика</label></h4>
                     <input type="number" class="form-control" id="tabl_num" name="tab_num" placeholder=""
-                           th:field="*{table_num}" value="" required>
-                    <small class="text-danger" th:if="${#fields.hasErrors('table_num')}"
-                           th:errors="*{table_num}"></small>
+                           th:field="*{getTableNum}" value="" required>
+                    <small class="text-danger" th:if="${#fields.hasErrors('tableNum')}"
+                           th:errors="*{getTableNum}"></small>
                 </div>
                 <div class="col">
                     <h4><label for="commen">Комментарий к заказу</label></h4>
@@ -231,7 +230,6 @@
 <script type="text/javascript" src="../js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../js/element.js"></script>
 <script type="text/javascript" src="../js/modernizr.js"></script>
-<script type="text/javascript" src="../js/owl.carousel.js"></script>
 <script type="text/javascript" src="../js/jquery.localscroll-1.2.7-min.js"></script>
 <script type="text/javascript" src="../js/wow.min.js"></script>
 <script type="text/javascript" src="../js/imagesloaded.pkgd.min.js"></script>

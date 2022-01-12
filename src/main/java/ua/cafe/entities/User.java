@@ -1,36 +1,50 @@
 package ua.cafe.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.Hibernate;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-public class User {
+@Getter
+@Setter
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Pattern(regexp = "[ A-Za-zА-Яа-яЁё]{2,50}", message = "Фамилия должна содержать только буквы (латинские или русские) и быть в пределах 2-50 символов.")
+    @Pattern(regexp = "[ A-Za-zА-Яа-яЁё-]{2,50}",
+            message = "Фамилия должна содержать только буквы (латинские или русские) и быть в пределах 2-50 символов.")
     private String lastName;
-    @Pattern(regexp = "[ A-Za-zА-Яа-яЁё]{2,50}", message = "Имя должно содержать только буквы (латинские или русские) и быть в пределах 2-50 символов.")
+    @Pattern(regexp = "[ A-Za-zА-Яа-яЁё-]{2,50}",
+            message = "Имя должно содержать только буквы (латинские или русские) и быть в пределах 2-50 символов.")
     private String firstName;
-    @Pattern(regexp = "[ A-Za-zА-Яа-яЁё]{2,50}", message = "Отчество должно содержать только буквы (латинские или русские) и быть в пределах 2-50 символов.")
+    @Pattern(regexp = "[ A-Za-zА-Яа-яЁё-]{2,50}",
+            message = "Отчество должно содержать только буквы (латинские или русские) и быть в пределах 2-50 символов.")
     private String patronymic;
     @Email(message = "Адрес электронной почты должен быть действительным")
     private String email;
-    @Pattern(regexp = "(\\+)?\\d{12}", message = "Номер телефона должен состоять из 12 цифр, включая код страны")
-    private String username;
     private String address;
-    private String position;
+    @Pattern(regexp = "(\\+)?\\d{12}",
+            message = "Номер телефона должен состоять из 12 цифр, включая код страны")
+    private String username;
     //200 символов потому что при хеш кодировании Б криптом кол-во символов увеличиывается и пароль в 10 символов = 60 символам
-    @Size(max = 200, min = 6, message = "Пароль должен быть в пределах 6-50 символов!")
+    @Size(max = 200, min = 6,
+            message = "Пароль должен быть в пределах 6-50 символов!")
     private String password = "";
-    private String roles;
+    private Authority position;
 
 
-    public User(String lastName, String firstName, String patronymic, String email, String username, String address, String position, String password) {
+    public User(String lastName, String firstName, String patronymic, String email, String username, String address, Authority position, String password) {
         if (username.contains("+"))
             username = username.replaceAll("[\\D]", "");
         this.lastName = lastName;
@@ -40,113 +54,18 @@ public class User {
         this.username = username;
         this.address = address;
         this.position = position;
-        switch (position.toLowerCase()) {
-            case "повар":
-                roles = "ROLE_COOK";
-                break;
-            case "официант":
-                roles = "ROLE_WAITER";
-                break;
-            case "директор":
-                roles = "ROLE_ADMIN";
-                break;
-        }
+//        authorities.add(position);
         this.password = password;
-
     }
 
     public User() {
     }
 
-    public String getPosition() {
-        return position;
-    }
 
-    public void setPosition(String position) {
-        this.position = position;
-        switch (position.toLowerCase()) {
-            case "повар":
-                roles = "ROLE_COOK";
-                break;
-            case "официант":
-                roles = "ROLE_WAITER";
-                break;
-            case "директор":
-                roles = "ROLE_ADMIN";
-                break;
-        }
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRoles() {
-        return roles;
-    }
-
-    public void setRoles(String roles) {
-        this.roles = roles;
+    public String toStringShort() {
+        return "{(" + id +
+                ") " + lastName + ' ' + firstName + ' ' + patronymic +
+                " - " + position.getAuthority() + '\'' + '}';
     }
 
     @Override
@@ -161,13 +80,51 @@ public class User {
                 ", address='" + address + '\'' +
                 ", position='" + position + '\'' +
                 ", password='" + password + '\'' +
-                ", roles='" + roles + '\'' +
                 '}';
     }
 
-    public String toStringShort() {
-        return "{(" + id +
-                ") " + lastName + ' ' + firstName + ' ' + patronymic +
-                " - " + roles + '\'' + '}';
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        if (id != 0)
+            return id == user.id;
+        else return Objects.equals(username, user.username);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, lastName, firstName, patronymic, email, address, username, password, position);
+    }
+
+    @Override
+    public List<Authority> getAuthorities() {
+        ArrayList<Authority> authorities = new ArrayList<>();
+        authorities.add(position);
+        return authorities;
+    }
+
+    //UserDetails
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+
 }

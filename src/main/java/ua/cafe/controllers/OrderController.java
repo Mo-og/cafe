@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.cafe.entities.*;
+import ua.cafe.services.DetailService;
 import ua.cafe.services.DishService;
 import ua.cafe.services.OrderService;
 import ua.cafe.services.UserService;
@@ -26,6 +28,7 @@ public class OrderController {
 
     //Services setting
     public static OrderService orderService;
+    public static DetailService detailService;
     private static DishService dishService;
     private static UserService userService;
 
@@ -44,6 +47,11 @@ public class OrderController {
         orderService = service;
     }
 
+    @Autowired
+    public void setService(DetailService service) {
+        detailService = service;
+    }
+
     //API
     @RequestMapping(value = "/api/orders", method = RequestMethod.GET)
     @ResponseBody
@@ -53,10 +61,7 @@ public class OrderController {
     }
 
     @GetMapping("/api/order")
-    public ResponseEntity<String> apiGetOrder(@RequestParam Long id, Principal principal) {
-        Role role = new Role(principal);
-        if (!role.isAuthorised())
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<String> apiGetOrder(@RequestParam Long id) {
         Order order = orderService.getById(id);
         if (order == null)
             return new ResponseEntity<>("No order found by given id", HttpStatus.NOT_FOUND);
@@ -65,28 +70,25 @@ public class OrderController {
 
     //add
     @PostMapping("/api/order")
-    public ResponseEntity<String> apiSaveOrder(@Valid Order order, BindingResult result, Principal principal) {
-        Role role = new Role(principal);
-        if (!role.isAuthorised())
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        if (result.hasErrors())
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        if (order.getDate_ordered() == null) {
-            order.setDate_ordered(new Date(System.currentTimeMillis()));
+    public ResponseEntity<String> apiSaveOrder(@RequestBody @Valid Order order, BindingResult result) {
+        if (result.hasErrors()) {
+            return new ResponseEntity<>("Invalid order: " + result.getFieldErrors(), HttpStatus.NOT_ACCEPTABLE);
+        }
+        if (order.getDateOrdered() == null) {
+            order.setDateOrdered(new Date(System.currentTimeMillis()));
         }
         orderService.saveOrder(order);
-        System.out.println("Added order: " + order.getDishNames());
         return ResponseEntity.ok("Order was saved!");
     }
 
     //update
     @RequestMapping(value = "/api/order", method = RequestMethod.PUT)
-    public ResponseEntity<String> apiUpdateOrder(@Valid Order order, BindingResult result, Principal principal) {
-        Role role = new Role(principal);
-        if (!role.isAuthorised())
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<String> apiUpdateOrder(@RequestBody @Valid Order order, BindingResult result) {
         if (result.hasErrors())
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("Invalid order: " + result.getFieldErrors(), HttpStatus.NOT_ACCEPTABLE);
+        System.out.println(order);
+        order.getDetails().forEach(detail -> detail.setOrder(order));
+        System.out.println(order.getDetails());
         orderService.saveOrder(order);
         return ResponseEntity.ok("Order was updated!");
     }
@@ -104,25 +106,17 @@ public class OrderController {
 
     ///////////////////////////////////////////////////////////
     @GetMapping("/orders")
-    public String getOrders(Model model, Principal principal) {
-        try {
-            model.addAttribute("orders", orderService.getAllOrders());
-            model.addAttribute("new_order", new Order());
+    public String getOrders(Model model, Authentication authentication) {
+        if (authentication == null) return "redirect:/";
 
-            final UserDetails user = userService.loadUserByUsername(principal.getName());
+        model.addAttribute("orders", orderService.getAllOrders());
+        model.addAttribute("new_order", new Order());
 
-            switch (user.getAuthorities().toString()) {
-                case "[ROLE_WAITER]":
-                    return "Waiter/orders";
-                case "[ROLE_ADMIN]":
-                    return "Director/orders";
-                case "[ROLE_COOK]":
-                    return "Cook/orders";
-            }
-        } catch (NullPointerException e) {
-            return "redirect:/";
-        }
-        return "redirect:/";
+        return switch (((User) authentication.getPrincipal()).getPosition()) {
+            case WAITER -> "Waiter/orders";
+            case COOK -> "Cook/orders";
+            case DIRECTOR -> "Director/orders";
+        };
     }
 
 
@@ -140,8 +134,8 @@ public class OrderController {
                         return "Cook/orders";
                 }
             }
-            if (order.getDate_ordered() == null) {
-                order.setDate_ordered(new Date(System.currentTimeMillis()));
+            if (order.getDateOrdered() == null) {
+                order.setDateOrdered(new Date(System.currentTimeMillis()));
             }
             orderService.saveOrder(order);
 
@@ -162,7 +156,7 @@ public class OrderController {
             return "Waiter/edit_order";
         }
         Order to_save = orderService.getById(order.getId());
-        to_save.setTable_num(order.getTable_num());
+        to_save.setTableNum(order.getTableNum());
         to_save.setComments(order.getComments());
         orderService.saveOrder(to_save);
         model.addAttribute("order", order);
@@ -212,10 +206,10 @@ public class OrderController {
 
     @GetMapping("/order_remove")
     public String removeOrder(Model model, @RequestParam Long id) {
-        model.addAttribute("orders", orderService.getAllOrders());
-        model.addAttribute("new_order", new Order());
         if (!orderService.existsWithId(id))
             throw new NoSuchElementException();
+        model.addAttribute("orders", orderService.getAllOrders());
+        model.addAttribute("new_order", new Order());
         orderService.removeById(id);
         //noinspection SpringMVCViewInspection
         return "redirect:/orders";

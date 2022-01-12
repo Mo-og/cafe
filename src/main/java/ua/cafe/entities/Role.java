@@ -1,6 +1,5 @@
 package ua.cafe.entities;
 
-import lombok.Data;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 
 @Getter
 @Component
-public class Role {
+public class Role{
 //    public static final String[] ROLES = {"[ROLE_WAITER]", "[ROLE_ADMIN]", "[ROLE_COOK]"};
 //    public static final String[] ROLES1 = {"ROLE_WAITER", "ROLE_ADMIN", "ROLE_COOK"};
     public static final String[] ROLES = {"WAITER", "ADMIN", "COOK"};
@@ -28,20 +27,11 @@ public class Role {
         return Arrays.stream(ROLES).anyMatch(inputAuthorities::contains);
     }
 
-    /*public static boolean isAuthorized(Principal principal) {
-        if (principal == null)
-            return false;
-        User user = userService.getByUsername(principal.getName());
-        return isAuthorized(user.getRoles());
-    }*/
-
-    private static UserService userService;
-
     @Autowired
     public void setService(UserService service) {
         userService = service;
     }
-
+    private static UserService userService;
     private final boolean isAuthorised;
     private final UserDetails user;
     private boolean isAdmin = false;
@@ -59,8 +49,8 @@ public class Role {
             return;
         }
         user = userService.loadUserByUsername(principal.getName());
-        String roleName = user.getAuthorities().toString();
-        switch (roleName) {
+        String authority = user.getAuthorities().toString();
+        switch (authority) {
             case "[ROLE_ADMIN]" -> {
                 isAuthorised = true;
                 isAdmin = true;

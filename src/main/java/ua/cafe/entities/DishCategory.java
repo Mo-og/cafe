@@ -3,6 +3,7 @@ package ua.cafe.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 
 @Data
 @Entity
@@ -12,7 +13,7 @@ public class DishCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-//    @Pattern(regexp = "[ A-Za-zА-Яа-яЁё]{2,200}", message = "Название категории должно содержать только буквы (латинские или русские) и быть в пределах 2-200 символов.")
+    @Pattern(regexp = "[ A-Za-zА-Яа-яЁё]{2,200}", message = "Название категории должно содержать только буквы (латинские или русские) и быть в пределах 2-200 символов.")
     private String name;
     private int categoryOrder; //for menu sorting
 
@@ -45,7 +46,7 @@ public class DishCategory {
         return "DishCategory{" +
                 "name='" + name + '\'' +
                 ", id=" + id +
-                ", order=" + categoryOrder +
+                ", categoryOrder=" + categoryOrder +
                 '}';
     }
 }

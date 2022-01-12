@@ -11,7 +11,7 @@ import java.util.List;
 
 @Lazy
 @Service
-public class DetailsService {
+public class DetailService {
 
     private DetailsOfOrderedDishRepository repository;
 
@@ -28,6 +28,10 @@ public class DetailsService {
             return;
         }
         repository.save(detail);
+    }
+
+    public void saveAll(List<Detail> details){
+        repository.saveAll(details);
     }
 
     public void forceSaveDetail(Detail detail) {

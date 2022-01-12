@@ -4,18 +4,21 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <title> Изменение данных заказа </title>
     <!-- CSS -->
     <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css"/>
-    <link type="text/css" rel="stylesheet" href="../css/owl.carousel.min.css">
     <link type="text/css" rel="stylesheet" href="../css/font-awesome.css">
     <link type="text/css" href="../css/animate.css" rel="stylesheet"/>
     <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet"/>
     <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet"/>
     <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
     <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
+
     <style>
         .b-popup {
             width: 100%;
@@ -128,8 +131,8 @@
                     </h2>
                     <br>
                     <h3 class="block-title text-align-center">Столик -
-                        <input type="number" name="table_num" id="table_num" style="width: 2em" size="2"
-                               v-model="order.table_num">
+                        <input type="number" name="tableNum" id="tableNum" style="width: 2em" size="2"
+                               v-model="order.tableNum">
                     </h3>
                     <br>
                     <h4 class="block-title text-align-center">
@@ -286,14 +289,13 @@
             order: {
                 comments: '',
                 cost: 0,
-                date_ordered: 0,
+                dateOrdered: 0,
                 details: [],
-                table_num: 1,
+                tableNum: 1,
                 id: null,
                 status: '',
-
             },
-            dish: { id: null, quantity: 1 }
+            dish: {id: null, quantity: 1}
         },
         created() {
             const url = new URL(window.location);
@@ -303,24 +305,32 @@
             });
 
             fetch('/api/menu')
-            .then(r => r.json())
-            .then(d => {
-                this.dishes = d;
-            })
+                .then(r => r.json())
+                .then(d => {
+                    this.dishes = d;
+                })
         },
         methods: {
-            showAddDish() { this.isShowEditDish = true; },
+            showAddDish() {
+                this.isShowEditDish = true;
+            },
             editDish(detailId) {
-              this.dish = {
-                  id: detailId,
-                  
-              }
+                this.dish = {
+                    id: detailId,
+
+                }
             },
             saveDish() {
+                // const {id, dateOrdered, comments, tableNum, status} = this.order,
+                // details=null;
+                // const order_emptied = {id, dateOrdered, comments, tableNum, status, details}
                 this.order.details.push({
                     dish: this.dishes.find(d => d.id === this.dish.id),
-                    id: this.order.details.length + 1,
-                    quantity: this.dish.quantity
+                    // order: order_emptied,
+                    // id: this.order.details.length + 1,
+                    quantity: this.dish.quantity,
+                    // dish_id: this.dish.id,
+                    // order_id: this.order.id
                 });
                 this.dish = {
                     id: null,
@@ -332,13 +342,19 @@
                 this.order.details = this.order.details.filter(d => d.id !== detailId)
             },
             saveOrder() {
-                fetch({
-                    url: '/order',
-                    method: 'POST',
-                    data: this.order
-                })
+                const {id, dateOrdered, comments, tableNum, status, details} = this.order
+                const payload = {id, dateOrdered, comments, tableNum, status, details}
+                fetch(location.origin + '/api/order', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8',
+                        'X-XSRF-TOKEN': document.querySelector("meta[name='_csrf']").getAttribute('content')
+                    },
+                    body: JSON.stringify(payload)
+                }).then(() => location.href = '/orders')
             },
-            resetOrder() {}
+            resetOrder() {
+            }
         }
     })
 </script>

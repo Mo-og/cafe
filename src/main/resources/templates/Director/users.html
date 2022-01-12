@@ -34,9 +34,6 @@
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
                                     </button>
-                                    <!--<div class="logo">
-                                        <h3><a class="navbar-collapse" th:href="@{/Director/index}">КАФЕ GORBIK</a></h3>
-                                    </div>-->
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
@@ -85,6 +82,7 @@
                                     <th class="text-justify">Должность</th>
                                 </tr>
                                 </thead>
+                                <!--/*@thymesVar id="user" type="ua.cafe.entities.User"*/-->
                                 <tr th:each="user,state : ${users}" style="cursor: pointer"
                                     th:onclick="'javascript:rowClicked(\'' + ${user.id} + '\');'">
                                     <td class="align-middle"><span th:text="${state.count}"></span></td>
@@ -94,7 +92,7 @@
                                     <td class="align-middle"><span th:text="${user.email}"></span></td>
                                     <td class="align-middle"><span th:text="${user.username}"></span></td>
                                     <td class="align-middle"><span th:text="${user.address}"></span></td>
-                                    <td class="align-middle"><span th:text="${user.position}"></span></td>
+                                    <td class="align-middle"><span th:text="${user.position.getPosition()}"></span></td>
                                 </tr>
                             </table>
                         </div>
@@ -111,7 +109,7 @@
 
 <script>
     function sure() {
-        var sured = confirm("Вы уверены, что хотите выйти");
+        let sured = confirm("Вы уверены, что хотите выйти");
         if (sured) {
             document.location.href = "/logout";
         }
