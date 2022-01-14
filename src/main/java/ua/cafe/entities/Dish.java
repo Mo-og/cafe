@@ -1,17 +1,26 @@
 package ua.cafe.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
 import org.hibernate.validator.constraints.Range;
 import ua.cafe.controllers.DishController;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "dishes")
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class Dish {
 
     @Id
@@ -33,24 +42,23 @@ public class Dish {
 
     @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Detail> details;
+    @ToString.Exclude
+    private List<Detail> details=new ArrayList<>();
 
     public void addDetail(Detail detail) {
-        for (Detail d : details) {
-            if (d.getOrder_id() != detail.getOrder_id())
-                details.add(detail);
-        }
+        if (details.contains(detail)) return;
+        details.add(detail);
+        detail.setDish(this);
     }
 
-    public Dish() {
+    public List<Detail> getDetails() {
+        return new ArrayList<>(details);
     }
 
-    public Dish(long id) {
-        this.id = id;
-    }
-
-    public Dish(@NotBlank(message = "У блюда должно быть название!") String name) {
-        this.name = name;
+    public void removeDetail(Detail detail) {
+        if (!details.contains(detail)) return;
+        details.remove(detail);
+        detail.setDish(null);
     }
 
     public String getImagePath() {
@@ -71,5 +79,16 @@ public class Dish {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Dish dish = (Dish) o;
+        return id != 0 && Objects.equals(id, dish.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

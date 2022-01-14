@@ -20,8 +20,8 @@ public class OrderService {
         this.repository = repository;
     }
 
-    public void saveOrder(Order order) {
-        repository.save(order);
+    public Order saveOrder(Order order) {
+        return repository.saveAndFlush(order);
     }
 
 //    public List<Order> getAllOrders() {

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -16,27 +17,25 @@ import java.util.*;
 @Getter
 @Setter
 @ToString
+@DynamicUpdate
 public class Order {
     public static final int TABLES_COUNT = 100;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @Column(updatable = false, name = "date_ordered", nullable = false)
     private Date dateOrdered;
     private String comments;
     @Range(min = 1, max = TABLES_COUNT)
     private int tableNum;
     private String status;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order")
     @ToString.Exclude
-    private List<Detail> details;
+    private List<Detail> details = new ArrayList<>();
 
 
     public Order() {
-    }
-
-    public Order(ArrayList<Detail> details) {
-        this.details = details;
     }
 
     public void sortByQuantity() {
@@ -58,7 +57,9 @@ public class Order {
     }
 
     public void removeDetail(Detail detail) {
+        if (!details.contains(detail)) return;
         details.remove(detail);
+        detail.setOrder(null);
     }
 
     public String getStatus() {
@@ -70,8 +71,8 @@ public class Order {
     }
 
     public void addDetail(Detail detail) {
-        if (details == null) details = new ArrayList<>();
-        Detail present = getDetailsIfPresent(detail.getDish_id());
+        if (details.contains(detail)) return;
+        /*Detail present = getDetailsIfPresent(detail.getDish_id());
         if (present != null) {
             present.setQuantity(detail.getQuantity() + present.getQuantity());
             if (present.getDish() != null)
@@ -81,28 +82,26 @@ public class Order {
             details.add(detail);
             if (detail.getDish() != null)
                 System.out.println("Добавляем блюдо: (" + detail.getDish().getName() + ") в количестве: " + detail.getQuantity());
-        }
+        }*/
+        details.add(detail);
+        detail.setOrder(this);
     }
 
     public String getDishNames() {
-        String dishNames = "";
+        StringBuilder stringBuilder = new StringBuilder();
         for (Detail d : details) {
-            dishNames = dishNames.concat(", " + d.getDish().getName() + " (" + d.getQuantity() + " шт.)");
+            stringBuilder.append(", ").append(d.getDish().getName().length() < 21 ? d.getDish().getName() : d.getDish().getName().substring(0, 20) + "...")
+                    .append(" (").append(d.getQuantity()).append(" шт.)");
         }
-        dishNames = dishNames.replaceFirst(", ", "");
-        return dishNames;
+        return stringBuilder.length() > 2 ? stringBuilder.substring(2) : stringBuilder.toString();
     }
 
     public List<Detail> getDetails() {
-        return details;
+        return new ArrayList<>(details);
     }
 
     public double getCost() {
-        double cost = 0;
-        for (Detail d : details) {
-            cost += d.getCost();
-        }
-        return cost;
+        return details.parallelStream().mapToDouble(Detail::getCost).sum();
     }
 
     @Override

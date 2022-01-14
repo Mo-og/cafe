@@ -1,18 +1,8 @@
 package ua.opu.kurs_gorbik_kozyrevych;
 
-import org.junit.jupiter.api.Test;
-import ua.cafe.entities.Detail;
-import ua.cafe.entities.Dish;
-import ua.cafe.entities.Order;
-
-import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class OrderTest {
 
-    int iterations = 25;
+    /*int iterations = 25;
 
     @Test
     void sortByQuantity() {
@@ -90,7 +80,7 @@ class OrderTest {
         }
     }
 
-    @Test
+   @Test
     void getDishNames() {
         Detail detail1 = new Detail(new Dish("dish1"), 2);
         Detail detail2 = new Detail(new Dish("dish2"), 1);
@@ -101,5 +91,5 @@ class OrderTest {
         System.out.println("Expected: " + expected);
         System.out.println("Actual  : " + actual);
         assertEquals(actual, expected);
-    }
+    }*/
 }

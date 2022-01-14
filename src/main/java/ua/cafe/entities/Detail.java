@@ -71,14 +71,6 @@ public class Detail {
 //        }
     }
 
-    public void setDish_id(Long dish_id) {
-        this.dish_id = dish_id;
-    }
-
-    public void setOrder_id(Long order_id) {
-        this.order_id = order_id;
-    }
-
     public Dish getDish() {
         //TODO: remove database interaction
         if (dish == null && dish_id != -1) {
@@ -88,9 +80,16 @@ public class Detail {
     }
 
     public void setDish(Dish dish) {
+        if (this.dish != null && this.dish.equals(dish))
+            return;
+        Dish oldDish = this.dish;
         this.dish = dish;
+        if (oldDish != null) {
+            oldDish.removeDetail(this);
+        }
         if (dish != null) {
             dish_id = dish.getId();
+            dish.addDetail(this);
         }
     }
 
@@ -99,9 +98,16 @@ public class Detail {
     }
 
     public void setOrder(Order order) {
+        if (this.order != null && this.order.equals(order))
+            return;
+        Order oldOrder = this.order;
         this.order = order;
+        if (oldOrder != null) {
+            oldOrder.removeDetail(this);
+        }
         if (order != null) {
-            this.order_id = order.getId();
+            order_id = order.getId();
+            order.addDetail(this);
         }
     }
 
@@ -115,14 +121,6 @@ public class Detail {
         if (dish == null)
             return dish_id;
         return dish.getId();
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public double getCost() {
@@ -146,12 +144,12 @@ public class Detail {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Detail detail = (Detail) o;
-        return id == detail.id && Objects.equals(dish_id, detail.dish_id) && Objects.equals(order_id, detail.order_id) && quantity == detail.quantity;
+        return id == detail.id && Objects.equals(getDish_id(), detail.getDish_id()) && Objects.equals(getOrder_id(), detail.getOrder_id()) && quantity == detail.quantity;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dish_id, order_id, quantity);
+        return Objects.hash(id, getDish_id(), getOrder_id(), quantity);
     }
 }
 

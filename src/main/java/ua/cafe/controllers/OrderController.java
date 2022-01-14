@@ -10,7 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.cafe.entities.*;
+import ua.cafe.entities.Detail;
+import ua.cafe.entities.Dish;
+import ua.cafe.entities.JsonMaker;
+import ua.cafe.entities.Order;
 import ua.cafe.services.DetailService;
 import ua.cafe.services.DishService;
 import ua.cafe.services.OrderService;
@@ -70,37 +73,38 @@ public class OrderController {
 
     //add
     @PostMapping("/api/order")
-    public ResponseEntity<String> apiSaveOrder(@RequestBody @Valid Order order, BindingResult result) {
+    public ResponseEntity<?> apiSaveOrder(@RequestBody @Valid Order order, BindingResult result) {
         if (result.hasErrors()) {
             return new ResponseEntity<>("Invalid order: " + result.getFieldErrors(), HttpStatus.NOT_ACCEPTABLE);
         }
         if (order.getDateOrdered() == null) {
             order.setDateOrdered(new Date(System.currentTimeMillis()));
         }
-        orderService.saveOrder(order);
-        return ResponseEntity.ok("Order was saved!");
+        Order temp_order = orderService.saveOrder(order);
+
+        System.out.println(order);
+        System.out.println("date:"+order.getDateOrdered().getTime());
+        System.out.println(temp_order);
+        return ResponseEntity.ok(temp_order);
     }
 
     //update
     @RequestMapping(value = "/api/order", method = RequestMethod.PUT)
-    public ResponseEntity<String> apiUpdateOrder(@RequestBody @Valid Order order, BindingResult result) {
+    public ResponseEntity<?> apiUpdateOrder(@RequestBody @Valid Order order, BindingResult result) {
         if (result.hasErrors())
             return new ResponseEntity<>("Invalid order: " + result.getFieldErrors(), HttpStatus.NOT_ACCEPTABLE);
-        System.out.println(order);
         order.getDetails().forEach(detail -> detail.setOrder(order));
-        System.out.println(order.getDetails());
         orderService.saveOrder(order);
-        return ResponseEntity.ok("Order was updated!");
+        Order temp_order = orderService.getById(order.getId());
+        System.out.println(order);
+        System.out.println(temp_order);
+        return ResponseEntity.ok(temp_order);
     }
 
     //remove
     @RequestMapping(value = "/api/order", method = RequestMethod.DELETE)
-    public ResponseEntity<String> apiRemoveOrder(@RequestParam Long id, Principal principal) {
-        Role role = new Role(principal);
-        if (!role.isAuthorised())
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<String> apiRemoveOrder(@RequestParam Long id) {
         orderService.removeById(id);
-        System.out.println("Removed order with id " + id);
         return ResponseEntity.ok("Removed order " + id);
     }
 
@@ -112,11 +116,12 @@ public class OrderController {
         model.addAttribute("orders", orderService.getAllOrders());
         model.addAttribute("new_order", new Order());
 
-        return switch (((User) authentication.getPrincipal()).getPosition()) {
+        return "Waiter/orders";
+        /*return switch (((User) authentication.getPrincipal()).getPosition()) {
             case WAITER -> "Waiter/orders";
             case COOK -> "Cook/orders";
             case DIRECTOR -> "Director/orders";
-        };
+        };*/
     }
 
 
