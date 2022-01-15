@@ -30,5 +30,13 @@ spring:
     check-template: true
     check-template-location: true
 #server:
+#  ssl:
+#    enabled: true
+#    key-store-type: PKCS12
+#    key-store: classpath:keystore.p12
+#    key-password: 74553211
+#    key-alias: tomcat
+#    trust-store: classpath:keystore.p12
+#    trust-store-password: 74553211
 ##  port: 80
 #  address: 192.168.88.254

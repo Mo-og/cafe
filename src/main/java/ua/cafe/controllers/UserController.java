@@ -1,7 +1,6 @@
 package ua.cafe.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,13 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.cafe.entities.Authority;
-import ua.cafe.entities.JsonMaker;
-import ua.cafe.entities.Role;
 import ua.cafe.entities.User;
 import ua.cafe.services.UserService;
+import ua.cafe.utils.JsonMaker;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.NoSuchElementException;
 
 
@@ -31,16 +28,12 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/api/users"}, method = RequestMethod.GET)
-    public ResponseEntity<String> apiGetUsers(Principal principal) {
-        Role role = new Role(principal);
-        if (!role.isAdmin())
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    public ResponseEntity<String> apiGetUsers() {
         return JsonMaker.getJsonResponse(userService.getAllUsers());
     }
 
     @RequestMapping(value = {"/users", "/workers"}, method = RequestMethod.GET)
     public String getUsers(Model model, Authentication authentication) {
-        if (authentication == null) return "permissionDenied";
         model.addAttribute("users", userService.getAllUsers());
         return switch (((User) authentication.getPrincipal()).getPosition()) {
             case WAITER -> "Waiter/users";
@@ -62,7 +55,6 @@ public class UserController {
     public String addAdmin() {
         User user = new User("admin", "admin", "admin", "a@b.c", "991122334455", "address", Authority.DIRECTOR, "password");
         user.setPassword(new BCryptPasswordEncoder().encode("74553211"));
-        user.setId(0);
         userService.removeByUsername("991122334455");
         userService.saveUser(user);
         return "redirect:/entrance";
@@ -70,7 +62,7 @@ public class UserController {
 
 
     @GetMapping("/user_remove")
-    public String removeUser(@RequestParam Long id, Principal principal) {
+    public String removeUser(@RequestParam Long id) {
         if (!userService.existsWithId(id))
             throw new NoSuchElementException();
         userService.removeById(id);
@@ -78,7 +70,7 @@ public class UserController {
     }
 
     @GetMapping("/add_user")
-    public String addUser(Model model, Principal principal) {
+    public String addUser(Model model) {
         model.addAttribute("user", new User());
         return "Director/add_user";
     }

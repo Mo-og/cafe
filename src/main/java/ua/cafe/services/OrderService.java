@@ -7,6 +7,7 @@ import ua.cafe.entities.Order;
 import ua.cafe.repositories.OrderRepository;
 
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 @Lazy
@@ -21,7 +22,7 @@ public class OrderService {
     }
 
     public Order saveOrder(Order order) {
-        return repository.saveAndFlush(order);
+        return repository.save(order);
     }
 
 //    public List<Order> getAllOrders() {
@@ -32,9 +33,10 @@ public class OrderService {
     // **решается прерименовыванием table_num в tableNum и date_ordered в dateOrdered и написанием метода в репозитории,
     // но надо отследить изменение имён
     public List<Order> getAllOrders() {
-        List<Order> n = repository.findAll();
+        return repository.findAllOrderedByTableNum();
+        /*List<Order> n = repository.findAll();
         n.sort(comparator);
-        return n;
+        return n;*/
     }
 
     Comparator<Order> comparator = (o1, o2) -> {
@@ -54,6 +56,10 @@ public class OrderService {
 
     public Order getById(long id) {
         return repository.getOne(id);
+    }
+
+    public Date getDateOrdered(long id){
+        return repository.getDateOrdered(id);
     }
 
 }

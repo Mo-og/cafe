@@ -10,14 +10,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ua.cafe.CafeApplication;
-import ua.cafe.Translit;
 import ua.cafe.entities.Dish;
-import ua.cafe.entities.ImageProcessor;
-import ua.cafe.entities.JsonMaker;
 import ua.cafe.entities.User;
 import ua.cafe.services.CategoriesService;
 import ua.cafe.services.DishService;
+import ua.cafe.utils.ImageProcessor;
+import ua.cafe.utils.JsonMaker;
+import ua.cafe.utils.Translit;
+import ua.cafe.utils.Utils;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -50,7 +50,7 @@ public class DishController {
     }
 
     //API
-    @GetMapping("/api/menu")
+    @GetMapping("/api/dishes")
     public ResponseEntity<String> getMenuJson() {
         List<Dish> dishes = dishService.getAllDishes();
         return JsonMaker.getJsonResponse(dishes);
@@ -215,7 +215,7 @@ public class DishController {
             int index = Objects.requireNonNull(file.getOriginalFilename()).lastIndexOf('.');
             if (index == -1) index = 0;
             //generating file name
-            String pathString = Translit.cyr2lat(dish.getName()) + CafeApplication.getDateString() + Objects.requireNonNull(file.getOriginalFilename()).substring(index);
+            String pathString = Translit.cyr2lat(dish.getName()) + Utils.getDateString() + Objects.requireNonNull(file.getOriginalFilename()).substring(index);
             path = Paths.get(IMAGES_FOLDER_PATH + pathString);
             byte[] bytes = file.getBytes();
             Files.write(path, bytes);

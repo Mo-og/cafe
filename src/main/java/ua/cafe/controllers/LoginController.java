@@ -9,19 +9,20 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.cafe.entities.EntranceForm;
-import ua.cafe.entities.Role;
 import ua.cafe.entities.User;
 import ua.cafe.services.UserService;
+import ua.cafe.utils.Role;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.Principal;
 
 @CrossOrigin
 @Controller
-public class EntranceController {
+public class LoginController {
 
     private static UserService userService;
 
@@ -31,13 +32,8 @@ public class EntranceController {
     }
 
     @RequestMapping(value = "/username", method = RequestMethod.GET)
-    public String currentUserName(Authentication authentication, Model model) {
-        if (authentication == null) return "test";
-        User user = (User) authentication.getPrincipal();
-        System.out.println(user);
-        model.addAttribute("name", user.getUsername());
-        System.out.println(authentication.getAuthorities());
-        System.out.println(user.getAuthorities().iterator().next());
+    public String currentUserName(Principal principal, Model model) {
+        System.out.println("principal==user: "+(principal instanceof User));
         return "test";
     }
 
@@ -73,15 +69,17 @@ public class EntranceController {
         return "logout";
     }
 
-    @GetMapping("/entrance")
+    @GetMapping("/login")
     public String getEntrance(Model model) {
-        model.addAttribute("entrance", new EntranceForm());
-        return "User/entrance";
+        model.addAttribute("form", new EntranceForm());
+        return "login";
     }
 
-    @PostMapping("/entrance")
-    public String validateEntrance(@Valid EntranceForm entrance, BindingResult result, Model model) {
-        model.addAttribute("entrance", entrance);
+    @PostMapping("/login")
+    public String validateEntrance(@Valid EntranceForm form, BindingResult result, Model model) {
+        model.addAttribute("form", form);
+        System.out.println(form);
+        result.getFieldErrors().forEach(fieldError -> System.out.println(fieldError.getField()+"; "+fieldError.getDefaultMessage()));
         if (result.hasFieldErrors("username")) {
             model.addAttribute("messageUsername", "Некорректный номер телефона!");
             model.addAttribute("usernameFailed", true);
@@ -89,25 +87,25 @@ public class EntranceController {
                 model.addAttribute("messagePassword", "Недопустимый пароль!");
                 model.addAttribute("passwordFailed", true);
             }
-            return "User/entrance";
+            return "login";
         }
         if (result.hasFieldErrors("password")) {
             model.addAttribute("messagePassword", "Недопустимый пароль!");
             model.addAttribute("passwordFailed", true);
-            if (!userService.existsWithUsername(entrance.getUsername())) {
+            if (!userService.existsWithUsername(form.getUsername())) {
                 model.addAttribute("messageUsername", "Пользователь не найден");
                 model.addAttribute("usernameFailed", true);
             }
-            return "User/entrance";
+            return "login";
         }
-        if (userService.existsWithUsername(entrance.getUsername())) {
+        if (userService.existsWithUsername(form.getUsername())) {
             model.addAttribute("messagePassword", "Введён неверный пароль!");
             model.addAttribute("passwordFailed", true);
         } else {
             model.addAttribute("messageUsername", "Пользователь не найден");
             model.addAttribute("usernameFailed", true);
         }
-        return "User/entrance";
+        return "login";
 
     }
 }

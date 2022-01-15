@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0">
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <title> Авторизация </title>
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        .animate__animated:hover {
+            animation: pulse;
+            animation-duration: 0.5s;
+        }
+        button:hover {
+            box-shadow: rgba(175, 47, 0, 0.9);
+        }
+    </style>
+</head>
+
+<body class="creamBg">
+<!-- Header Section Begins -->
+<form class="animate__animated " style="float: right; margin-right: 1em" th:action="@{/}" method="get">
+    <button class="btn-sm btn-secondary" type="submit"
+            style="width: auto;background: rgba(255,255,255,0.2); color: #e75b1e; text-shadow:   0 0 1px white; border: #ff7f50 1px solid ">Главная
+    </button>
+</form>
+<form class="animate__animated " style="float: right; margin-right: 1em" th:action="@{/menu}" method="get">
+    <button class="btn-sm btn-secondary" type="submit"
+            style="width: auto;background: rgba(255,255,255,0.2); color: #e75b1e; border: #ff7f50 1px solid ">Меню
+    </button>
+</form>
+<!-- Header Section Ends -->
+
+<!-- Banner Section Begins -->
+<div class="wrapper">
+    <div class="fade-in container">
+        <h2>Вход в аккаунт</h2>
+
+        <form class="form needs-validation" id="form" enctype="multipart/form-data" th:object="${form}" method="post">
+            <div style="margin-bottom: 1em">
+                <input type="text" id="username" th:field="*{username}"
+                       th:value="${form.username}" required placeholder="Логин">
+                <small style="color: red" th:if="${usernameFailed!=null&&usernameFailed}"
+                       th:text="${messageUsername}"></small>
+            </div>
+            <div style="margin-bottom: 1em">
+                <input id="password" placeholder="Пароль" th:field="*{password}"
+                       type="password" th:value="${form.password}" required>
+                <small style="color: red" th:if="${passwordFailed!=null&&passwordFailed}"
+                       th:text="${messagePassword}"></small>
+            </div>
+            <button type="submit" id="login-button" value="Submit">Войти</button>
+            <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden">
+        </form>
+    </div>
+
+    <ul class="bg-bubbles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+<!-- Banner Section Ends -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src="../js/login.js"></script>
+</body>
+</html>

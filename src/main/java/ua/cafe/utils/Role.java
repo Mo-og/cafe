@@ -1,4 +1,4 @@
-package ua.cafe.entities;
+package ua.cafe.utils;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,23 +8,15 @@ import ua.cafe.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.Arrays;
 
 @Getter
 @Component
 public class Role{
-//    public static final String[] ROLES = {"[ROLE_WAITER]", "[ROLE_ADMIN]", "[ROLE_COOK]"};
-//    public static final String[] ROLES1 = {"ROLE_WAITER", "ROLE_ADMIN", "ROLE_COOK"};
-    public static final String[] ROLES = {"WAITER", "ADMIN", "COOK"};
 
     public Role(HttpServletRequest request) {
         isAuthorised = request.isUserInRole("ROLE_WAITER")||request.isUserInRole("ROLE_ADMIN")||request.isUserInRole("ROLE_COOK");
         isAdmin = request.isUserInRole("ROLE_ADMIN");
         user = null;
-    }
-
-    public static boolean isAuthorised(String inputAuthorities) {
-        return Arrays.stream(ROLES).anyMatch(inputAuthorities::contains);
     }
 
     @Autowired

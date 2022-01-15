@@ -2,8 +2,8 @@ package ua.cafe.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.cafe.repositories.DishRepository;
 import ua.cafe.entities.Dish;
+import ua.cafe.repositories.DishRepository;
 
 import java.util.Comparator;
 import java.util.List;
@@ -43,7 +43,7 @@ public class DishService {
     }
 
     public Dish getById(long id) {
-        return repository.getOne(id);
+        return repository.findById(id).orElse(null);
     }
 
 }

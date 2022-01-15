@@ -36,11 +36,12 @@ public class Detail {
     private Long order_id = (long) -1;
     private int quantity;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
     @JoinColumn(name = "dish_id")
+    @JsonIgnore
     private Dish dish;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
     @JoinColumn(name = "order_id")
     @JsonIgnore
     private Order order;
@@ -53,11 +54,13 @@ public class Detail {
     public Detail() {
     }
 
-    public Detail(long dish_id, long order_id, int quantity, Dish dish) {
+    public Detail(long dish_id, int quantity) {
+        dish = dishService.getById(dish_id);
+        if (dish == null)
+            throw new IllegalArgumentException();
+        dish.addDetail(this);
         this.dish_id = dish_id;
-        this.order_id = order_id;
         this.quantity = quantity;
-        this.dish = dish;
     }
 
     public Detail(long dish_id, long order_id, int quantity) {
@@ -91,6 +94,14 @@ public class Detail {
             dish_id = dish.getId();
             dish.addDetail(this);
         }
+    }
+
+    public void setOrderRetrieveDish(Order order) {
+        if (dish == null && dish_id != -1)
+            setDish(dishService.getById(dish_id));
+        if (dish == null)
+            throw new IllegalStateException("Incorrect dish_id. Dish cannot be null but cannot be retrieved from DB.");
+        setOrder(order);
     }
 
     public Order getOrder() {

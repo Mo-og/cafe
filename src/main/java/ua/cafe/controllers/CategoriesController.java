@@ -1,23 +1,20 @@
 package ua.cafe.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.cafe.entities.DishCategory;
-import ua.cafe.entities.JsonMaker;
-import ua.cafe.entities.Role;
 import ua.cafe.services.CategoriesService;
-import ua.cafe.services.UserService;
+import ua.cafe.utils.JsonMaker;
+import ua.cafe.utils.Role;
+import ua.cafe.utils.Utils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.NoSuchElementException;
 
 @Controller
@@ -46,6 +43,16 @@ public class CategoriesController {
         return new ResponseEntity<>("No category found by given id", HttpStatus.NOT_FOUND);
     }
 
+    //add
+    @PostMapping("/api/category")
+    public ResponseEntity<?> apiAddDishCategory(@Valid DishCategory category, BindingResult result, HttpServletRequest request) {
+        ResponseEntity<?> ErrorsMap = Utils.getResponseEntity(result);
+        if (ErrorsMap != null) return ErrorsMap;
+        categoriesService.saveCategory(category);
+        System.out.println("Успешно добавлено " + category);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     //update
     @RequestMapping(value = "/api/category", method = RequestMethod.PUT)
     public ResponseEntity<String> apiUpdateCategory(@Valid DishCategory category, BindingResult result, HttpServletRequest request) {
@@ -56,19 +63,6 @@ public class CategoriesController {
             return new ResponseEntity<>(JsonMaker.getJson(category), HttpStatus.NOT_ACCEPTABLE);
         categoriesService.saveCategory(category);
         System.out.println("Обновлено " + category);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    //add
-    @PostMapping("/api/category")
-    public ResponseEntity<String> apiAddDishCategory(@Valid DishCategory category, BindingResult result, HttpServletRequest request) {
-        Role role = new Role(request);
-        if (!role.isAdmin())
-            return new ResponseEntity<>("You have no permission to add categories", HttpStatus.FORBIDDEN);
-        if (result.hasErrors())
-            return new ResponseEntity<>(JsonMaker.getJson(result.getAllErrors()), HttpStatus.NOT_ACCEPTABLE);
-        categoriesService.saveCategory(category);
-        System.out.println("Успешно добавлено " + category);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

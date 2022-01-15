@@ -41,24 +41,18 @@
                                     <ul class="nav navbar-nav navbar-right">
                                         <li><a href="#banner">Главная</a></li>
                                         <li><a th:href="@{/menu}">Меню</a></li>
-                                        <li><a th:if="${role.isAuthorised()}"
-                                               th:href="@{/orders}">Заказы</a></li>
-                                        <li><a th:if="${role.isAuthorised()}"
-                                               th:href="@{/users}">Сотрудники</a></li>
-                                        <li><a th:if="${role.isAdmin()}"
-                                               th:href="@{/report}">Отчет</a></li>
+                                        <li><a th:if="${role.isAuthorised()}" th:href="@{/orders}">Заказы</a></li>
+                                        <li><a th:if="${role.isAuthorised()}" th:href="@{/users}">Сотрудники</a></li>
+                                        <li><a th:if="${role.isAdmin()}" th:href="@{/report}">Отчет</a></li>
                                         <li><a href="#about">О нас</a></li>
                                         <li><a href="#gallery">Галерея</a></li>
                                         <li><a href="#footer">Связаться с нами</a></li>
-                                        <li><a th:if="${!role.isAuthorised()}"
-                                               th:href="@{/entrance}">Вход</a></li>
-                                        <li>
-                                            <a th:if="${role.isAuthorised()}" style="cursor: pointer"
-                                               onclick="
-                                               if(confirm('Вы уверены, что хотите выйти из личного кабинета?'))
+                                        <li><a th:if="${!role.isAuthorised()}" th:href="@{/login}">Вход</a></li>
+                                        <li><a th:if="${role.isAuthorised()}" style="cursor: pointer"
+                                               onclick="if(confirm('Вы уверены, что хотите выйти из личного кабинета?'))
                                                    document.logout.submit()">
-                                                Выйти
-                                            </a>
+                                            Выйти
+                                        </a>
                                             <form name="logout" th:if="${role.isAuthorised()}" th:action="@{/logout}"
                                                   method="post">
                                                 <input type="hidden" name="${_csrf.parameterName}"
@@ -83,9 +77,10 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="banner-text wow animated fadeInUp" data-wow-delay="0.1s">
                         <div class="banner-cell">
-                            <h1 style="font-size: 9vmin"><img src="../images/dine-img.png" alt="image"
-                                                              style="margin-left: -1rem;margin-top: 0.5rem"/> Добро
-                                пожаловать! </h1>
+                            <h1 style="font-size: 9vmin">
+                                <img src="../images/dine-img.png" alt="image"
+                                     style="margin-left: -1rem;margin-top: 0.5rem"/>
+                                Добро пожаловать! </h1>
                             <h2><span class="side-img left-side-img"><i></i><i></i><i></i></span> consectetuer
                                 adipiscing <span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
                             <p> Lorem ipsum dolor sit amet consectetuer adipiscing </p>

@@ -34,16 +34,16 @@ public class Dish {
     private double price;
     private String ingredients;
     private boolean available = true;
+    private ReadyStatus status = ReadyStatus.NEW;
     private String imagePath = null;
     @Transient
     @JsonIgnore
     private boolean isThumb = false;
 
-
     @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL)
     @JsonIgnore
     @ToString.Exclude
-    private List<Detail> details=new ArrayList<>();
+    private List<Detail> details = new ArrayList<>();
 
     public void addDetail(Detail detail) {
         if (details.contains(detail)) return;
@@ -66,6 +66,12 @@ public class Dish {
             if (imagePath != null && imagePath.length() > 11)
                 return DishController.URL_THUMBNAILS_PATH + imagePath.substring(11);
         return imagePath;
+    }
+
+    public String getStatusDesc() {
+        if (status == null)
+            return null;
+        return status.getDescription();
     }
 
     @Override

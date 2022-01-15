@@ -5,25 +5,22 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.cafe.entities.Detail;
 import ua.cafe.entities.Dish;
-import ua.cafe.entities.JsonMaker;
 import ua.cafe.entities.Order;
 import ua.cafe.services.DetailService;
 import ua.cafe.services.DishService;
 import ua.cafe.services.OrderService;
-import ua.cafe.services.UserService;
+import ua.cafe.utils.JsonMaker;
+import ua.cafe.utils.Utils;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Lazy
 @Controller
@@ -33,16 +30,10 @@ public class OrderController {
     public static OrderService orderService;
     public static DetailService detailService;
     private static DishService dishService;
-    private static UserService userService;
 
     @Autowired
     public void setService(DishService service) {
         dishService = service;
-    }
-
-    @Autowired
-    public void setService(UserService service) {
-        userService = service;
     }
 
     @Autowired
@@ -74,32 +65,22 @@ public class OrderController {
     //add
     @PostMapping("/api/order")
     public ResponseEntity<?> apiSaveOrder(@RequestBody @Valid Order order, BindingResult result) {
-        if (result.hasErrors()) {
-            return new ResponseEntity<>("Invalid order: " + result.getFieldErrors(), HttpStatus.NOT_ACCEPTABLE);
-        }
-        if (order.getDateOrdered() == null) {
-            order.setDateOrdered(new Date(System.currentTimeMillis()));
-        }
-        Order temp_order = orderService.saveOrder(order);
-
-        System.out.println(order);
-        System.out.println("date:"+order.getDateOrdered().getTime());
-        System.out.println(temp_order);
-        return ResponseEntity.ok(temp_order);
+        var ErrorsMap = Utils.getResponseEntity(result);
+        if (ErrorsMap != null) return ErrorsMap;
+        if (order.getDateOrdered() == null) order.setDateOrdered(new Date(System.currentTimeMillis()));
+        return ResponseEntity.ok(orderService.saveOrder(order));
     }
 
     //update
     @RequestMapping(value = "/api/order", method = RequestMethod.PUT)
     public ResponseEntity<?> apiUpdateOrder(@RequestBody @Valid Order order, BindingResult result) {
-        if (result.hasErrors())
-            return new ResponseEntity<>("Invalid order: " + result.getFieldErrors(), HttpStatus.NOT_ACCEPTABLE);
-        order.getDetails().forEach(detail -> detail.setOrder(order));
-        orderService.saveOrder(order);
-        Order temp_order = orderService.getById(order.getId());
-        System.out.println(order);
-        System.out.println(temp_order);
-        return ResponseEntity.ok(temp_order);
+        ResponseEntity<?> ErrorsMap = Utils.getResponseEntity(result);
+        if (ErrorsMap != null) return ErrorsMap;
+        order.getDetails().forEach(detail -> detail.setOrderRetrieveDish(order));
+        order.setDateOrdered(orderService.getDateOrdered(order.getId()));
+        return ResponseEntity.ok(orderService.saveOrder(order));
     }
+
 
     //remove
     @RequestMapping(value = "/api/order", method = RequestMethod.DELETE)
@@ -124,61 +105,6 @@ public class OrderController {
         };*/
     }
 
-
-    @PostMapping("/orders")
-    public String saveOrder(@Valid Order order, BindingResult result, Model model, Principal principal) {
-        try {
-            final UserDetails user = userService.loadUserByUsername(principal.getName());
-            if (result.hasErrors()) {
-                model.addAttribute("orders", orderService.getAllOrders());
-                model.addAttribute("new_order", new Order());
-                switch (user.getAuthorities().toString()) {
-                    case "[ROLE_WAITER]":
-                        return "Waiter/orders";
-                    case "[ROLE_COOK]":
-                        return "Cook/orders";
-                }
-            }
-            if (order.getDateOrdered() == null) {
-                order.setDateOrdered(new Date(System.currentTimeMillis()));
-            }
-            orderService.saveOrder(order);
-
-            //noinspection SpringMVCViewInspection
-            return "redirect:/orders";
-        } catch (NullPointerException e) {
-            return "index";
-        }
-    }
-
-
-    @PostMapping("/order_update")
-    public String updateOrder(@Valid Order order, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("order", order);
-            model.addAttribute("container", new Detail());
-            model.addAttribute("dishes", dishService.getAllDishes());
-            return "Waiter/edit_order";
-        }
-        Order to_save = orderService.getById(order.getId());
-        to_save.setTableNum(order.getTableNum());
-        to_save.setComments(order.getComments());
-        orderService.saveOrder(to_save);
-        model.addAttribute("order", order);
-        model.addAttribute("container", new Detail());
-        model.addAttribute("dishes", dishService.getAllDishes());
-        return "redirect:/order_edit?id=" + order.getId();
-    }
-
-    @GetMapping("/order_edit")
-    public String editDish(Model model, @RequestParam Long id) {
-        Order order = orderService.getById(id);
-        Detail container = new Detail();
-        model.addAttribute("order", order);
-        model.addAttribute("container", container);
-        model.addAttribute("dishes", dishService.getAllDishes());
-        return "Waiter/edit_order";
-    }
 
     //отчет
     @GetMapping("/report")
@@ -207,17 +133,6 @@ public class OrderController {
         model.addAttribute("order", order);
         model.addAttribute("dishes", dishService.getAllDishes());
         return "Cook/change_status";
-    }
-
-    @GetMapping("/order_remove")
-    public String removeOrder(Model model, @RequestParam Long id) {
-        if (!orderService.existsWithId(id))
-            throw new NoSuchElementException();
-        model.addAttribute("orders", orderService.getAllOrders());
-        model.addAttribute("new_order", new Order());
-        orderService.removeById(id);
-        //noinspection SpringMVCViewInspection
-        return "redirect:/orders";
     }
 
 }

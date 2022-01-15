@@ -177,18 +177,20 @@
                 <div class="form-row" style="margin-left: 3%;margin-right: 3%">
                     <div class="col mb-3">
                         <h4><label for="dish">Выберите блюдо</label></h4>
-                        <select v-model="selectedDish.dish.id" class="form-control" id="dish">
+                        <select v-model="selectedDetail.dish_id" class="form-control" id="dish">
                             <option v-for="dish in dishes" :key="dish.id" :value="dish.id">{{ dish.name }}</option>
                         </select>
                     </div>
                     <div class="col mb-3" align="left">
                         <h4><label for="quantity">Количество</label></h4>
-                        <input type="number" class="form-control" id="quantity" v-model.number="selectedDish.quantity">
+                        <input type="number" class="form-control" id="quantity"
+                               v-model.number="selectedDetail.quantity">
                         <!--                    <small class="text-danger" th:if="${#fields.hasErrors('quantity')}"-->
                         <!--                           th:errors="*{container.quantity}"></small>-->
                     </div>
                     <br>
-                    <button class="btn btn-warning btn-lg btn-block" @click.prevent="saveDish" :disabled="!selectedDish.dish.id">
+                    <button class="btn btn-warning btn-lg btn-block" @click.prevent="saveDish"
+                            :disabled="!selectedDetail.dish_id">
                         Добавить блюдо
                     </button>
                     <div class="table-responsive">
@@ -204,12 +206,12 @@
                             <tbody>
                             <tr v-for="(detail,i) in selectedOrder.details"
                                 :key="i"
-                                @click="editOrderDish(detail.dish.id)"
+                                @click="editOrderDish(detail.dish_id)"
                                 style="cursor: pointer">
-                                <td class="align-middle"><span>{{dishName(detail.dish.id)}}</span></td>
+                                <td class="align-middle"><span>{{dishName(detail.dish_id)}}</span></td>
                                 <td class="align-middle"><span>{{detail.quantity}}</span></td>
-                                <td class="align-middle"><span>{{dishCost(detail.dish.id)}}</span></td>
-                                <td @click.stop="deleteOrderDish(detail.dish.id)">
+                                <td class="align-middle"><span>{{dishCost(detail.dish_id)}}</span></td>
+                                <td @click.stop="deleteOrderDish(detail.dish_id)">
                                     <svg class="bi bi-x-square-fill" width="1em" height="1em"
                                          viewBox="0 0 16 16"
                                          fill="currentColor" xmlns="http://www.w3.org/2000/svg"
@@ -258,8 +260,8 @@
         id: null,
         status: '',
     }
-    const defaultDish = {
-        dish : {id: null },
+    const defaultDetail = {
+        dish_id: null,
         quantity: 1
     }
     new Vue({
@@ -269,12 +271,12 @@
             isShowEditOrder: false,
             orders: [],
             selectedOrder: JSON.parse(JSON.stringify(defaultOrder)),
-            selectedDish: JSON.parse(JSON.stringify(defaultDish)),
+            selectedDetail: JSON.parse(JSON.stringify(defaultDetail)),
             dishes: []
         },
         async created() {
             this.refreshOrders();
-            fetch('/api/menu')
+            fetch('/api/dishes')
                 .then(r => r.json())
                 .then(d => {
                     this.dishes = d;
@@ -343,24 +345,34 @@
             },
             formatDate(ts) {
                 const d = new Date(ts);
-                return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`
+                const options = {
+                    weekday: 'short', // "narrow", "short", "long"
+                    year: 'numeric', // "numeric", "2-digit"
+                    month: 'short', // "numeric", "2-digit", "narrow", "short", "long"
+                    day: '2-digit', // "numeric", "2-digit"
+                    hour: '2-digit', // "numeric", "2-digit"
+                    minute: '2-digit', // "numeric", "2-digit"
+                    // second: '2-digit' // "numeric", "2-digit"
+                };
+                let str=d.toLocaleString('ua-UA',options);
+                return str.charAt(0).toUpperCase().concat(str.substring(1));
             },
             saveDish() {
-                this.selectedOrder.details = this.selectedOrder.details.some(d => d.dish.id === this.selectedDish.dish.id)
+                this.selectedOrder.details = this.selectedOrder.details.some(d => d.dish_id === this.selectedDetail.dish_id)
                     ? this.selectedOrder.details.map(d => {
-                        if (d.dish.id === this.selectedDish.dish.id) {
-                            d.quantity += this.selectedDish.quantity;
+                        if (d.dish_id === this.selectedDetail.dish_id) {
+                            d.quantity += this.selectedDetail.quantity;
                         }
                         return d
                     })
-                    : [...this.selectedOrder.details, this.selectedDish];
-                this.selectedDish = JSON.parse(JSON.stringify(defaultDish));
+                    : [...this.selectedOrder.details, this.selectedDetail];
+                this.selectedDetail = JSON.parse(JSON.stringify(defaultDetail));
             },
             editOrderDish(dishId) {
-                this.selectedDish = JSON.parse(JSON.stringify(this.selectedOrder.details.find(d => d.dish.id === dishId)))
+                this.selectedDetail = JSON.parse(JSON.stringify(this.selectedOrder.details.find(d => d.dish_id === dishId)))
             },
             deleteOrderDish(dishId) {
-                this.selectedOrder.details = this.selectedOrder.details.filter(d => d.dish.id !== dishId)
+                this.selectedOrder.details = this.selectedOrder.details.filter(d => d.dish_id !== dishId)
             },
             dishName(dishId) {
                 return this.dishes.find(d => d.id === dishId).name

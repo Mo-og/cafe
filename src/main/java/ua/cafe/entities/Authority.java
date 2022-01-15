@@ -3,7 +3,9 @@ package ua.cafe.entities;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Authority implements GrantedAuthority {
-    DIRECTOR("ROLE_ADMIN", "Директор"), WAITER("ROLE_WAITER", "Официант"), COOK("ROLE_COOK", "Повар");
+    DIRECTOR("ROLE_ADMIN", "Директор"),
+    WAITER("ROLE_WAITER", "Официант"),
+    COOK("ROLE_COOK", "Повар");
 
     private final String authority;
     private final String position;

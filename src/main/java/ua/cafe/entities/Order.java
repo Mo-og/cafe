@@ -26,7 +26,8 @@ public class Order {
     @Column(updatable = false, name = "date_ordered", nullable = false)
     private Date dateOrdered;
     private String comments;
-    @Range(min = 1, max = TABLES_COUNT)
+    @Range(min = 1, max = TABLES_COUNT, message = "Номер столика должен быть в пределах от 1 до "+TABLES_COUNT+"!")
+    @Column(name = "table_num", nullable = false)
     private int tableNum;
     private String status;
 
@@ -91,7 +92,7 @@ public class Order {
         StringBuilder stringBuilder = new StringBuilder();
         for (Detail d : details) {
             stringBuilder.append(", ").append(d.getDish().getName().length() < 21 ? d.getDish().getName() : d.getDish().getName().substring(0, 20) + "...")
-                    .append(" (").append(d.getQuantity()).append(" шт.)");
+                    .append(" (").append(d.getQuantity()).append(" шт.)\n");
         }
         return stringBuilder.length() > 2 ? stringBuilder.substring(2) : stringBuilder.toString();
     }

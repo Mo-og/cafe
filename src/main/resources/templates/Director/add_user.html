@@ -121,9 +121,8 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="position">Должность</label>
                                         <select th:field="*{position}" class="form-control" id="position" required>
-                                            <option value="официант">Официант</option>
-                                            <option value="повар">Повар</option>
-                                            <option value="директор">Директор</option>
+                                            <option th:each="value : ${T(ua.cafe.entities.Authority).values()}"
+                                                    th:value="${value}" th:text="${value.getPosition()}"></option>
                                         </select>
                                     </div>
 

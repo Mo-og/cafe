@@ -1,13 +1,21 @@
 package ua.cafe.entities;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
-@Table(name = "dishCategory")
+@Table(name = "dish_category")
 public class DishCategory {
 
     @Id
@@ -17,36 +25,16 @@ public class DishCategory {
     private String name;
     private int categoryOrder; //for menu sorting
 
-    public DishCategory() {
-    }
-
-    public DishCategory(String name) {
-        this.name = name;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        DishCategory that = (DishCategory) o;
+        return id != 0 && Objects.equals(id, that.id);
     }
 
     @Override
-    public String toString() {
-        return "DishCategory{" +
-                "name='" + name + '\'' +
-                ", id=" + id +
-                ", categoryOrder=" + categoryOrder +
-                '}';
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

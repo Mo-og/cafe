@@ -21,7 +21,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav zoom">
-                <li><a class="nav-link" th:href="@{/entrance}" style="color: #ff7f50;">Вход</a></li>
+                <li><a class="nav-link" th:href="@{/login}" style="color: #ff7f50;">Вход</a></li>
             </ul>
         </div>
     </div>
@@ -71,7 +71,7 @@
             fetch('/api/categories')
                 .then(r => r.json())
                 .then(data => this.categories = data);
-            fetch('/api/menu')
+            fetch('/api/dishes')
                 .then(r => r.json())
                 .then(data => this.items = data)
         },

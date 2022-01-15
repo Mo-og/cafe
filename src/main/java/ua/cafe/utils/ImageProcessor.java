@@ -1,4 +1,4 @@
-package ua.cafe.entities;
+package ua.cafe.utils;
 
 import net.coobird.thumbnailator.Thumbnails;
 import ua.cafe.controllers.DishController;
