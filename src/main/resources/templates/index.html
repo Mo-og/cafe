@@ -9,6 +9,7 @@
     <title> Главная </title>
     <!-- CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link href="../css/font-awesome.css" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet"/>
     <link href="../css/magnific-popup.css" rel="stylesheet"/>
@@ -40,7 +41,8 @@
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
                                         <li><a href="#banner">Главная</a></li>
-                                        <li><a th:href="@{/menu}">Меню</a></li>
+                                        <li><a th:if="${role.isAuthorised()}" th:href="@{/menu_staff}">Меню</a></li>
+                                        <li><a th:if="${!role.isAuthorised()}" th:href="@{/menu}">Меню</a></li>
                                         <li><a th:if="${role.isAuthorised()}" th:href="@{/orders}">Заказы</a></li>
                                         <li><a th:if="${role.isAuthorised()}" th:href="@{/users}">Сотрудники</a></li>
                                         <li><a th:if="${role.isAdmin()}" th:href="@{/report}">Отчет</a></li>
@@ -269,6 +271,7 @@
 <script type="text/javascript" src="../js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../js/element.js"></script>
 <script type="text/javascript" src="../js/modernizr.js"></script>
+<script type="text/javascript" src="../js/owl.carousel.js"></script>
 <script type="text/javascript" src="../js/jquery.localscroll-1.2.7-min.js"></script>
 <script type="text/javascript" src="../js/wow.min.js"></script>
 <script type="text/javascript" src="../js/imagesloaded.pkgd.min.js"></script>

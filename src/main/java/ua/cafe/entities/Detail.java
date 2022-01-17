@@ -28,12 +28,12 @@ public class Detail {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Min(1)
     private long id;
-    @Column(insertable = false, updatable = false, nullable = false)
     @Min(1)
-    private Long dish_id = (long) -1;
-    @Column(insertable = false, updatable = false, nullable = false)
+    @Column(insertable = false, updatable = false, nullable = false, name = "dish_id")
+    private Long dishId = (long) -1;
     @Min(1)
-    private Long order_id = (long) -1;
+    @Column(insertable = false, updatable = false, nullable = false, name = "order_id")
+    private Long orderId = (long) -1;
     private int quantity;
 
     @ManyToOne(optional = false, cascade = CascadeType.MERGE)
@@ -54,18 +54,18 @@ public class Detail {
     public Detail() {
     }
 
-    public Detail(long dish_id, int quantity) {
-        dish = dishService.getById(dish_id);
+    public Detail(long dishId, int quantity) {
+        dish = dishService.getById(dishId);
         if (dish == null)
             throw new IllegalArgumentException();
         dish.addDetail(this);
-        this.dish_id = dish_id;
+        this.dishId = dishId;
         this.quantity = quantity;
     }
 
-    public Detail(long dish_id, long order_id, int quantity) {
-        this.dish_id = dish_id;
-        this.order_id = order_id;
+    public Detail(long dishId, long orderId, int quantity) {
+        this.dishId = dishId;
+        this.orderId = orderId;
         this.quantity = quantity;
         /*try {
             this.dish = DishController.getDishById(dish_id);
@@ -76,8 +76,8 @@ public class Detail {
 
     public Dish getDish() {
         //TODO: remove database interaction
-        if (dish == null && dish_id != -1) {
-            dish = dishService.getById(dish_id);
+        if (dish == null && dishId != -1) {
+            dish = dishService.getById(dishId);
         }
         return dish;
     }
@@ -91,14 +91,14 @@ public class Detail {
             oldDish.removeDetail(this);
         }
         if (dish != null) {
-            dish_id = dish.getId();
+            dishId = dish.getId();
             dish.addDetail(this);
         }
     }
 
     public void setOrderRetrieveDish(Order order) {
-        if (dish == null && dish_id != -1)
-            setDish(dishService.getById(dish_id));
+        if (dish == null && dishId != -1)
+            setDish(dishService.getById(dishId));
         if (dish == null)
             throw new IllegalStateException("Incorrect dish_id. Dish cannot be null but cannot be retrieved from DB.");
         setOrder(order);
@@ -117,20 +117,20 @@ public class Detail {
             oldOrder.removeDetail(this);
         }
         if (order != null) {
-            order_id = order.getId();
+            orderId = order.getId();
             order.addDetail(this);
         }
     }
 
-    public long getOrder_id() {
+    public long getOrderId() {
         if (order == null)
-            return order_id;
+            return orderId;
         return order.getId();
     }
 
-    public long getDish_id() {
+    public long getDishId() {
         if (dish == null)
-            return dish_id;
+            return dishId;
         return dish.getId();
     }
 
@@ -143,8 +143,8 @@ public class Detail {
     @Override
     public String toString() {
         return "Detail{" +
-                "dish_id=" + dish_id + (dish == null ? "" : ('(' + dish.getName() + ')')) +
-                ", order_id=" + order_id + (order == null ? "" : "(order obj set)") +
+                "dish_id=" + dishId + (dish == null ? "" : ('(' + dish.getName() + ')')) +
+                ", order_id=" + orderId + (order == null ? "" : "(order obj set)") +
                 ", id=" + id +
                 ", quantity=" + quantity +
                 '}';
@@ -155,12 +155,12 @@ public class Detail {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Detail detail = (Detail) o;
-        return id == detail.id && Objects.equals(getDish_id(), detail.getDish_id()) && Objects.equals(getOrder_id(), detail.getOrder_id()) && quantity == detail.quantity;
+        return id == detail.id && Objects.equals(getDishId(), detail.getDishId()) && Objects.equals(getOrderId(), detail.getOrderId()) && quantity == detail.quantity;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, getDish_id(), getOrder_id(), quantity);
+        return Objects.hash(id, getDishId(), getOrderId(), quantity);
     }
 }
 

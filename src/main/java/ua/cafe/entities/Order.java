@@ -45,12 +45,12 @@ public class Order {
     }
 
     public Detail getDetailsIfPresent(long id) {
-        return details.stream().filter(i -> i.getDish_id() == id).findFirst().orElse(null);
+        return details.stream().filter(i -> i.getDishId() == id).findFirst().orElse(null);
     }
 
     public boolean removeFromOrder(long id) {
         Detail detail = details.stream().filter(i -> i.getDish().getId() == id
-                || i.getDish_id() == id).findFirst().orElse(null);
+                || i.getDishId() == id).findFirst().orElse(null);
         if (detail == null)
             throw new NoSuchElementException();
         System.out.println("Удаляем из заказа №" + id + ": " + detail);
@@ -73,7 +73,7 @@ public class Order {
 
     public void addDetail(Detail detail) {
         if (details.contains(detail)) return;
-        /*Detail present = getDetailsIfPresent(detail.getDish_id());
+        /*Detail present = getDetailsIfPresent(detail.getDishId());
         if (present != null) {
             present.setQuantity(detail.getQuantity() + present.getQuantity());
             if (present.getDish() != null)

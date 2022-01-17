@@ -15,7 +15,7 @@ public class ImageProcessor {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Thumbnails.of(originalImage)
                 .size(25, 25)
-                .outputFormat("JPEG")
+                .outputFormat("jpg")
                 .outputQuality(1)
                 .toFile(new File(DishController.IMAGES_THUMBNAILS_PATH + fileName));
     }
@@ -24,7 +24,7 @@ public class ImageProcessor {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         return Thumbnails.of(originalImage)
                 .size(targetWidth, targetHeight)
-                .outputFormat("JPEG")
+                .outputFormat("jpeg")
                 .outputQuality(1)
                 .asBufferedImage();
     }

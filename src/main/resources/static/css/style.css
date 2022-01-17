@@ -23,6 +23,11 @@
 
 @import url('https://fonts.googleapis.com/css?family=Galada|Playball|Poppins:300,400,500,600,700');
 
+@font-face {
+    font-family: 'Pacifico';
+    src: url('../fonts/Pacifico-Regular.ttf') format('truetype');
+}
+
 /* ==================================================
     1. HTML5 display-role reset for older browsers
 ===================================================== */
@@ -217,7 +222,7 @@ p {
 
 .parallax-fix {
     position: relative;
-    background-size: cover !important;
+    background-size: cover;
     overflow: hidden;
     background-position: center center;
     background-repeat: no-repeat !important;
@@ -229,7 +234,7 @@ p {
     -moz-transition-timing-function: ease-in;
     -webkit-transition-timing-function: ease-in;
     -o-transition-timing-function: ease-in;
-    background-attachment: fixed !important
+    background-attachment: scroll !important;
 }
 
 .parallax-fix .row {
@@ -242,7 +247,7 @@ p {
     color: #e75b1e;
     margin: 0;
     text-align: center;
-    font-family: 'Playball', cursive;
+    font-family: 'Pacifico', sans-serif;
     letter-spacing: 1.62px;
 }
 
@@ -280,6 +285,13 @@ p {
     left: 0;
 }
 
+.navbar {
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    box-shadow: 0 0 1px rgba(77, 77, 77, 0.53);
+}
+
 .header-block .navbar-default {
     border: 0;
     background-color: transparent;
@@ -297,7 +309,7 @@ p {
 
 
 .header-block .menuBar ul li a {
-    color: #fff;
+    color: rgba(255, 255, 255, 0.65);
     letter-spacing: 1.3px;
     position: relative;
     margin: 0 15px;
@@ -567,34 +579,32 @@ p {
 }
 
 .side-img {
-    width: 75px;
+    width: 10vw;
     display: inline-block;
-    height: 14px;
+    height: 2vmin;
 }
 
 .side-img i {
-    margin: 0;
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box;
-    margin-bottom: 1px;
+    margin: 0 0 1px;
     border: 0;
     border-top: 1px solid #e75b1e;
     height: 1px;
     display: inline-block;
-    width: 75px;
+    width: 10vw;
     float: left;
 }
 
 .side-img i:first-child,
 .side-img i:last-child {
-    width: 65px;
+    width: 9vw;
 }
 
 .side-img.left-side-img i:first-child,
 .side-img.left-side-img i:last-child {
-    width: 65px;
-    margin: 0 0 1px 10px;
+    margin: 0 0 1px 1vw;
 }
 
 
@@ -1971,10 +1981,7 @@ p {
     position: relative;
 }
 
-.newsletter .side-img.right-side-img,
-.reservation-block .side-img.right-side-img {
-    margin-left: 18px;
-}
+
 
 
 /* ===================================
@@ -2156,12 +2163,11 @@ p {
 }
 
 .zoom, .nav-item, .navbar-brand {
-    transition: /*text-shadow .2s,*/ transform .2s;
+    transition: transform .2s;
 }
 
 .nav-item:hover {
-    transform: scale(1.1) translateY(-5%) skewY(-1deg);
-    /*text-shadow:  2px 2px 3px rgba(11, 11, 11, 0.5)*/
+    transform: scale(1.1) translateY(-5%);
 }
 
 @media (max-width: 768px) {
@@ -2196,5 +2202,6 @@ p {
 }
 
 h2 {
-    font-size: 4vw;
+    font-size: 5vmin;
+    font-family: "Comic Sans MS", sans-serif;
 }

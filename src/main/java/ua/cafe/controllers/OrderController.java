@@ -2,6 +2,7 @@ package ua.cafe.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -62,30 +63,33 @@ public class OrderController {
         return JsonMaker.getJsonResponse(order);
     }
 
-    //add
+    //POST
     @PostMapping("/api/order")
     public ResponseEntity<?> apiSaveOrder(@RequestBody @Valid Order order, BindingResult result) {
-        var ErrorsMap = Utils.getResponseEntity(result);
+        var ErrorsMap = Utils.getValidityResponse(result);
         if (ErrorsMap != null) return ErrorsMap;
         if (order.getDateOrdered() == null) order.setDateOrdered(new Date(System.currentTimeMillis()));
         return ResponseEntity.ok(orderService.saveOrder(order));
     }
 
-    //update
+    //PUT
     @RequestMapping(value = "/api/order", method = RequestMethod.PUT)
     public ResponseEntity<?> apiUpdateOrder(@RequestBody @Valid Order order, BindingResult result) {
-        ResponseEntity<?> ErrorsMap = Utils.getResponseEntity(result);
+        ResponseEntity<?> ErrorsMap = Utils.getValidityResponse(result);
         if (ErrorsMap != null) return ErrorsMap;
         order.getDetails().forEach(detail -> detail.setOrderRetrieveDish(order));
         order.setDateOrdered(orderService.getDateOrdered(order.getId()));
         return ResponseEntity.ok(orderService.saveOrder(order));
     }
 
-
-    //remove
+    //DELETE
     @RequestMapping(value = "/api/order", method = RequestMethod.DELETE)
     public ResponseEntity<String> apiRemoveOrder(@RequestParam Long id) {
-        orderService.removeById(id);
+        try {
+            orderService.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            return new ResponseEntity<>("No order found with id " + id, HttpStatus.NOT_FOUND);
+        }
         return ResponseEntity.ok("Removed order " + id);
     }
 

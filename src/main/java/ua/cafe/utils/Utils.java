@@ -19,7 +19,7 @@ public class Utils {
         return dateFormat.format(new Date());
     }
 
-    public static ResponseEntity<HashMap<String, List<String>>> getResponseEntity(BindingResult result) {
+    public static ResponseEntity<HashMap<String, List<String>>> getValidityResponse(BindingResult result) {
         if (result.hasErrors()) {
             var ErrorsMap = new HashMap<String, List<String>>();
             for (FieldError e : result.getFieldErrors())

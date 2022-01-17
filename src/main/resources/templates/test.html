@@ -18,7 +18,6 @@
 
 </head>
 <body>
-<p>Hello,</p>
-<p th:unless="${name==null}" th:text="${name}"></p>
+<h3 style="margin: 1em">Hello, <span th:unless="${name==null}" th:text="${name}"></span>!</h3>
 </body>
 </html>

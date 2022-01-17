@@ -21,7 +21,7 @@ public class DetailService {
     }
 
     public void saveDetail(Detail detail) {
-        Detail det = repository.findByOrder_idAndDish_id(detail.getOrder_id(), detail.getDish_id());
+        Detail det = repository.findByOrder_idAndDish_id(detail.getOrderId(), detail.getDishId());
         if (det != null) {
             det.setQuantity(det.getQuantity() + detail.getQuantity());
             repository.save(det);

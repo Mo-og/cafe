@@ -46,7 +46,7 @@ public class OrderService {
     };
 
 
-    public void removeById(long id) {
+    public void deleteById(long id) {
         repository.deleteById(id);
     }
 

@@ -1,6 +1,7 @@
 package ua.cafe.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import ua.cafe.entities.DishCategory;
 import ua.cafe.services.CategoriesService;
 import ua.cafe.utils.JsonMaker;
-import ua.cafe.utils.Role;
 import ua.cafe.utils.Utils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,39 +43,22 @@ public class CategoriesController {
         return new ResponseEntity<>("No category found by given id", HttpStatus.NOT_FOUND);
     }
 
-    //add
-    @PostMapping("/api/category")
-    public ResponseEntity<?> apiAddDishCategory(@Valid DishCategory category, BindingResult result, HttpServletRequest request) {
-        ResponseEntity<?> ErrorsMap = Utils.getResponseEntity(result);
+    //POST, PUT
+    @RequestMapping(value = "/api/category", method = {RequestMethod.POST, RequestMethod.PUT})
+    public ResponseEntity<?> apiAddUpdateCategory(@Valid DishCategory category, BindingResult result) {
+        ResponseEntity<?> ErrorsMap = Utils.getValidityResponse(result);
         if (ErrorsMap != null) return ErrorsMap;
-        categoriesService.saveCategory(category);
-        System.out.println("Успешно добавлено " + category);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(categoriesService.saveCategory(category), HttpStatus.OK);
     }
 
-    //update
-    @RequestMapping(value = "/api/category", method = RequestMethod.PUT)
-    public ResponseEntity<String> apiUpdateCategory(@Valid DishCategory category, BindingResult result, HttpServletRequest request) {
-        Role role = new Role(request);
-        if (!role.isAdmin())
-            return new ResponseEntity<>("You have no permission to change categories", HttpStatus.FORBIDDEN);
-        if (result.hasErrors())
-            return new ResponseEntity<>(JsonMaker.getJson(category), HttpStatus.NOT_ACCEPTABLE);
-        categoriesService.saveCategory(category);
-        System.out.println("Обновлено " + category);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    //remove
+    //DELETE
     @RequestMapping(value = "/api/category", method = RequestMethod.DELETE)
-    public ResponseEntity<String> apiRemoveCategory(@RequestParam Long id, HttpServletRequest request) {
-        Role role = new Role(request);
-        if (!role.isAdmin())
-            return new ResponseEntity<>("You have no permission to remove categories", HttpStatus.FORBIDDEN);
-        if (!categoriesService.existsWithId(id))
-            return new ResponseEntity<>("No category found by given id", HttpStatus.NOT_FOUND);
-        categoriesService.removeById(id);
-        System.out.println("Removed category with id = " + id);
+    public ResponseEntity<String> apiRemoveCategory(@RequestParam Long id) {
+        try {
+            categoriesService.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            return new ResponseEntity<>("No category found by given id of " + id, HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
     ////////////////////////////////////////////////////////////////////////////
@@ -125,7 +108,7 @@ public class CategoriesController {
     public String removeCategory(@RequestParam Long id) {
         if (!categoriesService.existsWithId(id))
             throw new NoSuchElementException();
-        categoriesService.removeById(id);
+        categoriesService.deleteById(id);
         return "redirect:/categories";
     }
 }

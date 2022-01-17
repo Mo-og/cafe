@@ -1,7 +1,11 @@
 package ua.cafe.utils;
 
+import java.util.regex.Pattern;
+
 public class Translit {
-    public static String cyr2lat(char ch){
+    private static final Pattern PATTERN = Pattern.compile("^[A-Za-z0-9.,\\-()\\[\\]]+$");
+
+    public static String cyr2lat(char ch) {
         return switch (ch) {
             case 'А' -> "A";
             case 'Б' -> "B";
@@ -11,8 +15,8 @@ public class Translit {
             case 'Е', 'Ё', 'Э' -> "E";
             case 'Ж' -> "Zh";
             case 'З' -> "Z";
-            case 'И' -> "I";
-            case 'Й' -> "I";
+            case 'И', 'І', 'Й' -> "I";
+            case 'Ї' -> "Yi";
             case 'К' -> "K";
             case 'Л' -> "L";
             case 'М' -> "M";
@@ -40,8 +44,8 @@ public class Translit {
             case 'е', 'ё', 'э' -> "e";
             case 'ж' -> "zh";
             case 'з' -> "z";
-            case 'и' -> "i";
-            case 'й' -> "i";
+            case 'и', 'і', 'й' -> "i";
+            case 'ї' -> "yi";
             case 'к' -> "k";
             case 'л' -> "l";
             case 'м' -> "m";
@@ -61,17 +65,19 @@ public class Translit {
             case 'ы' -> "y";
             case 'ю' -> "iu";
             case 'я' -> "ia";
-            case '.' -> ".";
-            case ',' -> ",";
-            default -> "_";
+            case '!', '?' -> ".";
+            case 'ь', 'Ь', 'ъ', 'Ъ' -> "";
+            default -> {
+                String chr = String.valueOf(ch);
+                yield PATTERN.matcher(chr).matches() ? chr : "-";
+            }
         };
     }
 
-    public static String cyr2lat(String s){
-        StringBuilder sb = new StringBuilder(s.length()*2);
-        for(char ch: s.toCharArray()){
+    public static String cyr2lat(String s) {
+        StringBuilder sb = new StringBuilder(s.length() * 2);
+        for (char ch : s.toCharArray())
             sb.append(cyr2lat(ch));
-        }
         return sb.toString();
     }
 }

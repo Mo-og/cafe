@@ -32,8 +32,8 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/username", method = RequestMethod.GET)
-    public String currentUserName(Principal principal, Model model) {
-        System.out.println("principal==user: "+(principal instanceof User));
+    public String currentUserName(Principal principal, Model model, Authentication authentication) {
+        model.addAttribute("name", ((User) authentication.getPrincipal()).getFirstName());
         return "test";
     }
 

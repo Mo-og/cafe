@@ -68,6 +68,10 @@ public class Dish {
         return imagePath;
     }
 
+    public String getClearImagePath() {
+        return imagePath;
+    }
+
     public String getStatusDesc() {
         if (status == null)
             return null;

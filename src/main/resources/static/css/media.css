@@ -286,7 +286,7 @@
         margin: 0 15px;
     }
     .blog-row-right .blog-text {
-        margin-right: 0px;
+        margin-right: 0;
     }
     .blog-date span {
         font-size: 22px;
@@ -342,7 +342,7 @@
         position: absolute;
     }
     .navbar-toggle {
-        right: 0px;
+        right: 0;
     }
     .banner {
         min-height: 800px !important;
@@ -380,7 +380,7 @@
         top: auto;
     }
     .mar-top-320 {
-        margin-top: 0px;
+        margin-top: 0;
     }
     .spcl-menu .col-lg-4:last-of-type {
         margin-bottom: 40px;
@@ -513,7 +513,7 @@
         margin: 0 10px;
     }
     .side-img {
-        width: 45px;
+        width: 7vw;
         overflow: hidden;
     }
     .side-img i:first-child,

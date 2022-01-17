@@ -65,8 +65,8 @@ public class DetailsController {
         if (result.hasErrors())
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 //TODO: simplify or optimise
-        Order order = OrderController.orderService.getById(detail.getOrder_id());
-        Dish dish_toSave = dishService.getById(detail.getDish_id());
+        Order order = OrderController.orderService.getById(detail.getOrderId());
+        Dish dish_toSave = dishService.getById(detail.getDishId());
         detailService.remove(detail);
         detail.setDish(dish_toSave);
         detail.setOrder(order);
