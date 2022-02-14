@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+import static ua.cafe.utils.Utils.markPage;
+
 @Controller
 public class DishController {
     private static final String IMAGES_FOLDER_PATH = ".//src//main//resources//static//DishImages//";
@@ -128,6 +130,7 @@ public class DishController {
         var dishes = dishService.getAllDishes();
         dishes.forEach(d -> d.setThumb(true));
         model.addAttribute("dishes", dishes);
+        markPage(model, "menuStaff");
         return "menuStaff";
     }
 
@@ -180,7 +183,7 @@ public class DishController {
             byte[] bytes = file.getBytes();
             Files.write(path, bytes);
             ImageProcessor.saveThumbnail(file.getInputStream(), pathString);
-            System.out.println("Saved thumnail successfully");
+            System.out.println("Saved thumbnail successfully");
         } catch (IOException | NullPointerException e) {
             System.out.println("*-Dish image update wasn't successful due to invalid image file.\n*-Error: " + e.getMessage());
             model.addAttribute("categories", categoriesService.getAllCategories());

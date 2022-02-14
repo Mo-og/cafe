@@ -35,6 +35,8 @@ public class Detail {
     @Column(insertable = false, updatable = false, nullable = false, name = "order_id")
     private Long orderId = (long) -1;
     private int quantity;
+    private ReadyStatus status = ReadyStatus.NEW;
+
 
     @ManyToOne(optional = false, cascade = CascadeType.MERGE)
     @JoinColumn(name = "dish_id")
@@ -67,11 +69,12 @@ public class Detail {
         this.dishId = dishId;
         this.orderId = orderId;
         this.quantity = quantity;
-        /*try {
-            this.dish = DishController.getDishById(dish_id);
-        } catch (Exception e) {*/
-        this.dish = null;
-//        }
+    }
+
+    public String getStatusDesc() {
+        if (status == null)
+            return null;
+        return status.getDescription();
     }
 
     public Dish getDish() {

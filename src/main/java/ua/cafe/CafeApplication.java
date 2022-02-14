@@ -10,6 +10,14 @@ import org.springframework.context.annotation.Bean;*/
 @SpringBootApplication
 public class CafeApplication {
 
+ /*   @Bean
+    public SpringTemplateEngine templateEngine(ITemplateResolver templateResolver, SpringSecurityDialect sec) {
+        final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver);
+        templateEngine.addDialect(sec); // Enable use of "sec"
+        return templateEngine;
+    }*/
+
     public static void main(String[] args) {
         SpringApplication.run(CafeApplication.class, args);
     }

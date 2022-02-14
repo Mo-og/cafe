@@ -1,246 +1,195 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+<head th:replace="fragments::head_datatable(~{::title}, ~{})">
     <title>Заказы</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0">
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
-    <title>Добавление заказа</title>
-    <!-- CSS -->
-    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css"/>
-    <link type="text/css" rel="stylesheet" href="../css/font-awesome.css">
-    <link type="text/css" href="../css/animate.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
-    <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
 </head>
 <style>
     .b-popup {
         width: 100%;
-        min-height: 100%;
+        height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
         overflow: hidden;
         position: fixed;
         top: 0;
+        backdrop-filter: blur(2px);
     }
 
     .b-popup .b-popup-content { /*настройки формы*/
-        margin: 15% auto 0 auto;
-        max-width: 500px;
-        height: 100%;
-        padding: 10px;
+        margin: auto;
+        width: 500px;
+        height: auto;
+        padding: 1.5rem;
         background-color: #fdfdfd; /*заливка формы*/
         border-radius: 15px;
         box-shadow: 0 0 10px #000; /*тень от всплывающего окна*/
     }
+
+    form .reservation-block {
+        display: block;
+        max-height: 79vh;
+        overflow-y: auto;
+    }
+
+    @media (max-width: 480px) {
+        .b-popup .b-popup-content {
+            width: 95%;
+        }
+
+        .reservation-block {
+            max-height: 65vh;
+        }
+    }
 </style>
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
 <div id="app">
+    <!-- Header Section Begins -->
+    <th:block th:replace="fragments :: navbar"/>
+    <!-- Header Section Ends -->
 
-
-    <div id="site-head">
-        <!-- Header Section Begins -->
-        <header id="header" class="header-block" data-top="0" data-scroll="100">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 main-menu">
-                        <div class="menuBar scrollbtn">
-                            <nav class="navbar navbar-default">
-                                <div class="container-fluid">
-                                    <div class="navbar-header">
-                                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                                                data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                                            <span class="sr-only">Toggle navigation</span>
-                                            <span class="icon-bar"></span>
-                                            <span class="icon-bar"></span>
-                                            <span class="icon-bar"></span>
-                                        </button>
-                                        <!--<div class="logo">
-                                            <h3><a class="navbar-collapse" th:href="@{/Waiter/index}">КАФЕ GORBIK</a></h3>
-                                        </div>-->
-                                    </div>
-                                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                        <ul class="nav navbar-nav navbar-right">
-                                            <li><a th:href="@{/}"><span
-                                                    style="color: #ff7f50;">Главная</span></a></li>
-                                            <li><a th:href="@{/menu_staff}"><span
-                                                    style="color: #ff7f50;">Меню</span></a></li>
-                                            <li><a th:href="@{/users}"><span
-                                                    style="color: #ff7f50;">Сотрудники</span></a>
-                                            </li>
-                                            <li>
-                                                <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
-                                                   th:href="@{/logout}"><span style="color: #ff7f50;">Выход</span></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <!-- Header Section Ends -->
-
-        <section class="reservation-block pad-top-100 pad-bottom-100">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
-                        <h2 class="block-title text-align-center"><span
-                                class="side-img left-side-img"><i></i><i></i></span>
-                            Заказы<span class="side-img right-side-img"><i></i><i></i></span></h2>
-                        <h4 class="block-title text-align-center">Для редактирования конкретного заказа, дважды нажмите
-                            на
-                            него в списке ниже.<i></i><i></i><i></i>
-                        </h4>
-                        <br><a @click="showAddOrder" class="btn btn-lg btn-block btn-outline-primary"
-                               role="button"
-                               aria-disabled="true">Добавить заказ</a>
+    <section class="reservation-block pad-top-100 pad-bottom-100">
+        <div class="container-lg">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
+                    <th:block th:replace="fragments :: headline('Заказы')"/>
+                    <h4 class="block-title text-align-center">
+                        Для редактирования конкретного заказа, дважды нажмите на него в списке ниже.
                         <br>
-                        <form class="reservation-block">
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th class="text-justify">Код заказа</th>
-                                        <th class="text-justify">Номер столика</th>
-                                        <th class="text-justify">Дата оформления</th>
-                                        <th class="text-justify">Блюда</th>
-                                        <th class="text-justify">Стоимость (грн.)</th>
-                                        <th class="text-justify">Статус</th>
-                                        <th class="text-justify">Комментарий</th>
-                                        <th class="text-justify"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr v-for="order in orders" :key="order.id" @click="showEditOrder(order)"
-                                        style="cursor: pointer">
-                                        <td class="align-middle"><span v-text="order.id"></span></td>
-                                        <td class="align-middle"><span v-text="order.tableNum"></span></td>
-                                        <td class="align-middle"><span v-text="formatDate(order.dateOrdered)"></span>
-                                        </td>
-                                        <td class="align-middle"><span v-text="order.dishNames"></span></td>
-                                        <td class="align-middle"><span v-text="order.cost"></span></td>
-                                        <td class="align-middle"><span v-text="order.status"></span></td>
-                                        <td class="align-middle"><span v-text="order.comments"></span></td>
-                                        <td @click.stop="deleteOrder(order.id)">
-                                            <!--                                        <button  class="btn btn-primary" style="" >Отменить</button>-->
-                                            <!--                                        альтернатива - иконка крестика-->
-                                            <svg class="bi bi-x-square-fill" width="1em" height="1em"
-                                                 viewBox="0 0 16 16"
-                                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                                 style="display: inline; cursor: pointer">
-                                                <path fill-rule="evenodd"
-                                                      d="M2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2zm9.854 4.854a.5.5 0 00-.708-.708L8 7.293 4.854 4.146a.5.5 0 10-.708.708L7.293 8l-3.147 3.146a.5.5 0 00.708.708L8 8.707l3.146 3.147a.5.5 0 00.708-.708L8.707 8l3.147-3.146z"
-                                                      clip-rule="evenodd"/>
-                                            </svg>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </form>
+                    </h4>
+                    <div class="d-grid col-12 gap-md-2 col-md-3 mx-auto mb-3">
+                        <a @click="showAddOrder" class="btn btn-block orange-btn empty-btn"
+                           role="button" aria-disabled="true">
+                            Добавить заказ
+                            <br>
+                        </a>
                     </div>
+                    <form class="reservation-block">
+                        <div class="table-responsive">
+                            <table id="table" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th class="text-justify">Код</th>
+                                    <th class="text-justify">Стол</th>
+                                    <th class="text-justify">Оформлен</th>
+                                    <th class="text-justify">Блюда</th>
+                                    <th class="text-justify">Счёт</th>
+                                    <th class="text-justify">Статус</th>
+                                    <th class="text-justify">Комментарий</th>
+                                    <th class="text-justify"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="order in orders" :key="order.id" @click="showEditOrder(order)"
+                                    style="cursor: pointer">
+                                    <td class="align-middle"><span v-text="order.id"></span></td>
+                                    <td class="align-middle"><span v-text="order.tableNum"></span></td>
+                                    <td class="align-middle"><span v-text="formatDate(order.dateOrdered)"></span>
+                                    </td>
+                                    <td class="align-middle"><span v-text="order.dishNames"></span></td>
+                                    <td class="align-middle"><span v-text="order.cost"></span></td>
+                                    <td class="align-middle"><span v-text="order.status"></span></td>
+                                    <td class="align-middle"><span v-text="order.comments"></span></td>
+                                    <td @click.stop="deleteOrder(order.id)" class="text-center align-middle">
+                                        <!--                                        <button  class="btn btn-primary" style="" >Отменить</button>-->
+                                        <!--                                        альтернатива - иконка крестика-->
+                                        <svg class="bi bi-x-square-fill" width="1.5em" height="1.5em"
+                                             viewBox="0 0 16 16"
+                                             fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                                             style="display: inline; cursor: pointer">
+                                            <path fill-rule="evenodd"
+                                                  d="M2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2zm9.854 4.854a.5.5 0 00-.708-.708L8 7.293 4.854 4.146a.5.5 0 10-.708.708L7.293 8l-3.147 3.146a.5.5 0 00.708.708L8 8.707l3.146 3.147a.5.5 0 00.708-.708L8.707 8l3.147-3.146z"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
 
-    <div class="b-popup" id="addOrder" v-show="isShowEditOrder">
-        <div class="b-popup-content" id="inner">
-            <br>
-            <h3 class="block-title text-align-center">Введите данные заказа</h3>
-            <br>
-            <form class="reservation-block" @submit.prevent="saveOrder">
-                <div class="form-row" style="margin-left: 3%;margin-right: 3%">
-                    <div class="col">
-                        <h4><label for="tabl_num">Номер столика</label></h4>
+    <div class="b-popup" id="addOrder" v-show="isShowEditOrder"
+         style="display: flex; flex-direction: column; justify-content: center; z-index: 10">
+        <div style="display: block; position: relative; width: 100%; height: 6.5vh"></div>
+        <div class="b-popup-content" id="inner" style="position: relative">
+            <h3 class="block-title text-align-center" style="margin-top: 10px">Введите данные заказа</h3>
+            <form class="reservation-block" @submit.prevent="saveOrder" style="margin-bottom: 10px">
+                <div class="mb-3">
+                    <div class="col mb-1">
+                        <h5><label for="tabl_num">Номер столика</label></h5>
                         <input type="number" class="form-control" id="tabl_num" name="tab_num" placeholder=""
                                v-model="selectedOrder.tableNum" required>
                         <small class="text-danger"></small>
                     </div>
-                    <div class="col">
-                        <h4><label for="commen">Комментарий к заказу</label></h4>
+                    <div class="col mb-1">
+                        <h5><label for="commen">Комментарий к заказу</label></h5>
                         <input type="text" class="form-control" id="commen" name="comment" placeholder=""
                                v-model="selectedOrder.comments">
                         <small class="text-danger"></small>
                     </div>
                 </div>
-                <hr class="mb-4">
-                <h4 class="block-title text-align-center">Добавьте блюдо в заказ</h4>
+                <h5 class="block-title text-align-center">Добавьте блюдо в заказ</h5>
 
-                <div class="form-row" style="margin-left: 3%;margin-right: 3%">
-                    <div class="col mb-3">
-                        <h4><label for="dish">Выберите блюдо</label></h4>
+                <div class="mb-3">
+                    <div class="col mb-1">
+                        <h5><label for="dish">Выберите блюдо</label></h5>
                         <select v-model="selectedDetail.dish_id" class="form-control" id="dish">
                             <option v-for="dish in dishes" :key="dish.id" :value="dish.id">{{ dish.name }}</option>
                         </select>
                     </div>
-                    <div class="col mb-3" align="left">
-                        <h4><label for="quantity">Количество</label></h4>
+                    <div class="col mb-1">
+                        <h5><label for="quantity">Количество</label></h5>
                         <input type="number" class="form-control" id="quantity"
                                v-model.number="selectedDetail.quantity">
-                        <!--                    <small class="text-danger" th:if="${#fields.hasErrors('quantity')}"-->
-                        <!--                           th:errors="*{container.quantity}"></small>-->
-                    </div>
-                    <br>
-                    <button class="btn btn-warning btn-lg btn-block" @click.prevent="saveDish"
-                            :disabled="!selectedDetail.dish_id">
-                        Добавить блюдо
-                    </button>
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th class="text-justify">Блюдо</th>
-                                <th class="text-justify">Количество</th>
-                                <th class="text-justify">Стоимость (грн.)</th>
-                                <th class="text-justify"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(detail,i) in selectedOrder.details"
-                                :key="i"
-                                @click="editOrderDish(detail.dish_id)"
-                                style="cursor: pointer">
-                                <td class="align-middle"><span>{{dishName(detail.dish_id)}}</span></td>
-                                <td class="align-middle"><span>{{detail.quantity}}</span></td>
-                                <td class="align-middle"><span>{{dishCost(detail.dish_id)}}</span></td>
-                                <td @click.stop="deleteOrderDish(detail.dish_id)">
-                                    <svg class="bi bi-x-square-fill" width="1em" height="1em"
-                                         viewBox="0 0 16 16"
-                                         fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                         style="display: inline; cursor: pointer">
-                                        <path fill-rule="evenodd"
-                                              d="M2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2zm9.854 4.854a.5.5 0 00-.708-.708L8 7.293 4.854 4.146a.5.5 0 10-.708.708L7.293 8l-3.147 3.146a.5.5 0 00.708.708L8 8.707l3.146 3.147a.5.5 0 00.708-.708L8.707 8l3.147-3.146z"
-                                              clip-rule="evenodd"/>
-                                    </svg>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
 
-
-                <div class="row">
-                    <div class="col-12 col-md-6">
-                        <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">
-                            {{ isNewOrder ? 'Оформить заказ' : 'Сохранить заказ' }}
-                        </button>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <button type="button" class="btn btn-secondary btn-lg btn-block"
-                                @click="closeEditOrder">
-                            Отменить
-                        </button>
-                    </div>
+                <button class="btn btn-warning btn-lg btn-block mb-2" @click.prevent="saveDish"
+                        :disabled="!selectedDetail.dish_id">
+                    Добавить блюдо
+                </button>
+                <div class="table-responsive mb-2">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th class="text-justify">Блюдо</th>
+                            <th class="text-justify">Шт.</th>
+                            <th class="text-justify">Стоимость</th>
+                            <th class="text-justify"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(detail,i) in selectedOrder.details"
+                            :key="i"
+                            @click="editOrderDish(detail.dish_id)"
+                            style="cursor: pointer">
+                            <td class="align-middle"><span>{{dishName(detail.dish_id)}}</span></td>
+                            <td class="align-middle"><span>{{detail.quantity}}</span></td>
+                            <td class="align-middle"><span>{{dishCost(detail.dish_id)}}</span></td>
+                            <td @click.stop="deleteOrderDish(detail.dish_id)">
+                                <svg class="bi bi-x-square-fill" width="1em" height="1em"
+                                     viewBox="0 0 16 16"
+                                     fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                                     style="display: inline; cursor: pointer">
+                                    <path fill-rule="evenodd"
+                                          d="M2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2zm9.854 4.854a.5.5 0 00-.708-.708L8 7.293 4.854 4.146a.5.5 0 10-.708.708L7.293 8l-3.147 3.146a.5.5 0 00.708.708L8 8.707l3.146 3.147a.5.5 0 00.708-.708L8.707 8l3.147-3.146z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex col-12 justify-content-between mb-1">
+                    <button class="btn btn-warning btn-lg" type="submit" value="Submit">
+                        {{ isNewOrder ? 'Оформить заказ' : 'Сохранить заказ' }}
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-lg" @click="closeEditOrder">
+                        Отменить
+                    </button>
                 </div>
             </form>
         </div>
@@ -354,7 +303,7 @@
                     minute: '2-digit', // "numeric", "2-digit"
                     // second: '2-digit' // "numeric", "2-digit"
                 };
-                let str=d.toLocaleString('ua-UA',options);
+                let str = d.toLocaleString('ua-UA', options);
                 return str.charAt(0).toUpperCase().concat(str.substring(1));
             },
             saveDish() {

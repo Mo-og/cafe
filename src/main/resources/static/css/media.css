@@ -616,13 +616,21 @@
         font-size: 50px;
         line-height: 62px;
     }
+
+    h2 {
+        font-size: 3em;
+        font-family: "Comic Sans MS", sans-serif;
+    }
+
     .title-caption {
         padding: 15px 0;
     }
+
     .food-gallery-item.wide,
     .food-gallery-item {
         width: 50%;
     }
+
     .newsletter form {
         width: 100%;
     }
@@ -646,7 +654,12 @@
 }
 
 @media (max-width: 360px) {
-    .tab-menu .nav-tabs>li>a {
+    h2 {
+        font-size: 3em;
+        font-family: "Comic Sans MS", sans-serif;
+    }
+
+    .tab-menu .nav-tabs > li > a {
         font-size: 14px;
         margin: 0 8px;
         padding: 10px;
@@ -654,13 +667,18 @@
 }
 
 @media (max-width: 340px) {
+    h2 {
+        font-size: 3em;
+        font-family: "Comic Sans MS", sans-serif;
+    }
+
     .menuBar .navbar-right {
         top: 25px;
-        -webkit-transform: translate(0,0%);
-        -moz-transform: translate(0,0%);
-        -ms-transform: translate(0,0%);
-        -o-transform: translate(0,0%);
-        transform: translate(0,0%);
+        -webkit-transform: translate(0, 0%);
+        -moz-transform: translate(0, 0%);
+        -ms-transform: translate(0, 0%);
+        -o-transform: translate(0, 0%);
+        transform: translate(0, 0%);
     }
 }
 

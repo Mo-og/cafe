@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="utf-8">
@@ -40,17 +40,17 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li><a href="#banner">Главная</a></li>
-                                        <li><a th:if="${role.isAuthorised()}" th:href="@{/menu_staff}">Меню</a></li>
-                                        <li><a th:if="${!role.isAuthorised()}" th:href="@{/menu}">Меню</a></li>
-                                        <li><a th:if="${role.isAuthorised()}" th:href="@{/orders}">Заказы</a></li>
-                                        <li><a th:if="${role.isAuthorised()}" th:href="@{/users}">Сотрудники</a></li>
-                                        <li><a th:if="${role.isAdmin()}" th:href="@{/report}">Отчет</a></li>
+                                        <li><a sec:authorize="isAuthenticated()" th:href="@{/menu_staff}">Рабочее
+                                            меню</a></li>
+                                        <li><a sec:authorize="!isAuthenticated()" th:href="@{/menu}">Меню</a></li>
+                                        <li><a sec:authorize="isAuthenticated()" th:href="@{/orders}">Заказы</a></li>
+                                        <li><a sec:authorize="isAuthenticated()" th:href="@{/users}">Сотрудники</a></li>
+                                        <li><a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/report}">Отчет</a></li>
                                         <li><a href="#about">О нас</a></li>
                                         <li><a href="#gallery">Галерея</a></li>
                                         <li><a href="#footer">Связаться с нами</a></li>
-                                        <li><a th:if="${!role.isAuthorised()}" th:href="@{/login}">Вход</a></li>
-                                        <li><a th:if="${role.isAuthorised()}" style="cursor: pointer"
+                                        <li><a sec:authorize="!isAuthenticated()" th:href="@{/login}">Вход</a></li>
+                                        <li><a sec:authorize="isAuthenticated()" style="cursor: pointer"
                                                onclick="if(confirm('Вы уверены, что хотите выйти из личного кабинета?'))
                                                    document.logout.submit()">
                                             Выйти

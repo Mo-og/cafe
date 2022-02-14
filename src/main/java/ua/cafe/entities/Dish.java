@@ -26,7 +26,8 @@ public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private long categoryId;
+    @ManyToOne
+    private DishCategory category;
     @NotBlank(message = "У блюда должно быть название!")
     private String name;
     @Range(min = 1, message = "Масса блюда не может быть меньше 1!")
@@ -34,7 +35,6 @@ public class Dish {
     private double price;
     private String ingredients;
     private boolean available = true;
-    private ReadyStatus status = ReadyStatus.NEW;
     private String imagePath = null;
     @Transient
     @JsonIgnore
@@ -72,10 +72,8 @@ public class Dish {
         return imagePath;
     }
 
-    public String getStatusDesc() {
-        if (status == null)
-            return null;
-        return status.getDescription();
+    public long getCategory() {
+        return category.getId();
     }
 
     @Override

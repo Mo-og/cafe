@@ -245,7 +245,7 @@ p {
 
 .block-title {
     color: #e75b1e;
-    margin: 0;
+    margin: 0 0 1rem;
     text-align: center;
     font-family: 'Pacifico', sans-serif;
     letter-spacing: 1.62px;
@@ -286,10 +286,26 @@ p {
 }
 
 .navbar {
+
     background-color: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
+    /*backdrop-filter: blur(3px);*/
+    /*-webkit-backdrop-filter: blur(3px);*/
     box-shadow: 0 0 1px rgba(77, 77, 77, 0.53);
+}
+
+@media (max-device-width: 580px) {
+    .navbar {
+        border-radius: 0 0 15px 15px;
+        border: 1px solid orange;
+        border-top: transparent;
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+    }
+
+    .header-block .menuBar .mb-navbar-item ul li a::before,
+    .header-block .menuBar .mb-navbar-item ul li a::after {
+        top: 20px;
+    }
 }
 
 .header-block .navbar-default {
@@ -375,6 +391,12 @@ p {
     -webkit-transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
     transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
+
+.header-block .menuBar .mb-navbar-item ul li a::before,
+.header-block .menuBar .mb-navbar-item ul li a::after {
+    bottom: -10px;
+}
+
 
 .header-block .menuBar ul li a::before {
     background: #b5b5b5;
@@ -1982,8 +2004,6 @@ p {
 }
 
 
-
-
 /* ===================================
     16. Copyright CSS
 ====================================== */
@@ -2136,9 +2156,11 @@ p {
     transition: top 0.5s, opacity 0.5s;
     padding: 0.5rem;
 }
-.card-subtitle{
+
+.card-subtitle {
     max-width: 87.5%;
 }
+
 .menu-card-title {
     position: absolute;
     bottom: 0;
@@ -2162,6 +2184,7 @@ p {
     border-bottom-left-radius: 6px;
 }
 
+/*
 .zoom, .nav-item, .navbar-brand {
     transition: transform .2s;
 }
@@ -2178,8 +2201,9 @@ p {
 
 .zoom:hover {
     transform: scale(1.1) translateY(-5%) translateX(5%);
-    /*text-shadow:  2px 2px 3px rgba(11, 11, 11, 0.5)*/
+    text-shadow:  2px 2px 3px rgba(11, 11, 11, 0.5)
 }
+*/
 
 .nav-item span, .header-block .navbar-brand:hover {
     color: #ff7f50;
@@ -2201,7 +2225,30 @@ p {
     box-sizing: border-box;
 }
 
-h2 {
-    font-size: 5vmin;
-    font-family: "Comic Sans MS", sans-serif;
+table {
+    border-collapse: separate;
+}
+
+td, th {
+    border: solid 1px #b0b0b0;
+}
+
+th {
+    border-bottom: solid 2px #737373;
+}
+
+tr:first-child th:first-child {
+    border-top-left-radius: 5px;
+}
+
+tr:first-child th:last-child {
+    border-top-right-radius: 5px;
+}
+
+tr:last-child td:first-child {
+    border-bottom-left-radius: 5px;
+}
+
+tr:last-child td:last-child {
+    border-bottom-right-radius: 5px;
 }

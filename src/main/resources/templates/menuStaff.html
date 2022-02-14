@@ -1,124 +1,33 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0">
-    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
-    <title> Меню </title>
-    <!-- CSS -->
-    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css"/>
-    <link type="text/css" rel="stylesheet" href="../css/font-awesome.css">
-    <link type="text/css" href="../css/animate.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
-    <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
-    <!-- Jquery Js -->
-    <script type="text/javascript" src="../js/jquery.min.js"></script>
-    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../js/element.js"></script>
-    <script type="text/javascript" src="../js/modernizr.js"></script>
-    <script type="text/javascript" src="../js/jquery.localscroll-1.2.7-min.js"></script>
-    <script type="text/javascript" src="../js/wow.min.js"></script>
-    <script type="text/javascript" src="../js/imagesloaded.pkgd.min.js"></script>
-    <script type="text/javascript" src="../js/jquery.isotope.min.js"></script>
-    <script type="text/javascript" src="../js/jquery.parallax-1.1.3.js"></script>
-    <script type="text/javascript" src="../js/jquery.magnific-popup.js"></script>
-    <script type="text/javascript" src="../js/moment-with-locales.js"></script>
-    <script type="text/javascript" src="../js/bootstrap-datetimepicker.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
-    <script src="https://cdn.datatables.net/plug-ins/1.10.16/sorting/datetime-moment.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            $.fn.dataTable.moment('D-MM-YYYY H:m:s');
-
-            $('#table').DataTable({
-                language: {
-                    // lengthMenu: "Отображать _MENU_ блюд",
-                    url: "https://cdn.datatables.net/plug-ins/1.10.21/i18n/Russian.json",
-                },
-                // "bLengthChange": false,
-                "pageLength": 25,
-            });
-    });
-    </script>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments::head_datatable(~{::title}, ~{::script})">
+    <title>Меню</title>
+    <script type="text/javascript" src="../js/table-sorting.js"></script>
 </head>
 
-<body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
+<body id="mainBox" class="creamBg">
 <div id="site-head">
-    <!-- Header Section Begins -->
-    <header id="header" class="header-block" data-top="0" data-scroll="100">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 main-menu">
-                    <div class="menuBar scrollbtn">
-                        <nav class="navbar navbar-default">
-                            <div class="container-fluid">
-                                <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                                        <span class="sr-only">Toggle navigation</span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                    </button>
-                                </div>
-                                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                    <ul class="nav navbar-nav navbar-right">
-                                        <li><a th:href="@{/}"><span style="color: #ff7f50;">Главная</span></a>
-                                        </li>
-                                        <li><a th:href="@{/orders}"><span style="color: #ff7f50;">Заказы</span></a></li>
-                                        <li><a th:href="@{/users}"><span style="color: #ff7f50;">Сотрудники</span></a>
-                                        </li>
-                                        <li><a th:href="@{/report}"><span style="color: #ff7f50;">Отчет</span></a></li>
-                                        <li>
-                                            <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
-                                               th:href="@{/logout}"><span style="color: #ff7f50;">Выход</span></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- Header Section Ends -->
+    <th:block th:replace="fragments :: navbar"/>
 
     <section class="reservation-block pad-top-100 pad-bottom-100">
-        <div class="container-fluid">
+        <div class="container-lg">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
-                    <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span>
-                        Меню<span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
+                    <th:block th:replace="fragments :: headline('Меню')"/>
+
+                    <div class="d-grid col-12 gap-md-2 col-md-3 mx-auto">
+                        <a th:href="@{/add_dish}" class="btn btn-block orange-btn empty-btn" role="button"
+                           aria-disabled="true" sec:authorize="hasRole('ROLE_ADMIN')">
+                            Добавить блюдо
+                        </a>
+                    </div>
                     <br>
-                    <a th:href="@{/add_dish}"
-                       class="btn btn-lg btn-block btn-outline-primary" role="button" aria-disabled="true">Добавить
-                        блюдо</a>
-                    <br>
-                    <h4 class="block-title text-align-center">Для редактирования конкретного блюда меню, выберите его в
-                        списке ниже<i></i><i></i><i></i>
+                    <h4 class="block-title text-align-center" sec:authorize="hasRole('ROLE_ADMIN')">
+                        Для редактирования конкретного блюда меню, выберите его в списке ниже<i></i><i></i><i></i>
                     </h4>
-                    <br><br>
+                    <br sec:authorize="hasRole('ROLE_ADMIN')"><br sec:authorize="hasRole('ROLE_ADMIN')">
                     <form class="reservation-block">
-                        <div class="table-responsive-sm">
+                        <div class="table-responsive">
                             <table id="table" class="table table-striped">
                                 <thead>
                                 <tr>
@@ -132,14 +41,17 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <tr th:each="dish, state : ${dishes}"
+                                    th:style="${#authorization.expression('hasRole(&quot;ROLE_ADMIN&quot;)')}?'cursor: pointer':''"
+                                    th:onclick="${#authorization.expression('hasRole(&quot;ROLE_ADMIN&quot;)')}?'javascript:rowClicked(\'' + ${dish.id} + '\');':''">
 
-                                <tr th:each="dish, state : ${dishes}" style="cursor: pointer"
-                                    th:onclick="'javascript:rowClicked(\'' + ${dish.id} + '\');'">
                                     <!--<td class="align-middle"><span th:text="${dish.id}"/></td>-->
                                     <td class="align-middle"><span th:text="${state.count}"></span></td>
-                                    <td class="align-middle"><img class="image" style="height: 25px; width: 25px" th:src="${dish.imagePath}" alt="dish image"></td>
+                                    <td class="align-middle"><img class="image"
+                                                                  style="width: 25px; height: 25px; display: block; "
+                                                                  th:src="${dish.imagePath}" alt=""></td>
                                     <td class="align-middle"><span th:text="${dish.name}"></span></td>
-                                    <td class="align-middle"><span th:text="${dish.categoryId}"></span></td>
+                                    <td class="align-middle"><span th:text="${dish.category}"></span></td>
                                     <td class="align-middle"><span th:text="${dish.weight}"></span></td>
                                     <td class="align-middle"><span th:text="${dish.price}"></span></td>
                                     <td class="align-middle"><span th:text="${dish.ingredients}"></span></td>
@@ -161,6 +73,5 @@
         location.href = "dish_edit?id=" + value;
     }
 </script>
-
 </body>
 </html>

@@ -23,9 +23,9 @@ public class DishService {
     }
 
     Comparator<Dish> comparator = (o1, o2) -> {
-        if (o1.getCategoryId() == o2.getCategoryId())
+        if (o1.getCategory() == o2.getCategory())
             return o1.getName().compareToIgnoreCase(o2.getName());
-        else return (int) (o1.getCategoryId() - o2.getCategoryId());
+        else return (int) (o1.getCategory() - o2.getCategory());
     };
 
     public List<Dish> getAllDishes() {

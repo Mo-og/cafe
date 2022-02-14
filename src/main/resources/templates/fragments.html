@@ -1,51 +1,94 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<!--suppress ThymeleafVariablesResolveInspection -->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      lang="ru">
+
 <head th:fragment="head(title, links)">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0">
+    <sec:csrfMetaTags/>
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
     <title th:replace="${title}">Кафе</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
 
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
     <th:block th:replace="${links}"/>
+    <script src="../static/js/table-sorting.js"></script>
 </head>
 
-<body>
-<header id="header" class="header-block" data-top="0" data-scroll="100" th:fragment="navbar">
-    <div class="menuBar">
-        <nav class="navbar fixed-top navbar-expand-sm navbar-light">
-            <div class="container-fluid">
-                <div class="zoom"><a th:href="@{/}"><span class="navbar-brand">Главная</span></a></div>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 60vh;">
-                        <li class="nav-item">
-                            <a th:href="@{/menu_staff}"><span>Меню</span></a></li>
-                        <li class="nav-item">
-                            <a th:href="@{/users}"><span>Сотрудники</span></a></li>
-                        <li class="nav-item">
-                            <a th:href="@{/orders}"><span>Заказы</span></a></li>
-                        <li class="nav-item">
-                            <a th:href="@{/report}"><span>Отчет</span></a></li>
-                        <li class="nav-item">
-                            <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
-                               th:href="@{/logout}"><span>Выход</span></a></li>
-                    </ul>
-                </div>
+<head th:fragment="head_datatable(title, links)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0">
+    <sec:csrfMetaTags/>
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <title th:replace="${title}">Кафе</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.11.3/b-2.2.1/b-colvis-2.2.1/b-html5-2.2.1/b-print-2.2.1/fc-4.0.1/fh-3.2.1/r-2.2.9/rg-1.1.4/sr-1.1.0/datatables.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript"
+            src="https://cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.11.3/b-2.2.1/b-colvis-2.2.1/b-html5-2.2.1/b-print-2.2.1/fc-4.0.1/fh-3.2.1/r-2.2.9/rg-1.1.4/sr-1.1.0/datatables.min.js"></script>
+    <th:block th:replace="${links}"/>
+</head>
 
+
+<!--Title-->
+<h2 th:fragment="headline(name)" class="block-title text-align-center">
+    <span class="side-img left-side-img"><i></i><i></i><i></i></span>
+    [[${name}]]
+    <span class="side-img right-side-img"><i></i><i></i><i></i></span>
+</h2>
+
+
+<!--Navbar-->
+<header id="header" class="header-block" th:fragment="navbar">
+    <nav class="navbar menuBar navbar-expand-sm navbar-light">
+        <div class="container-fluid">
+            <div class="zoom"><a th:href="@{/}"><span class="navbar-brand">Главная</span></a></div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse mb-navbar-item" id="navbarNav">
+                <ul class="navbar-nav ms-auto my-2 my-lg-0 mb-navbar-item">
+                    <li sec:authorize="isAuthenticated()" class="nav-item"
+                        th:classappend="${page == 'menuStaff' ? 'active' : ''}">
+                        <a th:href="@{/menu_staff}"><span>Рабочее меню</span></a></li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item"
+                        th:classappend="${page == 'users' ? 'active' : ''}">
+                        <a th:href="@{/users}"><span>Сотрудники</span></a></li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item"
+                        th:classappend="${page == 'orders' ? 'active' : ''}">
+                        <a th:href="@{/orders}"><span>Заказы</span></a></li>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"
+                        th:classappend="${page == 'report' ? 'active' : ''}">
+                        <a th:href="@{/report}"><span>Отчет</span></a></li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item">
+                        <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
+                           th:href="@{/logout}"><span>Выход</span></a></li>
+                    <li><a sec:authorize="!isAuthenticated()" th:href="@{/login}">Вход</a></li>
+                </ul>
             </div>
-        </nav>
-    </div>
+
+        </div>
+    </nav>
 </header>
-</body>
 
-
+<!--<meta name="_csrf" th:content="${_csrf.token}"/>-->
+<!--<script type="text/javascript">
+    var csrfParameter = $("meta[name='_csrf_parameter']").attr("content");
+    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+    var csrfToken = $("meta[name='_csrf']").attr("content");
+</script>-->
 </html>

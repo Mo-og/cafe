@@ -16,6 +16,8 @@ import ua.cafe.utils.JsonMaker;
 import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
+import static ua.cafe.utils.Utils.markPage;
+
 
 @Controller
 public class UserController {
@@ -35,6 +37,7 @@ public class UserController {
     @RequestMapping(value = {"/users", "/workers"}, method = RequestMethod.GET)
     public String getUsers(Model model, Authentication authentication) {
         model.addAttribute("users", userService.getAllUsers());
+        markPage(model, "users");
         return switch (((User) authentication.getPrincipal()).getPosition()) {
             case WAITER -> "Waiter/users";
             case COOK -> "Cook/users";

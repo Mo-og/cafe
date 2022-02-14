@@ -23,6 +23,8 @@ import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
+import static ua.cafe.utils.Utils.markPage;
+
 @Lazy
 @Controller
 public class OrderController {
@@ -100,6 +102,7 @@ public class OrderController {
 
         model.addAttribute("orders", orderService.getAllOrders());
         model.addAttribute("new_order", new Order());
+        markPage(model, "orders");
 
         return "Waiter/orders";
         /*return switch (((User) authentication.getPrincipal()).getPosition()) {
@@ -128,6 +131,8 @@ public class OrderController {
         }
         order.sortByQuantity();
         model.addAttribute("order", order);
+        markPage(model, "report");
+
         return "Director/report";
     }
 

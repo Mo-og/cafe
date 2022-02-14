@@ -2,6 +2,7 @@ package ua.cafe.utils;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -27,5 +28,9 @@ public class Utils {
             return new ResponseEntity<>(ErrorsMap, HttpStatus.NOT_ACCEPTABLE);
         }
         return null;
+    }
+
+    public static void markPage(Model model, String pageName) {
+        model.addAttribute("page", pageName);
     }
 }

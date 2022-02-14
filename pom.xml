@@ -18,12 +18,12 @@
         <dependency>
             <groupId>net.coobird</groupId>
             <artifactId>thumbnailator</artifactId>
-            <version>0.4.14</version>
+            <version>0.4.15</version>
         </dependency>
         <dependency>
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
-            <version>69.1</version>
+            <version>70.1</version>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
+            <version>1.18.22</version>
         </dependency>
 
         <dependency>
@@ -72,7 +72,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <version>2.5.5</version>
+            <version>2.6.2</version>
         </dependency>
 
         <!-- PostgreSQL -->
@@ -89,7 +89,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13.2</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -101,6 +101,12 @@
             <artifactId>annotations</artifactId>
             <version>RELEASE</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+            <version>3.0.4.RELEASE</version>
         </dependency>
 
     </dependencies>
@@ -143,6 +149,9 @@
         <compiler.plugin.version>3.6.2</compiler.plugin.version>
         <source.version>15</source.version>
         <target.version>15</target.version>
+
+        <thymeleaf.version>3.0.14.RELEASE</thymeleaf.version>
+        <thymeleaf-layout-dialect.version>3.0.14.RELEASE</thymeleaf-layout-dialect.version>
     </properties>
 
 </project>

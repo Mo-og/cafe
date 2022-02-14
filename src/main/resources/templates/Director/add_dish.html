@@ -142,7 +142,7 @@
                                         <a th:if="${categories.isEmpty()}" type="button" th:href="@{/categories}"
                                            class="form-control" id="category">Настройте категории</a>
                                         <!--suppress XmlDuplicatedId -->
-                                        <select th:unless="${categories.isEmpty()}" th:field="*{categoryId}"
+                                        <select th:unless="${categories.isEmpty()}" th:field="*{getCategory}"
                                                 class="form-control" id="category" required>
                                             <option th:each="cat : ${categories}"
                                                     th:value="${cat.id}" th:text="${cat.name}"></option>
