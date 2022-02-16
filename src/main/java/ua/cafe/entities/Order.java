@@ -16,7 +16,6 @@ import java.util.*;
 @Table(name = "orders")
 @Getter
 @Setter
-@ToString
 @DynamicUpdate
 public class Order {
     public static final int TABLES_COUNT = 100;
@@ -116,5 +115,16 @@ public class Order {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", dateOrdered=" + dateOrdered +
+                ", comments='" + comments + '\'' +
+                ", tableNum=" + tableNum +
+                ", status='" + status + '\'' +
+                '}';
     }
 }

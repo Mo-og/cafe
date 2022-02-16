@@ -1,5 +1,6 @@
 package ua.cafe.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,7 @@ import java.util.Objects;
 
 import static ua.cafe.utils.Utils.markPage;
 
+@Slf4j
 @Controller
 public class DishController {
     private static final String IMAGES_FOLDER_PATH = ".//src//main//resources//static//DishImages//";
@@ -52,6 +54,7 @@ public class DishController {
     //API
     @GetMapping("/api/dishes")
     public ResponseEntity<String> getMenuJson() {
+        log.info("/api/dishes");
         List<Dish> dishes = dishService.getAllDishes();
         return JsonMaker.getJsonResponse(dishes);
     }
@@ -150,22 +153,24 @@ public class DishController {
     }
 
     @PostMapping("/dish_update")
-    public String updateDish(@RequestParam("file") MultipartFile file, @Valid Dish dish, BindingResult result, Model model) {
+    public String updateDish(@RequestParam("file") MultipartFile file, @Valid Dish dish, BindingResult result, long categoryId, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("categories", categoriesService.getAllCategories());
             return "Director/edit_dish";
         }
+        categoriesService.setById(dish, categoryId);
         operateDish(file, dish, model);
         System.out.println("Обновлено " + dish);
         return "redirect:/menu_staff";
     }
 
     @PostMapping("/add_dish")
-    public String greetingSubmit(@RequestParam("file") MultipartFile file, @Valid Dish dish, BindingResult result, Model model) {
+    public String greetingSubmit(@RequestParam("file") MultipartFile file, @Valid Dish dish, BindingResult result, long categoryId, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("categories", categoriesService.getAllCategories());
             return "Director/add_dish";
         }
+        categoriesService.setById(dish, categoryId);
         operateDish(file, dish, model);
         return "redirect:/menu_staff";
     }
@@ -183,9 +188,11 @@ public class DishController {
             byte[] bytes = file.getBytes();
             Files.write(path, bytes);
             ImageProcessor.saveThumbnail(file.getInputStream(), pathString);
-            System.out.println("Saved thumbnail successfully");
+            log.info("Saved thumbnail successfully");
         } catch (IOException | NullPointerException e) {
-            System.out.println("*-Dish image update wasn't successful due to invalid image file.\n*-Error: " + e.getMessage());
+            System.out.println();
+            log.info("*-Dish image update wasn't successful due to invalid image file.");
+            log.info(e.getCause() + ": " + e.getMessage());
             model.addAttribute("categories", categoriesService.getAllCategories());
         } catch (Exception e) {
             e.printStackTrace();
@@ -193,11 +200,13 @@ public class DishController {
 
         if (path != null && dish.getImagePath() != null && dish.getImagePath().length() > 11) {
             try {
+                System.out.println();
+                log.info("Trying to delete old image and thumbnail");
                 Files.delete(Paths.get(IMAGES_FOLDER_PATH, dish.getImagePath().substring(11)));
                 Files.delete(Paths.get(IMAGES_THUMBNAILS_PATH, dish.getImagePath().substring(11)));
-                System.out.println("Removed old dish images: " + dish.getImagePath().substring(11));
+                log.info("Removed old dish images: " + dish.getImagePath().substring(11));
             } catch (IOException | InvalidPathException e) {
-                System.out.println("Unable to delete old DishImage: " + e.getMessage());
+                log.info("Unable to delete old DishImage: " + e.getMessage());
             }
         }
         if (path != null)

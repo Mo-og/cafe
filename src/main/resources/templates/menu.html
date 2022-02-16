@@ -1,55 +1,43 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments::head(~{::title}, ~{})">
+<head th:insert="fragments::head(~{::title}, ~{})">
     <title> Меню </title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light ">
+<th:block th:replace="fragments :: navbar"/>
+<section class="reservation-block pad-top-100 pad-bottom-100">
     <div class="container-fluid">
-        <div style="flex: 1 1 100%;"></div>
-        <a class="navbar-brand" th:href="@{/}" style="color: #ff7f50;">Главная</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav zoom">
-                <li><a class="nav-link" th:href="@{/login}" style="color: #ff7f50;">Вход</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <h1 class="block-title text-align-center"><span
-                    class="side-img left-side-img"><i></i><i></i><i></i></span> Меню <span
-                    class="side-img right-side-img"><i></i><i></i><i></i></span>
-            </h1>
-            <br><br><br>
-            <div id="menu-list">
-                <template v-for="item in vItems">
-                    <h4 class="block-title text-align-center mb-5"><span
-                            class="side-img left-side-img"><i></i><i></i><i></i></span> {{ item.categoryName }} <span
-                            class="side-img right-side-img"><i></i><i></i><i></i></span></h4>
-                    <div class="menu-list mb-5">
-                        <div class="menu-card" v-for="item in item.dishes" :key="item.id"
-                             :style="`background-image:url(&quot;${item.imagePath || '/images/no-dish-image.png'}&quot;); ${item.imagePath !== '' ? 'background-size: cover;':''}`">
-                            <h5 class="menu-card-title">{{ item.name }}</h5>
-                            <span class="menu-card-price">{{ item.price }} ₴</span>
-                            <div class="menu-card-description">
-                                <p class="card-subtitle mb-2 text-muted">{{ item.name }}</p>
-                                <p class="card-text">{{ item.weight }} г</p>
-                                <p class="card-text">{{ item.ingredients }}</p>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <th:block th:replace="fragments :: headline('Меню')"/>
+                <br>
+                <div id="menu-list">
+                    <template v-for="item in vItems">
+                        <h3 class="block-title text-align-center mb-5"><span
+                                class="side-img left-side-img"><i></i><i></i><i></i></span> {{ item.categoryName }}
+                            <span
+                                    class="side-img right-side-img"><i></i><i></i><i></i></span></h3>
+                        <div class="menu-list mb-5">
+                            <div :key="item.id"
+                                 :style="`background-image:url(&quot;${item.imagePath || '/images/no-dish-image.png'}&quot;); ${item.imagePath !== '' ? 'background-size: cover;':''}`"
+                                 class="menu-card"
+                                 v-for="item in item.dishes">
+                                <h5 class="menu-card-title">{{ item.name }}</h5>
+                                <span class="menu-card-price">{{ item.price }} ₴</span>
+                                <div class="menu-card-description">
+                                    <p class="card-subtitle mb-2 text-muted">{{ item.name }}</p>
+                                    <p class="card-text">{{ item.weight }} г</p>
+                                    <p class="card-text">{{ item.ingredients }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </template>
+                    </template>
+
+                </div>
 
             </div>
-
         </div>
     </div>
-</div>
+</section>
 <!-- Banner Section Ends -->
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
@@ -72,10 +60,10 @@
             vItems() {
                 return this.categories
                     .sort((a, b) => a.categoryOrder - b.categoryOrder) //a.categoryOrder < b.categoryOrder ? -1 : a.categoryOrder === b.categoryOrder ? 0 : 1
-                    .filter(category => this.items.some(item => item.categoryId === category.id))
+                    .filter(category => this.items.some(item => item.category.id === category.id))
                     .map(category => ({
                         categoryName: category.name,
-                        dishes: this.items.filter(item => item.categoryId === category.id)
+                        dishes: this.items.filter(item => item.category.id === category.id)
                     }))
             }
         }

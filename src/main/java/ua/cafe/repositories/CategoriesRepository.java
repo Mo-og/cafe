@@ -5,6 +5,8 @@ import ua.cafe.entities.DishCategory;
 
 import java.util.List;
 
-public interface CategoriesRepository extends JpaRepository<DishCategory,Long> {
+public interface CategoriesRepository extends JpaRepository<DishCategory, Long> {
     List<DishCategory> findAllByOrderByName();
+
+    DishCategory getById(long categoryId);
 }

@@ -1,102 +1,49 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0">
-    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+<html lang="ru" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments::head(~{::title}, ~{})">
     <title> Категории </title>
-    <!-- CSS -->
-    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css"/>
-    <link type="text/css" rel="stylesheet" href="../css/owl.carousel.min.css">
-    <link type="text/css" rel="stylesheet" href="../css/font-awesome.css">
-    <link type="text/css" href="../css/animate.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/magnific-popup.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/bootstrap-datetimepicker.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/style.css?v=1.0" rel="stylesheet"/>
-    <link type="text/css" href="../css/media.css?v=1.0" rel="stylesheet"/>
 </head>
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
 <div id="site-head">
     <!-- Header Section Begins -->
-    <header id="header" class="header-block" data-top="0" data-scroll="100">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 main-menu">
-                    <div class="menuBar scrollbtn">
-                        <nav class="navbar navbar-default">
-                            <div class="container-fluid">
-                                <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                                        <span class="sr-only">Toggle navigation</span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                    </button>
-                                    <!--<div class="logo">
-                                        <h3><a class="navbar-collapse" th:href="@{/Director/index}">КАФЕ</a></h3>
-                                    </div>-->
-                                </div>
-                                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                    <ul class="nav navbar-nav navbar-right">
-                                        <li class="active"><a th:href="@{/}"><span
-                                                style="color: #ff7f50;">Главная</span></a></li>
-                                        <li><a th:href="@{/menu}"><span style="color: #ff7f50;">Меню</span></a></li>
-                                        <li><a th:href="@{/users}"><span
-                                                style="color: #ff7f50;">Сотрудники</span></a></li>
-                                        <li><a th:href="@{/orders}"><span style="color: #ff7f50;">Заказы</span></a></li>
-                                        <li><a th:href="@{/report}"><span style="color: #ff7f50;">Отчет</span></a></li>
-                                        <li>
-                                            <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
-                                               th:href="@{/logout}"><span style="color: #ff7f50;">Выход</span></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+    <th:block th:replace="fragments :: navbar"/>
     <!-- Header Section Ends -->
 
 
     <section class="reservation-block pad-top-100 pad-bottom-100">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
-                    <h2 class="block-title text-align-center"><span class="side-img left-side-img"><i></i><i></i><i></i></span>
-                        Категории<span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
-                    <br><a th:href="@{/add_category}" class="btn btn-lg btn-block btn-outline-primary"
-                           role="button"
-                           aria-disabled="true">Добавить категорию блюда</a>
-                    <br>
-                    <h4 class="block-title text-align-center">Для редактирования конкретной категории блюда, выберите её
-                        в списке ниже<i></i><i></i><i></i></h4>
-                    <br><br>
-                    <form class="reservation-block">
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th class="text-justify">#</th>
-                                    <th class="text-justify">Категория</th>
-                                </tr>
-                                </thead>
-                                <tbody>
+        <div class="container-lg">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
+                <th:block th:replace="fragments :: headline('Категории')"/>
 
-                                <tr th:each="category, state : ${categories}" style="cursor: pointer"
-                                    th:onclick="'javascript:rowClicked(\'' + ${category.id} + '\');'">
-                                    <td class="align-middle"><span th:text="${state.count}"></span></td>
-                                    <td class="align-middle"><span th:text="${category.name}"></span></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </form>
-                </div>
+                <div class="d-grid col-12 gap-md-2 col-xl-5 col-lg-7 col-md-8 col-sm-9 col-xs-12 mx-auto mb-2">
+                    <a aria-disabled="true" class="btn btn-block orange-btn empty-btn" role="button"
+                       sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/add_category}">
+                        Добавить категорию блюда
+                    </a></div>
+                <h4 class="block-title text-align-center mb-4">
+                    Для редактирования конкретной категории блюда, выберите её в списке ниже
+                </h4>
+                <form class="reservation-block">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th class="text-justify">#</th>
+                                <th class="text-justify">Категория</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr style="cursor: pointer" th:each="category, state : ${categories}"
+                                th:onclick="'javascript:rowClicked(\'' + ${category.id} + '\');'">
+                                <td class="align-middle"><span th:text="${state.count}"></span></td>
+                                <td class="align-middle"><span th:text="${category.name}"></span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
             </div>
         </div>
     </section>

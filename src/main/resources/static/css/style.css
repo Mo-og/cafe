@@ -148,9 +148,16 @@ h1 {
 }
 
 h2 {
-    font-size: 54px;
+    font-size: 12vmin;
     line-height: 64px;
 }
+
+@media screen and (min-width: 1200px) {
+    h2 {
+        font-size: 54px;
+    }
+}
+
 
 h3 {
     font-size: 24px;

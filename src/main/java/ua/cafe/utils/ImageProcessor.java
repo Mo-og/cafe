@@ -1,5 +1,6 @@
 package ua.cafe.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import ua.cafe.controllers.DishController;
 
@@ -8,10 +9,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 
+@Slf4j
 public class ImageProcessor {
 
     public static void saveThumbnail(InputStream originalImage, String fileName) throws Exception {
-        System.out.println("Saving thumbnail for " + fileName);
+        log.info("Saving thumbnail for " + fileName);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Thumbnails.of(originalImage)
                 .size(25, 25)

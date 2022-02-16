@@ -1,5 +1,6 @@
 package ua.cafe.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
+@Slf4j
 @Controller
 public class CategoriesController {
 
@@ -96,11 +98,14 @@ public class CategoriesController {
 
     @PostMapping("/add_category")
     public String addDishCatPost(@Valid DishCategory category, BindingResult result) {
-        System.out.println("Отправлено " + category);
-        if (result.hasErrors())
+        log.info("Got category " + category);
+        if (result.hasErrors()) {
+            result.getFieldErrors().forEach(fieldError -> log.error(fieldError.getObjectName() + " [" + fieldError.getRejectedValue() + "]: " + fieldError.getDefaultMessage()));
             return "/Director/add_category";
+        }
+        log.info("No errors found for " + category.getName());
         categoriesService.saveCategory(category);
-        System.out.println("Успешно добавлено " + category);
+        log.info("Успешно добавлено " + category);
         return "redirect:/categories";
     }
 

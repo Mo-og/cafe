@@ -14,42 +14,47 @@
             animation: pulse;
             animation-duration: 0.5s;
         }
+
         button:hover {
             box-shadow: rgba(175, 47, 0, 0.9);
         }
     </style>
 </head>
 
-<body class="creamBg">
+<body>
 <!-- Header Section Begins -->
 <form class="animate__animated " style="float: right; margin-right: 1em" th:action="@{/}" method="get">
     <button class="btn-sm btn-secondary" type="submit"
-            style="width: auto;background: rgba(255,255,255,0.2); color: #e75b1e; text-shadow:   0 0 1px white; border: #ff7f50 1px solid ">Главная
+            style="width: auto;background: rgba(255,255,255,0.2); color: #e75b1e; text-shadow:   0 0 1px white; border: #ff7f50 1px solid">
+        Главная
     </button>
 </form>
 <form class="animate__animated " style="float: right; margin-right: 1em" th:action="@{/menu}" method="get">
     <button class="btn-sm btn-secondary" type="submit"
-            style="width: auto;background: rgba(255,255,255,0.2); color: #e75b1e; border: #ff7f50 1px solid ">Меню
+            style="width: auto;background: rgba(255,255,255,0.2); color: #e75b1e; border: #ff7f50 1px solid">Меню
     </button>
 </form>
 <!-- Header Section Ends -->
 
-<!-- Banner Section Begins -->
-<div class="wrapper">
-    <div class="fade-in container">
-        <h2>Вход в аккаунт</h2>
 
+<!-- Banner Section Begins -->
+
+<div class="wrapper">
+    <div class=" fade-in container">
+        <img alt="" src="../images/simple-logo.png"
+             style="position:absolute;height: 60%; margin-top: 3rem;margin-left: 2rem; opacity: 0.8; filter: blur(5px)">
+        <h2>Вход в аккаунт</h2>
         <form class="form needs-validation" id="form" enctype="multipart/form-data" th:object="${form}" method="post">
             <div style="margin-bottom: 1em">
                 <input type="text" id="username" th:field="*{username}"
                        th:value="${form.username}" required placeholder="Логин">
-                <small style="color: red" th:if="${usernameFailed!=null&&usernameFailed}"
+                <small style="color: red; text-shadow: white 0 0 5px" th:if="${usernameFailed!=null&&usernameFailed}"
                        th:text="${messageUsername}"></small>
             </div>
             <div style="margin-bottom: 1em">
                 <input id="password" placeholder="Пароль" th:field="*{password}"
                        type="password" th:value="${form.password}" required>
-                <small style="color: red" th:if="${passwordFailed!=null&&passwordFailed}"
+                <small style="color: red; text-shadow: white 0 0 5px" th:if="${passwordFailed!=null&&passwordFailed}"
                        th:text="${messagePassword}"></small>
             </div>
             <button type="submit" id="login-button" value="Submit">Войти</button>

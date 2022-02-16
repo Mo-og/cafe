@@ -19,7 +19,6 @@ import java.util.Objects;
 @Table(name = "dishes")
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 public class Dish {
 
@@ -72,7 +71,11 @@ public class Dish {
         return imagePath;
     }
 
-    public long getCategory() {
+    public DishCategory getCategory() {
+        return category;
+    }
+
+    public long getCategoryId() {
         return category.getId();
     }
 

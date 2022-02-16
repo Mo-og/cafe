@@ -1,5 +1,6 @@
 package ua.cafe.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -27,6 +28,7 @@ import static ua.cafe.utils.Utils.markPage;
 
 @Lazy
 @Controller
+@Slf4j
 public class OrderController {
 
     //Services setting
@@ -105,11 +107,6 @@ public class OrderController {
         markPage(model, "orders");
 
         return "Waiter/orders";
-        /*return switch (((User) authentication.getPrincipal()).getPosition()) {
-            case WAITER -> "Waiter/orders";
-            case COOK -> "Cook/orders";
-            case DIRECTOR -> "Director/orders";
-        };*/
     }
 
 

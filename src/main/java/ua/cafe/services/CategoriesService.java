@@ -2,6 +2,7 @@ package ua.cafe.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ua.cafe.entities.Dish;
 import ua.cafe.entities.DishCategory;
 import ua.cafe.repositories.CategoriesRepository;
 
@@ -37,4 +38,7 @@ public class CategoriesService {
         return repository.getOne(id);
     }
 
+    public void setById(Dish dish, long categoryId) {
+        dish.setCategory(repository.getById(categoryId));
+    }
 }

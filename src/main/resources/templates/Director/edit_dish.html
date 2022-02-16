@@ -1,102 +1,93 @@
 <!doctype html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments::head(~{::title}, ~{})">
+<head th:insert="fragments::head(~{::title}, ~{})">
     <title> Изменение данных блюда </title>
 </head>
 <body class="creamBg">
 <th:block th:replace="fragments :: navbar"/>
 
 <section class="reservation-block pad-top-100 pad-bottom-100">
-    <div class="container-fluid">
+    <div class="container-lg">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
-                <h2 class="block-title text-align-center">
-                    <span class="side-img left-side-img"><i></i><i></i><i></i></span>
-                    Изменение данных блюда
-                    <span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
-                <br><h4 class="block-title text-align-center">Измените необходимые поля и нажмите кнопку 'Сохранить
-                    блюдо'</h4>
-                <br>
-                <form enctype="multipart/form-data" th:action="@{/dish_update}" th:object="${dish}" method="post"
-                      novalidate>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h4 class="mb-3">Поля для заполнения</h4>
-                            <div class="col"><label for="id"><input th:field="*{id}" type="hidden"
-                                                                    class="form-control" id="id"
-                                                                    th:value="${dish.id}"></label></div>
-                            <div class="row mb-3">
-                                <div class="col-md-4 mb-3">
-                                    <label for="name">Название блюда</label>
-                                    <input th:field="*{name}" type="text" class="form-control" id="name"
-                                           placeholder=""
-                                           th:value="${dish.name}" required>
-                                    <small class="text-danger" th:if="${#fields.hasErrors('name')}"
-                                           th:errors="*{name}"></small>
-                                </div>
-
-                                <div class="col-md-4 mb-3">
-                                    <label for="price">Цена</label>
-                                    <input th:field="*{price}" type="number" class="form-control" id="price"
-                                           th:value="${dish.price}" required>
-                                    <small class="text-danger" th:if="${#fields.hasErrors('price')}"
-                                           th:errors="*{price}"></small>
-                                </div>
-
-                                <div class="col-md-4 mb-3">
-                                    <label for="weight">Вес</label>
-                                    <input th:field="*{weight}" type="number" class="form-control" id="weight"
-                                           placeholder=""
-                                           th:value="${dish.weight}" required>
-                                    <small class="text-danger" th:if="${#fields.hasErrors('weight')}"
-                                           th:errors="*{weight}"></small>
-                                </div>
+                <th:block th:replace="fragments :: headline('Изменение данных блюда')"/>
+                <h4 class="block-title text-align-center">
+                    Измените необходимые поля и нажмите кнопку 'Сохранить блюдо'
+                </h4>
+                <form enctype="multipart/form-data" method="post" th:action="@{/dish_update}" th:object="${dish}">
+                    <input class="form-control" id="id" th:field="*{id}" th:value="${dish.id}" type="hidden">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="name">Название блюда</label>
+                                <input class="form-control" id="name" placeholder="" required
+                                       th:field="*{name}"
+                                       th:value="${dish.name}" type="text">
+                                <small class="text-danger" th:errors="*{name}"
+                                       th:if="${#fields.hasErrors('name')}"></small>
                             </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-6 mb-3">
-                                    <div class="btn-toolbar"><label for="category">Категория </label>
-                                        <a th:href="@{/categories}">
-                                            <img src="../images/conf.png" height="20px" width="20px"
-                                                 style="margin-left: 5px;" alt="gear icon">
-                                        </a>
-                                    </div>
-                                    <select th:field="*{getCategory}" class="form-control" id="category" required
-                                            th:default="${dish.getCategory}">
-                                        <option th:each="cat : ${categories}"
-                                                th:value="${cat.id}" th:text="${cat.name}"></option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="ingredients">Ингредиенты</label>
-                                    <input th:field="*{ingredients}" type="text" class="form-control"
-                                           id="ingredients"
-                                           placeholder="" th:value="${dish.ingredients}" required>
-                                </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="price">Цена</label>
+                                <input class="form-control" id="price" required th:field="*{price}"
+                                       th:value="${dish.price}" type="number">
+                                <small class="text-danger" th:errors="*{price}"
+                                       th:if="${#fields.hasErrors('price')}"></small>
                             </div>
-                            <div class="mb-3">
-                                <label for="inputFile" class="mb-3">
-                                    <div class="up mb-1">Изображение блюда</div>
-                                    <img class="image zoom" th:src="${dish.imagePath}" alt="Изображение блюда"
-                                         style="height: 200px;">
+
+                            <div class="col-md-4 mb-3">
+                                <label for="weight">Вес</label>
+                                <input class="form-control" id="weight" placeholder="" required
+                                       th:field="*{weight}"
+                                       th:value="${dish.weight}" type="number">
+                                <small class="text-danger" th:errors="*{weight}"
+                                       th:if="${#fields.hasErrors('weight')}"></small>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="category">
+                                    <a style="color: black; text-decoration: underline" th:href="@{/categories}">
+                                        Категория<img alt="gear icon" height="20px" src="../images/conf.png"
+                                                      style="margin-left: 5px;" width="20px">
+                                    </a>
                                 </label>
-                                <input type="hidden" th:value="${dish.imagePath}" name="imagePath">
-                                <input type="file" name="file" class="form-control" id="inputFile"
-                                       aria-describedby="inputFileButton" aria-label="Upload"
-                                       placeholder="Выберите изображение">
+                                <select class="form-control" id="category" name="categoryId"
+                                        th:default="${dish.getCategoryId()}">
+                                    <option th:each="cat : ${categories}"
+                                            th:text="${cat.name}" th:value="${cat.id}"></option>
+                                </select>
                             </div>
-                            <hr class="mb-4">
-                            <div class="d-flex">
-                                <div style="flex: 1"></div>
-                                <button class="btn btn-warning btn-md" style="margin-right: 1rem;" type="submit"
-                                        value="Submit">Сохранить блюдо
-                                </button>
 
-                                <button type="button" class="btn btn-danger btn-md"
-                                        th:onclick="'javascript:sure(\'' + ${dish.id} + '\');'">Удалить
-                                </button>
+                            <div class="col-md-6 mb-3">
+                                <label for="ingredients">Ингредиенты</label>
+                                <input class="form-control" id="ingredients" th:field="*{ingredients}"
+                                       th:value="${dish.ingredients}" type="text">
                             </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="mb-3" for="inputFile">
+                                <div class="up mb-1">Изображение блюда</div>
+                                <img alt="Изображение блюда" class="image zoom" style="height: 200px;"
+                                     th:src="${dish.imagePath}">
+                            </label>
+                            <input name="imagePath" th:value="${dish.imagePath}" type="hidden">
+                            <input aria-describedby="inputFileButton" aria-label="Upload" class="form-control"
+                                   id="inputFile"
+                                   name="file" placeholder="Выберите изображение"
+                                   type="file">
+                        </div>
+                        <hr class="mb-4">
+                        <div class="d-flex">
+                            <div style="flex: 1"></div>
+                            <button class="btn btn-warning mx-1" style="margin-right: 1rem;" type="submit"
+                                    value="Submit">Сохранить блюдо
+                            </button>
+
+                            <button class="btn btn-danger" th:onclick="'javascript:sure(\'' + ${dish.id} + '\');'"
+                                    type="button">Удалить
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -105,16 +96,15 @@
     </div>
 </section>
 
-
-<br/><br/><br/>
 <script>
     function sure(id) {
-        var sured = confirm("Вы уверены, что хотите удалить блюдо?");
+        let sured = confirm("Вы уверены, что хотите удалить блюдо?");
         if (sured) {
             // form.submit();
             document.location.href = "dish_remove?id=" + id;
         }
-    }</script>
+    }
+</script>
 
 </body>
 </html>
