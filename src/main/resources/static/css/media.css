@@ -206,7 +206,7 @@
         color: #ffffff;
         border-color: transparent;
     }
-    .header-block .menuBar ul li a::before, 
+    .header-block .menuBar ul li a::before,
     .header-block .menuBar ul li a::after {
         height: 0;
     }

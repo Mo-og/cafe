@@ -3,10 +3,11 @@ package ua.cafe.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import ua.cafe.entities.Detail;
 import ua.cafe.entities.Order;
+import ua.cafe.repositories.DetailsOfOrderedDishRepository;
 import ua.cafe.repositories.OrderRepository;
 
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -15,36 +16,34 @@ import java.util.List;
 public class OrderService {
 
     private OrderRepository repository;
+    private DetailsOfOrderedDishRepository detailsRepository;
 
     @Autowired
     public void setRepository(OrderRepository repository) {
         this.repository = repository;
     }
 
+    @Autowired
+    public void setRepository(DetailsOfOrderedDishRepository repository) {
+        this.detailsRepository = repository;
+    }
+
     public Order saveOrder(Order order) {
         return repository.save(order);
     }
 
-//    public List<Order> getAllOrders() {
-//        return repository.findAllByOrderByTable_num();
-//    }
-
-    //TODO надо решить как-то через репозиторий методом вроде findAllByOrderByTable_numAndDate_ordered()
-    // **решается прерименовыванием table_num в tableNum и date_ordered в dateOrdered и написанием метода в репозитории,
-    // но надо отследить изменение имён
-    public List<Order> getAllOrders() {
-        return repository.findAllOrderedByTableNum();
-        /*List<Order> n = repository.findAll();
-        n.sort(comparator);
-        return n;*/
+    public Order saveNewOrder(Order order) {
+        order.setDateOrdered(new Date(System.currentTimeMillis()));
+        Order finalOrder = repository.save(order);
+        order.getDetails().forEach(detail -> detail.setOrderRetrieveDish(finalOrder));
+        detailsRepository.saveAll(order.getDetails());
+        finalOrder.setDetails(order.getDetails());
+        return finalOrder;
     }
 
-    Comparator<Order> comparator = (o1, o2) -> {
-        if (o1.getTableNum() == o2.getTableNum())
-            return Long.compare(o1.getDateOrdered().getTime(), o2.getDateOrdered().getTime());
-        return Long.compare(o1.getTableNum(), o2.getTableNum());
-    };
-
+    public List<Order> getAllOrders() {
+        return repository.findAllOrderedByTableNum();
+    }
 
     public void deleteById(long id) {
         repository.deleteById(id);
@@ -58,8 +57,32 @@ public class OrderService {
         return repository.getOne(id);
     }
 
-    public Date getDateOrdered(long id){
-        return repository.getDateOrdered(id);
+    public Date findDateOrdered(long id) {
+        return repository.findDateOrdered(id);
     }
 
+    public Order updateOrder(Order orderUpdate) {
+        Order fromDb = getById(orderUpdate.getId());
+        fromDb.setTableNum(orderUpdate.getTableNum());
+        fromDb.setComments(orderUpdate.getComments());
+        //////
+        //TODO: remove detail by API [delete detail] instead of this
+        List<Detail> details = fromDb.getDetails();
+        details.removeAll(orderUpdate.getDetails());
+        detailsRepository.deleteAll(details);
+        //////
+        orderUpdate.getDetails().forEach(detail -> {
+            if (detail.getId() != 0) {
+                Detail d = detailsRepository.getOne(detail.getId());
+                d.setQuantity(detail.getQuantity());
+                d.setStatus(detail.getStatus());
+            } else {
+                detail.setOrderRetrieveDish(fromDb);
+                detailsRepository.save(detail);
+            }
+        });
+        fromDb.setDetails(orderUpdate.getDetails());
+        fromDb.updateStatus();
+        return repository.save(fromDb);
+    }
 }

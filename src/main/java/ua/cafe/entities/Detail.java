@@ -30,10 +30,10 @@ public class Detail {
     private long id;
     @Min(1)
     @Column(insertable = false, updatable = false, nullable = false, name = "dish_id")
-    private Long dishId = (long) -1;
+    private Long dishId = -1L;
     @Min(1)
     @Column(insertable = false, updatable = false, nullable = false, name = "order_id")
-    private Long orderId = (long) -1;
+    private Long orderId = -1L;
     private int quantity;
     private ReadyStatus status = ReadyStatus.NEW;
 
@@ -158,12 +158,12 @@ public class Detail {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Detail detail = (Detail) o;
-        return id == detail.id && Objects.equals(getDishId(), detail.getDishId()) && Objects.equals(getOrderId(), detail.getOrderId()) && quantity == detail.quantity;
+        return id == detail.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, getDishId(), getOrderId(), quantity);
+        return Objects.hash(id);
     }
 }
 

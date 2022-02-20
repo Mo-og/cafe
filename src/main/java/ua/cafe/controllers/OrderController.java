@@ -21,7 +21,6 @@ import ua.cafe.utils.JsonMaker;
 import ua.cafe.utils.Utils;
 
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 
 import static ua.cafe.utils.Utils.markPage;
@@ -72,8 +71,10 @@ public class OrderController {
     public ResponseEntity<?> apiSaveOrder(@RequestBody @Valid Order order, BindingResult result) {
         var ErrorsMap = Utils.getValidityResponse(result);
         if (ErrorsMap != null) return ErrorsMap;
-        if (order.getDateOrdered() == null) order.setDateOrdered(new Date(System.currentTimeMillis()));
-        return ResponseEntity.ok(orderService.saveOrder(order));
+
+        var temp = orderService.saveNewOrder(order);
+        log.info("Saved order: " + temp);
+        return ResponseEntity.ok(temp);
     }
 
     //PUT
@@ -81,9 +82,12 @@ public class OrderController {
     public ResponseEntity<?> apiUpdateOrder(@RequestBody @Valid Order order, BindingResult result) {
         ResponseEntity<?> ErrorsMap = Utils.getValidityResponse(result);
         if (ErrorsMap != null) return ErrorsMap;
-        order.getDetails().forEach(detail -> detail.setOrderRetrieveDish(order));
-        order.setDateOrdered(orderService.getDateOrdered(order.getId()));
-        return ResponseEntity.ok(orderService.saveOrder(order));
+        log.info("Got order: " + order.toString());
+
+        var temp = orderService.updateOrder(order);
+        log.info("Updated order as: " + temp.toString());
+
+        return ResponseEntity.ok(temp);
     }
 
     //DELETE

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT dateOrdered FROM Order where id=:id")
-    Date getDateOrdered(@Param("id") long order_id);
+    Date findDateOrdered(@Param("id") long order_id);
 
     @Query(value = "SELECT o FROM Order o ORDER BY o.tableNum, o.dateOrdered ASC")
 //    @Query(value = "SELECT * FROM orders ORDER BY table_num, date_ordered ASC", nativeQuery = true)

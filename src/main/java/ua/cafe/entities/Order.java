@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Range;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.util.*;
@@ -17,7 +18,7 @@ import java.util.*;
 @Getter
 @Setter
 @DynamicUpdate
-public class Order {
+public class Order implements Comparable<Order> {
     public static final int TABLES_COUNT = 100;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,15 +26,14 @@ public class Order {
     @Column(updatable = false, name = "date_ordered", nullable = false)
     private Date dateOrdered;
     private String comments;
-    @Range(min = 1, max = TABLES_COUNT, message = "Номер столика должен быть в пределах от 1 до "+TABLES_COUNT+"!")
+    @Range(min = 1, max = TABLES_COUNT, message = "Номер столика должен быть в пределах от 1 до " + TABLES_COUNT + "!")
     @Column(name = "table_num", nullable = false)
     private int tableNum;
-    private String status;
+    private ReadyStatus status;
 
     @OneToMany(mappedBy = "order")
     @ToString.Exclude
     private List<Detail> details = new ArrayList<>();
-
 
     public Order() {
     }
@@ -62,27 +62,8 @@ public class Order {
         detail.setOrder(null);
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public void addDetail(Detail detail) {
         if (details.contains(detail)) return;
-        /*Detail present = getDetailsIfPresent(detail.getDishId());
-        if (present != null) {
-            present.setQuantity(detail.getQuantity() + present.getQuantity());
-            if (present.getDish() != null)
-                System.out.println("Увеличеваем количество блюд: quantity(" + present.getDish().getName() + ") = " + detail.getQuantity());
-
-        } else {
-            details.add(detail);
-            if (detail.getDish() != null)
-                System.out.println("Добавляем блюдо: (" + detail.getDish().getName() + ") в количестве: " + detail.getQuantity());
-        }*/
         details.add(detail);
         detail.setOrder(this);
     }
@@ -90,6 +71,10 @@ public class Order {
     public String getDishNames() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Detail d : details) {
+            if (d.getDish() == null) {
+                stringBuilder.append(", null");
+                continue;
+            }
             stringBuilder.append(", ").append(d.getDish().getName().length() < 21 ? d.getDish().getName() : d.getDish().getName().substring(0, 20) + "...")
                     .append(" (").append(d.getQuantity()).append(" шт.)\n");
         }
@@ -100,8 +85,48 @@ public class Order {
         return new ArrayList<>(details);
     }
 
+    public List<Detail> acquireDetails() {
+        return details;
+    }
+
+    public void retainDetails(List<Detail> list) {
+        details.retainAll(list);
+    }
+
     public double getCost() {
         return details.parallelStream().mapToDouble(Detail::getCost).sum();
+    }
+
+    public void updateStatus() {
+        boolean hasNew = false;
+        boolean hasReady = false;
+        for (var d : details) {
+            switch (d.getStatus()) {
+                case IN_PROGRESS -> {
+                    status = ReadyStatus.IN_PROGRESS;
+                    return;
+                }
+                case NEW -> hasNew = true;
+                case READY -> hasReady = true;
+            }
+        }
+        if (!hasNew) {
+            if (hasReady) {
+                status = ReadyStatus.READY;
+            } else {
+                status = ReadyStatus.FINISHED;
+            }
+        } else
+            status = ReadyStatus.NEW;
+    }
+
+    public ReadyStatus getStatus() {
+        updateStatus();
+        return status;
+    }
+
+    public String getStatusDescription() {
+        return getStatus().getDescription();
     }
 
     @Override
@@ -125,6 +150,14 @@ public class Order {
                 ", comments='" + comments + '\'' +
                 ", tableNum=" + tableNum +
                 ", status='" + status + '\'' +
+                ", details=" + details +
                 '}';
+    }
+
+    @Override
+    public int compareTo(@NotNull Order o) {
+        if (tableNum == o.getTableNum())
+            return Long.compare(dateOrdered.getTime(), o.getDateOrdered().getTime());
+        return Integer.compare(tableNum, o.getTableNum());
     }
 }

@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
                 .authorizeRequests()
                 .antMatchers("static/**", "/DishImages/**").permitAll()
-                .antMatchers("/", "/User/**").permitAll()
+                .antMatchers("/").permitAll()
 
                 .antMatchers(HttpMethod.GET, "/api/menu").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/dish").permitAll()
@@ -60,20 +60,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .antMatchers(HttpMethod.PUT, "/api/dish").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/dish").hasRole("ADMIN")
 
-                .antMatchers(HttpMethod.GET, "/api/orders").hasAnyRole("ADMIN", "WAITER", "COOK")
-                .antMatchers(HttpMethod.GET, "/api/order").hasAnyRole("ADMIN", "WAITER", "COOK")
+                .antMatchers(HttpMethod.GET, "/api/orders").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/order").authenticated()
                 .antMatchers(HttpMethod.POST, "/api/order").hasAnyRole("ADMIN", "WAITER")
                 .antMatchers(HttpMethod.PUT, "/api/order").hasAnyRole("ADMIN", "WAITER")
                 .antMatchers(HttpMethod.DELETE, "/api/order").hasAnyRole("ADMIN", "WAITER")
 
-                .antMatchers(HttpMethod.GET, "/api/detail").hasAnyRole("ADMIN", "WAITER", "COOK")
+                .antMatchers(HttpMethod.GET, "/api/detail").authenticated()
                 .antMatchers(HttpMethod.POST, "/api/detail").hasAnyRole("ADMIN", "WAITER")
                 .antMatchers(HttpMethod.PUT, "/api/detail").hasAnyRole("ADMIN", "WAITER")
                 .antMatchers(HttpMethod.DELETE, "/api/detail").hasAnyRole("ADMIN", "WAITER")
 
                 .antMatchers("/Director/**").hasRole("ADMIN")
                 .antMatchers("/dish_edit", "/add**", "/dish_remove").hasRole("ADMIN")
-                .antMatchers("/order**").hasAnyRole("ADMIN", "WAITER", "COOK")
+                .antMatchers("/order**").authenticated()
+                .antMatchers("/categor**").authenticated()
                 .antMatchers("/Cook/**").hasAnyRole("ADMIN", "COOK")
 
                 .and().formLogin().loginPage("/login")
