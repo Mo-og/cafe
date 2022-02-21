@@ -22,10 +22,6 @@
         background-color: #fdfdfd; /*заливка формы*/
         border-radius: 15px;
         box-shadow: 0 0 10px #000; /*тень от всплывающего окна*/
-    }
-
-    form .reservation-block {
-        display: block;
         max-height: 79vh;
         overflow-y: auto;
     }
@@ -33,10 +29,11 @@
     @media (max-width: 480px) {
         .b-popup .b-popup-content {
             width: 95%;
+            max-height: 65vh;
         }
 
-        .reservation-block {
-            max-height: 65vh;
+        .table > :not(caption) > * > * {
+            padding: 0.25rem 0.25rem;
         }
     }
 </style>
@@ -53,7 +50,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
                     <th:block th:replace="fragments :: headline('Заказы')"/>
                     <h4 class="block-title text-align-center">
-                        Для редактирования конкретного заказа, дважды нажмите на него в списке ниже.
+                        Для редактирования конкретного заказа, нажмите на него в списке ниже.
                         <br>
                     </h4>
                     <div class="d-grid col-12 gap-md-2 col-md-3 mx-auto mb-3">
@@ -70,38 +67,50 @@
                                 <tr>
                                     <th class="text-justify">Код</th>
                                     <th class="text-justify">Стол</th>
-                                    <th class="text-justify">Оформлен</th>
                                     <th class="text-justify">Блюда</th>
                                     <th class="text-justify">Счёт</th>
-                                    <th class="text-justify">Статус</th>
+                                    <th class="text-justify" rowspan="2"></th>
+                                </tr>
+                                <tr>
+                                    <th class="text-justify text-align-center" colspan="2">Оформлен</th>
                                     <th class="text-justify">Комментарий</th>
-                                    <th class="text-justify"></th>
+                                    <th class="text-justify">Статус</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="order in orders" :key="order.id" @click="showEditOrder(order)"
-                                    style="cursor: pointer">
-                                    <td class="align-middle"><span v-text="order.id"></span></td>
-                                    <td class="align-middle"><span v-text="order.tableNum"></span></td>
-                                    <td class="align-middle"><span v-text="formatDate(order.dateOrdered)"></span>
-                                    </td>
-                                    <td class="align-middle"><span v-text="order.dishNames"></span></td>
-                                    <td class="align-middle"><span v-text="order.cost"></span></td>
-                                    <td class="align-middle"><span v-text="order.statusDescription"></span></td>
-                                    <td class="align-middle"><span v-text="order.comments"></span></td>
-                                    <td @click.stop="deleteOrder(order.id)" class="text-center align-middle">
-                                        <!--                                        <button  class="btn btn-primary" style="" >Отменить</button>-->
-                                        <!--                                        альтернатива - иконка крестика-->
-                                        <svg class="bi bi-x-square-fill" width="1.5em" height="1.5em"
-                                             viewBox="0 0 16 16"
-                                             fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                             style="display: inline; cursor: pointer">
-                                            <path fill-rule="evenodd"
-                                                  d="M2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2zm9.854 4.854a.5.5 0 00-.708-.708L8 7.293 4.854 4.146a.5.5 0 10-.708.708L7.293 8l-3.147 3.146a.5.5 0 00.708.708L8 8.707l3.146 3.147a.5.5 0 00.708-.708L8.707 8l3.147-3.146z"
-                                                  clip-rule="evenodd"/>
-                                        </svg>
-                                    </td>
-                                </tr>
+                                <template v-for="order in orders">
+                                    <tr :key="order.id" @click="showEditOrder(order)" class="border-top"
+                                        style="cursor: pointer">
+                                        <td class="align-middle text-align-center"><span v-text="order.id"></span></td>
+                                        <td class="align-middle text-align-center"><span style="font-weight: bold"
+                                                                                         v-text="order.tableNum"></span>
+                                        </td>
+                                        <td class="align-middle"><span v-text="order.dishNames"></span></td>
+                                        <td class="align-middle"><span style="font-weight: bold"
+                                                                       v-text="order.cost+'₴'"></span></td>
+                                        <td @click.stop="deleteOrder(order.id)" class="text-center align-middle"
+                                            rowspan="3">
+                                            <!--                                        <button  class="btn btn-primary" style="" >Отменить</button>-->
+                                            <!--                                        альтернатива - иконка крестика-->
+                                            <svg class="bi bi-x-square-fill" fill="currentColor" height="1.5em"
+                                                 style="display: inline; cursor: pointer"
+                                                 viewBox="0 0 16 16" width="1.5em"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path clip-rule="evenodd"
+                                                      d="M2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2zm9.854 4.854a.5.5 0 00-.708-.708L8 7.293 4.854 4.146a.5.5 0 10-.708.708L7.293 8l-3.147 3.146a.5.5 0 00.708.708L8 8.707l3.146 3.147a.5.5 0 00.708-.708L8.707 8l3.147-3.146z"
+                                                      fill-rule="evenodd"/>
+                                            </svg>
+                                        </td>
+                                    </tr>
+                                    <tr></tr>
+                                    <tr @click="showEditOrder(order)" style="cursor: pointer">
+                                        <td class="align-middle text-align-center" colspan="2"><span
+                                                v-text="formatDate(order.dateOrdered)"></span></td>
+                                        <td class="align-middle"><span v-text="order.comments"></span></td>
+                                        <td class="align-middle"><span v-text="order.statusDescription"></span></td>
+                                    </tr>
+
+                                </template>
                                 </tbody>
                             </table>
                         </div>
@@ -158,6 +167,7 @@
                         <tr>
                             <th class="text-justify">Блюдо</th>
                             <th class="text-justify">Шт.</th>
+                            <th class="text-justify">Цена</th>
                             <th class="text-justify">Стоимость</th>
                             <th class="text-justify"></th>
                         </tr>
@@ -169,7 +179,8 @@
                             style="cursor: pointer">
                             <td class="align-middle"><span>{{dishName(detail.dishId)}}</span></td>
                             <td class="align-middle"><span>{{detail.quantity}}</span></td>
-                            <td class="align-middle"><span>{{dishCost(detail.dishId)}}</span></td>
+                            <td class="align-middle"><span>{{dishCost(detail.dishId)}}₴</span></td>
+                            <td class="align-middle"><span>{{dishCost(detail.dishId) * detail.quantity}}</span></td>
                             <td @click.stop="deleteOrderDish(detail.dishId)">
                                 <svg class="bi bi-x-square-fill" width="1em" height="1em"
                                      viewBox="0 0 16 16"
@@ -298,14 +309,14 @@
                 const options = {
                     weekday: 'short', // "narrow", "short", "long"
                     year: '2-digit', // "numeric", "2-digit"
-                    month: 'short', // "numeric", "2-digit", "narrow", "short", "long"
+                    month: '2-digit', // "numeric", "2-digit", "narrow", "short", "long"
                     day: '2-digit', // "numeric", "2-digit"
                     hour: '2-digit', // "numeric", "2-digit"
                     minute: '2-digit', // "numeric", "2-digit"
                     // second: '2-digit' // "numeric", "2-digit"
                 };
                 let str = d.toLocaleString('ua-UA', options);
-                return str.charAt(0).toUpperCase().concat(str.substring(1));
+                return str.substring(3, 13).concat(str.charAt(0).toUpperCase().concat(str.substring(1, 2))).concat(str.substring(16));
             },
             saveDish() {
                 this.selectedOrder.details = this.selectedOrder.details.some(d => d.dishId === this.selectedDetail.dishId)
@@ -328,7 +339,7 @@
                 return this.dishes.find(d => d.id === dishId).name
             },
             dishCost(dishId) {
-                return this.dishes.find(d => d.id === dishId).cost
+                return this.dishes.find(d => d.id === dishId).price
             }
         }
     })
