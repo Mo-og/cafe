@@ -14,7 +14,6 @@ import ua.cafe.services.CategoriesService;
 import ua.cafe.utils.JsonMaker;
 import ua.cafe.utils.Utils;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
@@ -66,11 +65,9 @@ public class CategoriesController {
     ////////////////////////////////////////////////////////////////////////////
 
     @GetMapping("/categories")
-    public String getCategories(Model model, HttpServletRequest request) {
+    public String getCategories(Model model) {
         model.addAttribute("categories", categoriesService.getAllCategories());
-        if (request.isUserInRole("ROLE_ADMIN")) return "Director/categories";
-        if (request.isUserInRole("ROLE_WAITER")) return "Waiter/categories";
-        return "index";
+        return "categories";
     }
 
     @GetMapping("/add_category")

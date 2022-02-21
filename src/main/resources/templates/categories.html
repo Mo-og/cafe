@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments::head_datatable(~{::title}, ~{})">
+    <title>Категории</title>
+</head>
+<body>
+<div id="site-head">
+    <!-- Header Section Begins -->
+    <th:block th:replace="fragments :: navbar"/>
+    <!-- Header Section Ends -->
+
+    <section class="reservation-block pad-top-100 pad-bottom-100">
+        <div class="container-lg">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <th:block th:replace="fragments :: headline('Категории')"/>
+
+                <div class="d-grid col-12 gap-md-2 col-xl-5 col-lg-7 col-md-8 col-sm-9 col-xs-12 mx-auto mb-2">
+                    <a aria-disabled="true" class="btn btn-block orange-btn empty-btn" role="button"
+                       sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/add_category}">
+                        Добавить категорию блюда
+                    </a>
+                </div>
+                <h4 class="block-title text-align-center mb-3">
+                    Для редактирования конкретной категории блюда, выберите её в списке ниже
+                </h4>
+                <form class="reservation-block">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="table">
+                            <thead>
+                            <tr>
+                                <th class="text-justify">Порядок сортировки</th>
+                                <th class="text-justify">Название</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr style="cursor: pointer" th:each="category : ${categories}"
+                                th:onclick="'javascript:rowClicked(\'' + ${category.id} + '\');'">
+                                <td class="align-middle"><span th:text="${category.categoryOrder}"></span></td>
+                                <td class="align-middle"><span th:text="${category.name}"></span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<script>
+    function rowClicked(value) {
+        location.href = "category_edit?id=" + value;
+    }
+</script>
+<script src="../js/table-sorting.js"></script>
+
+</body>
+</html>

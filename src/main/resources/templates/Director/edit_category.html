@@ -32,6 +32,13 @@
                                                th:value="${category.name}" required>
                                         <small class="text-danger" th:if="${#fields.hasErrors('name')}"
                                                th:errors="*{name}"></small>
+                                        <h4><label for="categoryOrder">Порядок для сортировки</label></h4>
+                                        <input class="form-control" id="categoryOrder" name="categoryOrder"
+                                               placeholder=""
+                                               th:field="*{categoryOrder}" th:value="${category.categoryOrder}"
+                                               type="number">
+                                        <small class="text-danger" th:errors="*{categoryOrder}"
+                                               th:if="${#fields.hasErrors('categoryOrder')}"></small>
                                     </div>
 
                                     <hr class="mb-4">
