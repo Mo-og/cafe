@@ -46,14 +46,16 @@
         <h2>Вход в аккаунт</h2>
         <form class="form needs-validation" id="form" enctype="multipart/form-data" th:object="${form}" method="post">
             <div style="margin-bottom: 1em">
-                <input type="text" id="username" th:field="*{username}"
+                <input id="username" th:field="*{username}" type="number"
                        th:value="${form.username}" required placeholder="Логин">
+                <!--suppress ThymeleafVariablesResolveInspection -->
                 <small style="color: red; text-shadow: white 0 0 5px" th:if="${usernameFailed!=null&&usernameFailed}"
                        th:text="${messageUsername}"></small>
             </div>
             <div style="margin-bottom: 1em">
                 <input id="password" placeholder="Пароль" th:field="*{password}"
                        type="password" th:value="${form.password}" required>
+                <!--suppress ThymeleafVariablesResolveInspection -->
                 <small style="color: red; text-shadow: white 0 0 5px" th:if="${passwordFailed!=null&&passwordFailed}"
                        th:text="${messagePassword}"></small>
             </div>

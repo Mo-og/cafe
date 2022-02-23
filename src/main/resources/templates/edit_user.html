@@ -1,7 +1,12 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="fragments::head_datatable(~{::title}, ~{})">
+<head th:insert="fragments::head_datatable(~{::title}, ~{::style})">
     <title> Изменение данных работников </title>
+    <style>
+        select[readonly] {
+            pointer-events: none;
+        }
+    </style>
 </head>
 
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
@@ -66,12 +71,12 @@
 
                                     <div class="col-md-6 mb-3">
                                         <label for="position">Должность</label>
-                                        <select class="form-control" id="position" required
-                                                th:disabled="${#authorization.expression('hasRole(&quot;ROLE_ADMIN&quot;)')||user.getUsername()==#authentication.name}"
+                                        <select class="form-control" id="position" required tabindex="-1"
+                                                th:readonly="${#authorization.expression('hasRole(&quot;ROLE_ADMIN&quot;)')||user.getUsername()==#authentication.name}"
                                                 th:field="*{position}"
                                                 type="">
                                             <option th:each="pos : ${T(ua.cafe.entities.Authority).values()}"
-                                                    th:value="${pos}" th:text="${pos.getPosition()}"></option>
+                                                    th:text="${pos.getName()}" th:value="${pos}"></option>
                                         </select>
                                     </div>
 

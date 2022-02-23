@@ -8,11 +8,11 @@ public enum Authority implements GrantedAuthority {
     COOK("ROLE_COOK", "Повар");
 
     private final String authority;
-    private final String position;
+    private final String name;
 
-    Authority(String authority, String position) {
+    Authority(String authority, String name) {
         this.authority = authority;
-        this.position = position;
+        this.name = name;
     }
 
     @Override
@@ -20,7 +20,7 @@ public enum Authority implements GrantedAuthority {
         return authority;
     }
 
-    public String getPosition() {
-        return position;
+    public String getName() {
+        return name;
     }
 }

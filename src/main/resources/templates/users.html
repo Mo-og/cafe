@@ -49,8 +49,9 @@
                                     <td class="align-middle"><span th:text="${user.patronymic}"></span></td>
                                     <td class="align-middle" sec:authorize="hasRole('ROLE_ADMIN')"><span
                                             th:text="${user.email}"></span></td>
-                                    <td class="align-middle"><span th:text="${user.username}"></span></td>
-                                    <td class="align-middle"><span th:text="${user.position.getPosition()}"></span></td>
+                                    <td class="align-middle"><span th:text="'+'+${user.username}"></span></td>
+                                    <td class="align-middle"><span th:text="${user.getPosition().getName()}"></span>
+                                    </td>
                                 </tr>
                             </table>
                         </div>

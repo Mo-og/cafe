@@ -38,9 +38,9 @@ public class UserService implements UserDetailsService {
         if (auth.getPosition() != Authority.DIRECTOR) {
             //if user is not admin they change their own account
             //and thus cannot change their role
+
             user.setPosition(auth.getPosition());
         }
-
         Optional<User> fromDbOpt = repository.findById(user.getId());
 
         if (result.hasErrors()) {
@@ -59,7 +59,7 @@ public class UserService implements UserDetailsService {
                 user.setPassword(fromDb.getPassword());
             } else user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         }
-
+        user.setUsername(user.getUsername().replace("+", ""));
         repository.save(user);
         return "redirect:/users";
     }

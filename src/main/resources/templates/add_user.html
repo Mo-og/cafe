@@ -65,7 +65,7 @@
                                         <label for="position">Должность</label>
                                         <select class="form-control" id="position" required th:field="*{position}">
                                             <option th:each="value : ${T(ua.cafe.entities.Authority).values()}"
-                                                    th:text="${value.getPosition()}" th:value="${value}"></option>
+                                                    th:text="${value.getName()}" th:value="${value}"></option>
                                         </select>
                                     </div>
 
