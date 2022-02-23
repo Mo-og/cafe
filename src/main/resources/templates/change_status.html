@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments::head(~{::title}, ~{::style})">
+    <title> Изменение данных заказа </title>
+</head>
+<body class="creamBg" data-offset="150" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" id="mainBox">
+<script>
+    function clickedToDelete(dish_id, order_id) {
+        var sured = confirm("Вы уверены, что хотите удалить блюдо №" + dish_id + " из заказа?");
+        if (sured) {
+            // form.submit();
+            document.location.href = "dish_exclude?dish_id=" + dish_id + "&order_id=" + order_id;
+        }
+    }
+
+    function clickedToEdit(dish_id, order_id) {
+        document.location.href = "order_dish_edit?dish_id=" + dish_id + "&order_id=" + order_id;
+    }
+
+    function remove(id) {
+        var sured = confirm("Вы уверены, что хотите удалить заказ №" + id + "? Это действие невозможно отменить!");
+        if (sured) {
+            location.href = "order_remove?id=" + id;
+        }
+    }
+
+    function PopUpShow(id) {
+        $('#' + id).fadeIn(300);
+        setTimeout(function () {
+            $('#inner').slideDown(400);
+        }, 301);
+    }
+
+    function PopUpHide(id) {
+        $('#inner').slideUp(400);
+        setTimeout(function () {
+            $('#' + id).fadeOut(300)
+        }, 300);
+    }
+</script>
+<div id="site-head">
+    <!-- Header Section Begins -->
+    <th:block th:replace="fragments :: navbar"/>
+    <!-- Header Section Ends -->
+
+    <section class="reservation-block pad-top-100 pad-bottom-100">
+        <th:block th:replace="fragments :: headline('Изменение статуса заказа')"/>
+        <h4 class="block-title text-align-center">Выберите требуемый статус заказа</h4>
+        <div class="form-row" style="margin-left: 3%;margin-right: 3%">
+            <form class="reservation-block" enctype="multipart/form-data" method="post"
+                  novalidate th:action="@{/orders}" th:object="${order}">
+                <input class="form-control" name="id" th:field="*{id}" th:value="${order.id}"
+                       type="hidden">
+                <input class="form-control" name="tabl_num" style="display: none" th:field="*{getTableNum}"
+                       th:value="${order.getTableNum}"
+                       type="hidden">
+                <input class="form-control" name="comments" style="display: none" th:field="*{comments}"
+                       th:value="${order.comments}"
+                       type="hidden">
+                <div class="col-4 col-md-4">
+                    <input class="form-control" name="status" th:value="Новый" type="hidden">
+                    <button class="btn btn-danger btn-lg btn-block" type="submit" value="Submit">
+                        Отменить выполнение заказа
+                    </button>
+                </div>
+            </form>
+            <form class="reservation-block" enctype="multipart/form-data" method="post"
+                  novalidate th:action="@{/orders}" th:object="${order}">
+                <input class="form-control" name="id" th:field="*{id}" th:value="${order.id}"
+                       type="hidden">
+                <input class="form-control" name="tabl_num" style="display: none" th:field="*{getTableNum}"
+                       th:value="${order.getTableNum}"
+                       type="hidden">
+                <input class="form-control" name="comments" style="display: none" th:field="*{comments}"
+                       th:value="${order.comments}"
+                       type="hidden">
+                <div class="col-4 col-md-4">
+                    <input class="form-control" name="status" th:value="Выполняется" type="hidden">
+                    <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">
+                        Поставить заказ на выполнение
+                    </button>
+                </div>
+            </form>
+            <form class="reservation-block" enctype="multipart/form-data" method="post"
+                  novalidate th:action="@{/orders}" th:object="${order}">
+                <input class="form-control" name="id" th:field="*{id}" th:value="${order.id}"
+                       type="hidden">
+                <input class="form-control" name="tabl_num" style="display: none" th:field="*{getTableNum}"
+                       th:value="${order.getTableNum}"
+                       type="hidden">
+                <input class="form-control" name="comments" style="display: none" th:field="*{comments}"
+                       th:value="${order.comments}"
+                       type="hidden">
+                <div class="col-4 col-md-4">
+                    <input class="form-control" name="status" th:value="Готово" type="hidden">
+                    <button class="btn btn-success btn-lg btn-block" type="submit" value="Submit">
+                        Готово
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+</body>
+</html>

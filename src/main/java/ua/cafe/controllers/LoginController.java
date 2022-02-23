@@ -38,7 +38,7 @@ public class LoginController {
     }
 
     @GetMapping("/")
-    public String entrance(HttpServletRequest request, Model model, Authentication authentication) {
+    public String entrance(HttpServletRequest request, Model model) {
         model.addAttribute("role", new Role(request));
         return "index";
     }
@@ -77,35 +77,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public String validateEntrance(@Valid EntranceForm form, BindingResult result, Model model) {
-        model.addAttribute("form", form);
-        System.out.println(form);
-        result.getFieldErrors().forEach(fieldError -> System.out.println(fieldError.getField()+"; "+fieldError.getDefaultMessage()));
-        if (result.hasFieldErrors("username")) {
-            model.addAttribute("messageUsername", "Некорректный номер телефона!");
-            model.addAttribute("usernameFailed", true);
-            if (result.hasFieldErrors("password")) {
-                model.addAttribute("messagePassword", "Недопустимый пароль!");
-                model.addAttribute("passwordFailed", true);
-            }
-            return "login";
-        }
-        if (result.hasFieldErrors("password")) {
-            model.addAttribute("messagePassword", "Недопустимый пароль!");
-            model.addAttribute("passwordFailed", true);
-            if (!userService.existsWithUsername(form.getUsername())) {
-                model.addAttribute("messageUsername", "Пользователь не найден");
-                model.addAttribute("usernameFailed", true);
-            }
-            return "login";
-        }
-        if (userService.existsWithUsername(form.getUsername())) {
-            model.addAttribute("messagePassword", "Введён неверный пароль!");
-            model.addAttribute("passwordFailed", true);
-        } else {
-            model.addAttribute("messageUsername", "Пользователь не найден");
-            model.addAttribute("usernameFailed", true);
-        }
+        userService.checkLogin(model, form, result);
         return "login";
-
     }
 }

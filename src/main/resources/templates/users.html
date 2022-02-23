@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments::head_datatable(~{::title}, ~{})">
+    <title> Список работников </title>
+</head>
+<body class="creamBg" data-offset="150" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" id="mainBox">
+<div id="site-head">
+    <!-- Header Section Begins -->
+    <th:block th:replace="fragments :: navbar"/>
+    <!-- Header Section Ends -->
+
+    <!-- Banner Section Begins -->
+    <section class="reservation-block pad-top-100 pad-bottom-100">
+        <div class="container-lg">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <th:block th:replace="fragments :: headline('Управление сотрудниками')"/>
+
+                    <th:block sec:authorize="hasRole('ROLE_ADMIN')"
+                              th:replace="fragments :: buttonMain(@{/add_user},'Добавить сотрудника')"/>
+
+                    <h4 class="block-title text-align-center">Для изменения данных о сотруднике, выберите его в
+                        списке</h4>
+
+                    <form class="reservation-block">
+                        <div class="table-responsive">
+                            <table class="table"
+                                   th:classappend="${#authorization.expression('hasRole(&quot;ROLE_ADMIN&quot;)')?' table-striped':''}">
+                                <thead>
+                                <tr>
+                                    <th class="text-justify">#</th>
+                                    <th class="text-justify">Фамилия</th>
+                                    <th class="text-justify">Имя</th>
+                                    <th class="text-justify">Отчество</th>
+                                    <th class="text-justify" sec:authorize="hasRole('ROLE_ADMIN')">Почта</th>
+                                    <th class="text-justify">Телефон</th>
+                                    <th class="text-justify">Должность</th>
+                                </tr>
+                                </thead>
+                                <!--/*@thymesVar id="user" type="ua.cafe.entities.User"*/-->
+                                <tr th:class="${user.getUsername()==#authentication.name}?'table-active'"
+                                    th:each="user, state : ${users}"
+                                    th:onclick="${#authorization.expression('hasRole(&quot;ROLE_ADMIN&quot;)')||user.getUsername()==#authentication.name}?'javascript:rowClicked(\'' + ${user.id} + '\');'"
+                                    th:style="${#authorization.expression('hasRole(&quot;ROLE_ADMIN&quot;)')||user.getUsername()==#authentication.name}?'cursor: pointer':''">
+                                    <td class="align-middle"><span th:text="${state.count}"></span></td>
+                                    <td class="align-middle"><span th:text="${user.lastName}"></span></td>
+                                    <td class="align-middle"><span th:text="${user.firstName}"></span></td>
+                                    <td class="align-middle"><span th:text="${user.patronymic}"></span></td>
+                                    <td class="align-middle" sec:authorize="hasRole('ROLE_ADMIN')"><span
+                                            th:text="${user.email}"></span></td>
+                                    <td class="align-middle"><span th:text="${user.username}"></span></td>
+                                    <td class="align-middle"><span th:text="${user.position.getPosition()}"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Banner Section Ends -->
+</div>
+
+<script>
+    function sure() {
+        let sured = confirm("Вы уверены, что хотите выйти");
+        if (sured) {
+            document.location.href = "/logout";
+        }
+    }
+
+    function rowClicked(value) {
+        location.href = "user_edit?id=" + value;
+    }
+</script>
+</body>
+</html>

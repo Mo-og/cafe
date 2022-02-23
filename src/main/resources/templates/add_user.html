@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments::head(~{::title}, ~{})">
+    <title> Добавление работника </title>
+</head>
+
+<body class="creamBg" data-offset="150" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" id="mainBox">
+<div id="site-head">
+    <!-- Header Section Begins -->
+    <th:block th:replace="fragments :: navbar"/>
+    <!-- Header Section Ends -->
+
+    <section class="reservation-block pad-top-100 pad-bottom-100">
+        <div class="container-lg">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <th:block th:replace="fragments :: headline('Добавление сотрудника')"/>
+                    <h4 class="block-title text-align-center">Заполните поля и нажмите кнопку 'Добавить сотрудника'</h4>
+                    <form class="needs-validation" enctype="multipart/form-data" method="post"
+                          th:action="@{/add_user}"
+                          th:object="${user}">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="row">
+
+                                    <div class="col-md-4 mb-3">
+                                        <label for="lastName">Фамилия</label>
+                                        <input class="form-control" id="lastName" placeholder="2 - 50 букв" required
+                                               th:field="*{lastName}"
+                                               type="text" value="">
+                                        <small class="text-danger" th:errors="*{lastName}"
+                                               th:if="${#fields.hasErrors('lastName')}"></small>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label for="firstName">Имя</label>
+                                        <input class="form-control" id="firstName" placeholder="2 - 50 букв" required
+                                               th:field="*{firstName}"
+                                               type="text" value="">
+                                        <small class="text-danger" th:errors="*{firstName}"
+                                               th:if="${#fields.hasErrors('firstName')}"></small>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label for="patronymic">Отчество</label>
+                                        <input class="form-control" id="patronymic" placeholder="2 - 50 букв" required
+                                               th:field="*{patronymic}"
+                                               type="text" value="">
+                                        <small class="text-danger" th:errors="*{patronymic}"
+                                               th:if="${#fields.hasErrors('patronymic')}"></small>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="email">Электронная почта</label>
+                                        <input class="form-control" id="email" placeholder="name@example.com" required
+                                               th:field="*{email}" type="email" value="">
+                                        <small class="text-danger" th:errors="*{email}"
+                                               th:if="${#fields.hasErrors('email')}"></small>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="position">Должность</label>
+                                        <select class="form-control" id="position" required th:field="*{position}">
+                                            <option th:each="value : ${T(ua.cafe.entities.Authority).values()}"
+                                                    th:text="${value.getPosition()}" th:value="${value}"></option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="username">Телефон</label>
+                                        <input class="form-control" id="username" placeholder="5 - 14 цифр" required
+                                               th:field="*{username}" type="text" value="">
+                                        <small class="text-danger" th:errors="*{username}"
+                                               th:if="${#fields.hasErrors('username')}"></small>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="address">Домашний адрес</label>
+                                        <input class="form-control" id="address" th:field="*{address}" type="text">
+                                    </div>
+
+                                    <div class="col-md-12 mb-3">
+                                        <label for="password">Пароль для входа на сайт</label>
+                                        <input class="form-control" id="password" placeholder="*******" required
+                                               th:field="*{password}" type="text">
+                                        <small class="text-danger" th:errors="*{password}"
+                                               th:if="${#fields.hasErrors('password')}"></small>
+                                    </div>
+
+                                </div>
+
+                                <hr class="mb-4">
+                                <button class="btn btn-warning btn-lg btn-block" type="submit" value="Submit">
+                                    Добавить работника
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

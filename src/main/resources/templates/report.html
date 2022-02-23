@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments::head_datatable(~{::title}, ~{})">
+    <title>Отчет</title>
+</head>
+<body class="creamBg" data-offset="150" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" id="mainBox">
+
+<div id="site-head">
+    <!-- Header Section Begins -->
+    <th:block th:replace="fragments :: navbar"/>
+    <!-- Header Section Ends -->
+
+    <section class="reservation-block pad-top-100 pad-bottom-100">
+        <th:block th:replace="fragments :: headline('Отчет по продажам')"/>
+        <form class="reservation-block" enctype="multipart/form-data" method="post"
+              th:action="@{/order_update}">
+            <div class="container-lg">
+                <div class="row">
+                    <div class="col-20" th:object="${order}"><br>
+                        <form class="reservation-block">
+                            <div class="table-responsive-sm">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-justify">Блюдо</th>
+                                        <th class="text-justify">Продано порций</th>
+                                        <th class="text-justify">Прибыль (грн.)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="detail, state : ${order.details}">
+                                        <td class="align-middle"><span th:if="${detail.dish!=null}"
+                                                                       th:text="${detail.dish.name}"></span></td>
+                                        <td class="align-middle"><span th:text="${detail.quantity}"></span></td>
+                                        <td class="align-middle"><span th:text="${detail.cost}"></span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>

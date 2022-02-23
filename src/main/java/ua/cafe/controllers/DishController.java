@@ -141,7 +141,7 @@ public class DishController {
     public String addDish(Model model) {
         model.addAttribute("dish", new Dish());
         model.addAttribute("categories", categoriesService.getAllCategories());
-        return "Director/add_dish";
+        return "add_dish";
     }
 
     @GetMapping("/dish_edit")
@@ -149,14 +149,14 @@ public class DishController {
         Dish dish = dishService.getById(id);
         model.addAttribute("dish", dish);
         model.addAttribute("categories", categoriesService.getAllCategories());
-        return "Director/edit_dish";
+        return "edit_dish";
     }
 
     @PostMapping("/dish_update")
     public String updateDish(@RequestParam("file") MultipartFile file, @Valid Dish dish, BindingResult result, long categoryId, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("categories", categoriesService.getAllCategories());
-            return "Director/edit_dish";
+            return "edit_dish";
         }
         categoriesService.setById(dish, categoryId);
         operateDish(file, dish, model);
@@ -168,7 +168,7 @@ public class DishController {
     public String greetingSubmit(@RequestParam("file") MultipartFile file, @Valid Dish dish, BindingResult result, long categoryId, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("categories", categoriesService.getAllCategories());
-            return "Director/add_dish";
+            return "add_dish";
         }
         categoriesService.setById(dish, categoryId);
         operateDish(file, dish, model);

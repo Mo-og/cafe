@@ -73,7 +73,7 @@ public class CategoriesController {
     @GetMapping("/add_category")
     public String addDishCategory(Model model) {
         model.addAttribute("category", new DishCategory());
-        return "Director/add_category";
+        return "add_category";
     }
 
     @GetMapping("/category_edit")
@@ -81,13 +81,13 @@ public class CategoriesController {
         DishCategory category = categoriesService.getById(id);
         model.addAttribute("category", category);
         System.out.println("Получено " + category);
-        return "Director/edit_category";
+        return "edit_category";
     }
 
     @PostMapping("/category_update")
     public String updateDish(@Valid DishCategory category, BindingResult result) {
         if (result.hasErrors())
-            return "Director/edit_category";
+            return "edit_category";
         categoriesService.saveCategory(category);
         System.out.println("Обновлено " + category);
         return "redirect:/categories";
@@ -98,7 +98,7 @@ public class CategoriesController {
         log.info("Got category " + category);
         if (result.hasErrors()) {
             result.getFieldErrors().forEach(fieldError -> log.error(fieldError.getObjectName() + " [" + fieldError.getRejectedValue() + "]: " + fieldError.getDefaultMessage()));
-            return "/Director/add_category";
+            return "add_category";
         }
         log.info("No errors found for " + category.getName());
         categoriesService.saveCategory(category);

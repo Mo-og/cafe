@@ -21,13 +21,6 @@
     <th:block th:replace="${links}"/>
 </th:block>
 
-<!--Title-->
-<h2 class="block-title text-align-center mb-2" th:fragment="headline(name)">
-    <span class="side-img left-side-img"><i></i><i></i><i></i></span>
-    [[${name}]]
-    <span class="side-img right-side-img"><i></i><i></i><i></i></span>
-</h2>
-
 <!--Head with 'table sorting' jQuery link-->
 <th:block th:fragment="head_datatable(title, links)">
     <meta charset="utf-8">
@@ -49,6 +42,22 @@
             src="https://cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.11.3/b-2.2.1/b-colvis-2.2.1/b-html5-2.2.1/b-print-2.2.1/fc-4.0.1/fh-3.2.1/r-2.2.9/rg-1.1.4/sr-1.1.0/datatables.min.js"></script>
     <th:block th:replace="${links}"/>
 </th:block>
+
+<!--Title-->
+<h2 class="block-title text-align-center mb-4" th:fragment="headline(name)">
+    <span class="side-img left-side-img"><i></i><i></i><i></i></span>
+    [[${name}]]
+    <span class="side-img right-side-img"><i></i><i></i><i></i></span>
+</h2>
+
+<th:block th:fragment="buttonMain(link, text)">
+    <div class="d-grid col-12 gap-md-2 col-md-3 mx-auto">
+        <a aria-disabled="true" class="btn btn-block orange-btn empty-btn" role="button"
+           th:href="${link}" th:text="${text}">
+        </a>
+    </div>
+</th:block>
+
 
 <!--Navbar-->
 <header id="header" class="header-block" th:fragment="navbar">

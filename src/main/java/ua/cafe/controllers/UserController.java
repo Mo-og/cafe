@@ -35,31 +35,32 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/users", "/workers"}, method = RequestMethod.GET)
-    public String getUsers(Model model, Authentication authentication) {
+    public String getUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         markPage(model, "users");
-        return switch (((User) authentication.getPrincipal()).getPosition()) {
-            case WAITER -> "Waiter/users";
-            case COOK -> "Cook/users";
-            case DIRECTOR -> "Director/users";
-        };
-
+        return "users";
     }
 
     @GetMapping("/user_edit")
-    public String editUser(Model model, @RequestParam Long id) {
+    public String editUser(Model model, @RequestParam Long id, Authentication authentication) {
         User user = userService.getById(id);
+        try {
+            User auth = (User) authentication.getPrincipal();
+            if (auth.getPosition() != Authority.DIRECTOR)
+                if (!user.getUsername().equals(auth.getUsername()))
+                    return "redirect:/users";
+        } catch (NullPointerException e) {
+            //noinspection SpringMVCViewInspection
+            return "redirect:/login";
+        }
         model.addAttribute("user", user);
-        return "Director/edit_user";
+        return "edit_user";
     }
 
     //на случай сброса базы - добавляет сотрудника
     @GetMapping("/supersecretrequest7355")
     public String addAdmin() {
-        User user = new User("admin", "admin", "admin", "a@b.c", "991122334455", "address", Authority.DIRECTOR, "password");
-        user.setPassword(new BCryptPasswordEncoder().encode("74553211"));
-        userService.removeByUsername("991122334455");
-        userService.saveUser(user);
+        userService.createAdmin();
         return "redirect:/entrance";
     }
 
@@ -75,29 +76,21 @@ public class UserController {
     @GetMapping("/add_user")
     public String addUser(Model model) {
         model.addAttribute("user", new User());
-        return "Director/add_user";
+        return "add_user";
     }
 
     @PostMapping("/user_update")
-    public String editingSubmit(@Valid User user, BindingResult result) {
-        if (result.hasErrors() && !user.getPassword().equals("")) {
-            return "Director/edit_user";
-        }
-        //если пароль не поменяли, то хешировать снова не стоит, если поменяли, то хешируем
-        if (user.getPassword().equals("")) {
-            user.setPassword(userService.getById(user.getId()).getPassword());
-        } else user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        userService.saveUser(user);
-        return "redirect:/users";
+    public String editingSubmit(@Valid User user, BindingResult result, Authentication authentication) {
+        return userService.checkSaveUser(user, result, authentication);
     }
 
     @PostMapping("/add_user")
-    public String greetingSubmit(@Valid User user, BindingResult result) {
+    public String greetingSubmit(@Valid User user, BindingResult result, Authentication authentication) {
         if (result.hasErrors()) {
-            return "Director/add_user";
+            return "add_user";
         }
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        userService.saveUser(user);
+        userService.checkSaveUser(user, result, authentication);
         return "redirect:/users";
     }
 }

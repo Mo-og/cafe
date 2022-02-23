@@ -110,9 +110,8 @@ public class OrderController {
         model.addAttribute("new_order", new Order());
         markPage(model, "orders");
 
-        return "Waiter/orders";
+        return "orders";
     }
-
 
     //отчет
     @GetMapping("/report")
@@ -134,7 +133,7 @@ public class OrderController {
         model.addAttribute("order", order);
         markPage(model, "report");
 
-        return "Director/report";
+        return "report";
     }
 
     @GetMapping("/change_status")
@@ -142,7 +141,7 @@ public class OrderController {
         Order order = orderService.getById(id);
         model.addAttribute("order", order);
         model.addAttribute("dishes", dishService.getAllDishes());
-        return "Cook/change_status";
+        return "change_status";
     }
 
 }
