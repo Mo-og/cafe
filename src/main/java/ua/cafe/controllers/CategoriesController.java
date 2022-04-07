@@ -9,10 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.cafe.entities.DishCategory;
+import ua.cafe.models.Category;
 import ua.cafe.services.CategoriesService;
 import ua.cafe.utils.JsonMaker;
-import ua.cafe.utils.Utils;
+import ua.cafe.utils.ResponseFactory;
 
 import javax.validation.Valid;
 import java.util.NoSuchElementException;
@@ -37,8 +37,8 @@ public class CategoriesController {
     }
 
     @GetMapping("/api/category")
-    public ResponseEntity<String> getCategoryJson(@RequestParam Long id) {
-        DishCategory category = categoriesService.getById(id);
+    public ResponseEntity<String> getCategory(@RequestParam Long id) {
+        Category category = categoriesService.getById(id);
         if (category != null)
             return JsonMaker.getJsonResponse(category);
         return new ResponseEntity<>("No category found by given id", HttpStatus.NOT_FOUND);
@@ -46,8 +46,8 @@ public class CategoriesController {
 
     //POST, PUT
     @RequestMapping(value = "/api/category", method = {RequestMethod.POST, RequestMethod.PUT})
-    public ResponseEntity<?> apiAddUpdateCategory(@Valid DishCategory category, BindingResult result) {
-        ResponseEntity<?> ErrorsMap = Utils.getValidityResponse(result);
+    public ResponseEntity<?> apiAddUpdateCategory(@Valid Category category, BindingResult result) {
+        ResponseEntity<?> ErrorsMap = ResponseFactory.createResponse(result);
         if (ErrorsMap != null) return ErrorsMap;
         return new ResponseEntity<>(categoriesService.saveCategory(category), HttpStatus.OK);
     }
@@ -72,20 +72,20 @@ public class CategoriesController {
 
     @GetMapping("/add_category")
     public String addDishCategory(Model model) {
-        model.addAttribute("category", new DishCategory());
+        model.addAttribute("category", new Category());
         return "add_category";
     }
 
     @GetMapping("/category_edit")
     public String editDishCategory(Model model, @RequestParam Long id) {
-        DishCategory category = categoriesService.getById(id);
+        Category category = categoriesService.getById(id);
         model.addAttribute("category", category);
         System.out.println("Получено " + category);
         return "edit_category";
     }
 
     @PostMapping("/category_update")
-    public String updateDish(@Valid DishCategory category, BindingResult result) {
+    public String updateDish(@Valid Category category, BindingResult result) {
         if (result.hasErrors())
             return "edit_category";
         categoriesService.saveCategory(category);
@@ -94,7 +94,7 @@ public class CategoriesController {
     }
 
     @PostMapping("/add_category")
-    public String addDishCatPost(@Valid DishCategory category, BindingResult result) {
+    public String addDishCatPost(@Valid Category category, BindingResult result) {
         log.info("Got category " + category);
         if (result.hasErrors()) {
             result.getFieldErrors().forEach(fieldError -> log.error(fieldError.getObjectName() + " [" + fieldError.getRejectedValue() + "]: " + fieldError.getDefaultMessage()));

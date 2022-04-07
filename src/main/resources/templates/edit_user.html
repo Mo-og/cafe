@@ -75,7 +75,7 @@
                                                 th:readonly="${#authorization.expression('hasRole(&quot;ROLE_ADMIN&quot;)')||user.getUsername()==#authentication.name}"
                                                 th:field="*{position}"
                                                 type="">
-                                            <option th:each="pos : ${T(ua.cafe.entities.Authority).values()}"
+                                            <option th:each="pos : ${T(ua.cafe.models.Authority).values()}"
                                                     th:text="${pos.getName()}" th:value="${pos}"></option>
                                         </select>
                                     </div>

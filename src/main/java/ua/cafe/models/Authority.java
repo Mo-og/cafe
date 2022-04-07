@@ -1,4 +1,4 @@
-package ua.cafe.entities;
+package ua.cafe.models;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -7,7 +7,10 @@ public enum Authority implements GrantedAuthority {
     WAITER("ROLE_WAITER", "Официант"),
     COOK("ROLE_COOK", "Повар");
 
+    //ROLE_ADMIN, etc.
     private final String authority;
+
+    //Директор, etc.
     private final String name;
 
     Authority(String authority, String name) {

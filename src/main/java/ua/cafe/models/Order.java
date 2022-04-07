@@ -1,4 +1,4 @@
-package ua.cafe.entities;
+package ua.cafe.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

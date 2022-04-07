@@ -8,15 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.cafe.entities.Authority;
-import ua.cafe.entities.User;
+import ua.cafe.models.Authority;
+import ua.cafe.models.User;
 import ua.cafe.services.UserService;
 import ua.cafe.utils.JsonMaker;
 
 import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
-import static ua.cafe.utils.Utils.markPage;
+import static ua.cafe.utils.Stats.markPage;
 
 
 @Controller
@@ -34,7 +34,7 @@ public class UserController {
         return JsonMaker.getJsonResponse(userService.getAllUsers());
     }
 
-    @RequestMapping(value = {"/users", "/workers"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/users"}, method = RequestMethod.GET)
     public String getUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         markPage(model, "users");

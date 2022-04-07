@@ -1,7 +1,7 @@
 package ua.cafe.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ua.cafe.entities.User;
+import ua.cafe.models.User;
 
 import java.util.Optional;
 

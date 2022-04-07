@@ -11,19 +11,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.cafe.entities.Detail;
-import ua.cafe.entities.Dish;
-import ua.cafe.entities.Order;
+import ua.cafe.models.Detail;
+import ua.cafe.models.Dish;
+import ua.cafe.models.Order;
 import ua.cafe.services.DetailService;
 import ua.cafe.services.DishService;
 import ua.cafe.services.OrderService;
+import ua.cafe.services.PdfService;
 import ua.cafe.utils.JsonMaker;
-import ua.cafe.utils.Utils;
+import ua.cafe.utils.ResponseFactory;
 
 import javax.validation.Valid;
 import java.util.List;
 
-import static ua.cafe.utils.Utils.markPage;
+import static ua.cafe.utils.Stats.markPage;
 
 @Lazy
 @Controller
@@ -34,6 +35,7 @@ public class OrderController {
     public static OrderService orderService;
     public static DetailService detailService;
     private static DishService dishService;
+    private static PdfService pdfService;
 
     @Autowired
     public void setService(DishService service) {
@@ -48,6 +50,11 @@ public class OrderController {
     @Autowired
     public void setService(DetailService service) {
         detailService = service;
+    }
+
+    @Autowired
+    public void setService(PdfService service) {
+        pdfService = service;
     }
 
     //API
@@ -69,7 +76,7 @@ public class OrderController {
     //POST
     @PostMapping("/api/order")
     public ResponseEntity<?> apiSaveOrder(@RequestBody @Valid Order order, BindingResult result) {
-        var ErrorsMap = Utils.getValidityResponse(result);
+        var ErrorsMap = ResponseFactory.createResponse(result);
         if (ErrorsMap != null) return ErrorsMap;
 
         var temp = orderService.saveNewOrder(order);
@@ -80,7 +87,7 @@ public class OrderController {
     //PUT
     @RequestMapping(value = "/api/order", method = RequestMethod.PUT)
     public ResponseEntity<?> apiUpdateOrder(@RequestBody @Valid Order order, BindingResult result) {
-        ResponseEntity<?> ErrorsMap = Utils.getValidityResponse(result);
+        ResponseEntity<?> ErrorsMap = ResponseFactory.createResponse(result);
         if (ErrorsMap != null) return ErrorsMap;
         log.info("Got order: " + order.toString());
 

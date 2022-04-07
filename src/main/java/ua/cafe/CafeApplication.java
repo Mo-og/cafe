@@ -2,6 +2,7 @@ package ua.cafe;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.SpringVersion;
 /*import org.apache.coyote.http11.AbstractHttp11Protocol;
 import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
@@ -19,6 +20,8 @@ public class CafeApplication {
     }*/
 
     public static void main(String[] args) {
+        System.out.println("Spring version: " + SpringVersion.getVersion());
+        System.out.println("Java version: " + System.getProperty("java.version"));
         SpringApplication.run(CafeApplication.class, args);
     }
 

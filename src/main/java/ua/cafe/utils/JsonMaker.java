@@ -6,10 +6,10 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public class JsonMaker {
+public abstract class JsonMaker {
     private static final ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
-    public static <T> String getJson(T t){
+    public static <T> String getJson(T t) {
         try {
             return ow.writeValueAsString(t);
         } catch (JsonProcessingException e) {

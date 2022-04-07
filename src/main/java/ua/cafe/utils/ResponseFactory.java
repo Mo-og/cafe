@@ -2,25 +2,16 @@ package ua.cafe.utils;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class Utils {
-    private static final DateFormat dateFormat = new SimpleDateFormat("_-_dd.MM.yyyy_HH.mm.ss");
+public class ResponseFactory {
 
-    public static String getDateString() {
-        return dateFormat.format(new Date());
-    }
-
-    public static ResponseEntity<HashMap<String, List<String>>> getValidityResponse(BindingResult result) {
+    public static ResponseEntity<HashMap<String, List<String>>> createResponse(BindingResult result) {
         if (result.hasErrors()) {
             var ErrorsMap = new HashMap<String, List<String>>();
             for (FieldError e : result.getFieldErrors())
@@ -28,9 +19,5 @@ public class Utils {
             return new ResponseEntity<>(ErrorsMap, HttpStatus.NOT_ACCEPTABLE);
         }
         return null;
-    }
-
-    public static void markPage(Model model, String pageName) {
-        model.addAttribute("page", pageName);
     }
 }

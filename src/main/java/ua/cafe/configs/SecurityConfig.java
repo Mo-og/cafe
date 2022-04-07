@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 
     @Bean
     public AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
-        return new MySimpleUrlAuthenticationSuccessHandler("/");
+        return new UrlAuthenticationSuccessHandler("/");
     }
 
     @Override
@@ -49,6 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()).and()
 //                .csrf().disable()
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+
+                //.headers().xssProtection().and()
+                //.contentSecurityPolicy("script-src 'self'").and().and()
+
                 .authorizeRequests()
                 .antMatchers("static/**", "/DishImages/**").permitAll()
                 .antMatchers("/").permitAll()
@@ -71,10 +75,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .antMatchers(HttpMethod.PUT, "/api/detail").hasAnyRole("ADMIN", "WAITER")
                 .antMatchers(HttpMethod.DELETE, "/api/detail").hasAnyRole("ADMIN", "WAITER")
 
-                .antMatchers("/Director/**").hasRole("ADMIN")
                 .antMatchers("/dish_edit", "/add**", "/dish_remove").hasRole("ADMIN")
-                .antMatchers("/order**").authenticated()
-                .antMatchers("/categor**").authenticated()
+                .antMatchers("/order**", "/categor**").authenticated()
                 .antMatchers("/Cook/**").hasAnyRole("ADMIN", "COOK")
 
                 .and().formLogin().loginPage("/login")

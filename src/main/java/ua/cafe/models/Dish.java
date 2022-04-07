@@ -1,4 +1,4 @@
-package ua.cafe.entities;
+package ua.cafe.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -7,7 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.validator.constraints.Range;
-import ua.cafe.controllers.DishController;
+import org.jetbrains.annotations.NotNull;
+import ua.cafe.utils.Stats;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -20,13 +21,13 @@ import java.util.Objects;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class Dish {
+public class Dish implements Comparable<Dish> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @ManyToOne
-    private DishCategory category;
+    private Category category;
     @NotBlank(message = "У блюда должно быть название!")
     private String name;
     @Range(min = 1, message = "Масса блюда не может быть меньше 1!")
@@ -63,15 +64,16 @@ public class Dish {
     public String getImagePath() {
         if (isThumb)
             if (imagePath != null && imagePath.length() > 11)
-                return DishController.URL_THUMBNAILS_PATH + imagePath.substring(11);
+                return Stats.URL_THUMBNAILS_PATH + imagePath.substring(11);
         return imagePath;
     }
 
+    @JsonIgnore
     public String getClearImagePath() {
         return imagePath;
     }
 
-    public DishCategory getCategory() {
+    public Category getCategory() {
         return category;
     }
 
@@ -96,6 +98,15 @@ public class Dish {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Dish dish = (Dish) o;
         return id != 0 && Objects.equals(id, dish.id);
+    }
+
+    @Override
+    public int compareTo(@NotNull Dish o) {
+        int result = this.category.compareTo(o.category);
+        if (result == 0) {
+            result = this.name.compareToIgnoreCase(o.name);
+        }
+        return result;
     }
 
     @Override

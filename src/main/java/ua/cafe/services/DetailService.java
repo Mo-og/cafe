@@ -4,8 +4,8 @@ package ua.cafe.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import ua.cafe.entities.Detail;
-import ua.cafe.repositories.DetailsOfOrderedDishRepository;
+import ua.cafe.models.Detail;
+import ua.cafe.repositories.DetailRepository;
 
 import java.util.List;
 
@@ -13,10 +13,10 @@ import java.util.List;
 @Service
 public class DetailService {
 
-    private DetailsOfOrderedDishRepository repository;
+    private DetailRepository repository;
 
     @Autowired
-    public void setRepository(DetailsOfOrderedDishRepository repository) {
+    public void setRepository(DetailRepository repository) {
         this.repository = repository;
     }
 
@@ -42,6 +42,7 @@ public class DetailService {
         return repository.findByOrder_idAndDish_id(order_id, dish_id);
     }
 
+    //Deprecated
     public void removeByOrderIdAndDishID(long order_id, long dish_id) {
         Detail detail = repository.findByOrder_idAndDish_id(order_id, dish_id);
         detail.setDish(null);
@@ -50,6 +51,7 @@ public class DetailService {
     }
 
     public void remove(Detail detail) {
+        //TODO: should not set nulls
         detail.setDish(null);
         detail.setOrder(null);
         repository.delete(detail);

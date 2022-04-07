@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import ua.cafe.entities.Authority;
-import ua.cafe.entities.EntranceForm;
-import ua.cafe.entities.User;
+import ua.cafe.models.Authority;
+import ua.cafe.models.LoginForm;
+import ua.cafe.models.User;
 import ua.cafe.repositories.UserRepository;
 
 import java.util.List;
@@ -105,7 +105,7 @@ public class UserService implements UserDetailsService {
         return user.get();
     }
 
-    public void checkLogin(Model model, EntranceForm form, BindingResult result) {
+    public void checkLogin(Model model, LoginForm form, BindingResult result) {
         model.addAttribute("form", form);
         result.getFieldErrors().forEach(fieldError -> log.info(fieldError.getField() + "; " + fieldError.getDefaultMessage()));
         if (result.hasFieldErrors("username")) {

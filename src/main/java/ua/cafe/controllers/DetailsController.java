@@ -8,11 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.cafe.entities.Detail;
-import ua.cafe.entities.Dish;
-import ua.cafe.entities.Order;
+import ua.cafe.models.Detail;
+import ua.cafe.models.Dish;
+import ua.cafe.models.Order;
 import ua.cafe.services.DetailService;
 import ua.cafe.services.DishService;
+import ua.cafe.services.OrderService;
 import ua.cafe.utils.JsonMaker;
 import ua.cafe.utils.Role;
 
@@ -25,6 +26,7 @@ public class DetailsController {
 
     private static DetailService detailService;
     private static DishService dishService;
+    private static OrderService orderService;
 
     @Autowired
     public void setService(DishService service) {
@@ -32,8 +34,13 @@ public class DetailsController {
     }
 
     @Autowired
-    public void setDetailsService(DetailService service) {
+    public void setDetailService(DetailService service) {
         DetailsController.detailService = service;
+    }
+
+    @Autowired
+    public void setOrderService(OrderService service) {
+        DetailsController.orderService = service;
     }
 
     //API
@@ -65,7 +72,7 @@ public class DetailsController {
         if (result.hasErrors())
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 //TODO: simplify or optimise
-        Order order = OrderController.orderService.getById(detail.getOrderId());
+        Order order = orderService.getById(detail.getOrderId());
         Dish dish_toSave = dishService.getById(detail.getDishId());
         detailService.remove(detail);
         detail.setDish(dish_toSave);

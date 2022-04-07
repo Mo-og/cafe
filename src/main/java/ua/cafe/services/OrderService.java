@@ -3,9 +3,9 @@ package ua.cafe.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import ua.cafe.entities.Detail;
-import ua.cafe.entities.Order;
-import ua.cafe.repositories.DetailsOfOrderedDishRepository;
+import ua.cafe.models.Detail;
+import ua.cafe.models.Order;
+import ua.cafe.repositories.DetailRepository;
 import ua.cafe.repositories.OrderRepository;
 
 import java.util.Date;
@@ -16,7 +16,7 @@ import java.util.List;
 public class OrderService {
 
     private OrderRepository repository;
-    private DetailsOfOrderedDishRepository detailsRepository;
+    private DetailRepository detailRepository;
 
     @Autowired
     public void setRepository(OrderRepository repository) {
@@ -24,8 +24,8 @@ public class OrderService {
     }
 
     @Autowired
-    public void setRepository(DetailsOfOrderedDishRepository repository) {
-        this.detailsRepository = repository;
+    public void setRepository(DetailRepository repository) {
+        this.detailRepository = repository;
     }
 
     public Order saveOrder(Order order) {
@@ -36,7 +36,7 @@ public class OrderService {
         order.setDateOrdered(new Date(System.currentTimeMillis()));
         Order finalOrder = repository.save(order);
         order.getDetails().forEach(detail -> detail.setOrderRetrieveDish(finalOrder));
-        detailsRepository.saveAll(order.getDetails());
+        detailRepository.saveAll(order.getDetails());
         finalOrder.setDetails(order.getDetails());
         return finalOrder;
     }
@@ -69,16 +69,16 @@ public class OrderService {
         //TODO: remove detail by API [delete detail] instead of this
         List<Detail> details = fromDb.getDetails();
         details.removeAll(orderUpdate.getDetails());
-        detailsRepository.deleteAll(details);
+        detailRepository.deleteAll(details);
         //////
         orderUpdate.getDetails().forEach(detail -> {
             if (detail.getId() != 0) {
-                Detail d = detailsRepository.getOne(detail.getId());
+                Detail d = detailRepository.getOne(detail.getId());
                 d.setQuantity(detail.getQuantity());
                 d.setStatus(detail.getStatus());
             } else {
                 detail.setOrderRetrieveDish(fromDb);
-                detailsRepository.save(detail);
+                detailRepository.save(detail);
             }
         });
         fromDb.setDetails(orderUpdate.getDetails());

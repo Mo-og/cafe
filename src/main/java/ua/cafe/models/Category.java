@@ -1,10 +1,11 @@
-package ua.cafe.entities;
+package ua.cafe.models;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -16,7 +17,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "dish_category")
-public class DishCategory {
+public class Category implements Comparable<Category> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,12 +30,17 @@ public class DishCategory {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        DishCategory that = (DishCategory) o;
+        Category that = (Category) o;
         return id != 0 && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public int compareTo(@NotNull Category o) {
+        return categoryOrder - o.categoryOrder;
     }
 }

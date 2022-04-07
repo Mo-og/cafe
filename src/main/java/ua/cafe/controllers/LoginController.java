@@ -8,8 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.cafe.entities.EntranceForm;
-import ua.cafe.entities.User;
+import ua.cafe.models.LoginForm;
 import ua.cafe.services.UserService;
 import ua.cafe.utils.Role;
 
@@ -18,7 +17,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.Principal;
 
 @CrossOrigin
 @Controller
@@ -32,8 +30,8 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/username", method = RequestMethod.GET)
-    public String currentUserName(Principal principal, Model model, Authentication authentication) {
-        model.addAttribute("name", ((User) authentication.getPrincipal()).getFirstName());
+    public String currentUserName(Model model, Authentication authentication) {
+//        model.addAttribute("name", ((User) authentication.getPrincipal()).getFirstName());
         return "test";
     }
 
@@ -71,12 +69,12 @@ public class LoginController {
 
     @GetMapping("/login")
     public String getEntrance(Model model) {
-        model.addAttribute("form", new EntranceForm());
+        model.addAttribute("form", new LoginForm());
         return "login";
     }
 
     @PostMapping("/login")
-    public String validateEntrance(@Valid EntranceForm form, BindingResult result, Model model) {
+    public String validateEntrance(@Valid LoginForm form, BindingResult result, Model model) {
         userService.checkLogin(model, form, result);
         return "login";
     }

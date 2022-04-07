@@ -1,4 +1,4 @@
-package ua.cafe.entities;
+package ua.cafe.models;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package ua.cafe.entities;
+package ua.cafe.models;
 
 import org.springframework.http.ResponseEntity;
 import ua.cafe.utils.JsonMaker;
@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public enum ReadyStatus {
     NEW("Новый"), IN_PROGRESS("Готовится"), READY("Приготовлено"), FINISHED("Выполнено");
-    private final String description;
+    public final String description;
 
     public static final ResponseEntity<String> MAP_RESPONSE_ENTITY;
     static {

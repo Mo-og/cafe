@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>ua.cafe.utils.ImageProcessor</OriginalElement>
+  <nodes>
+    <node x="612.125" y="397.0">ua.cafe.controllers.UserController</node>
+    <node x="241.1578947368423" y="198.90789473684202">ua.cafe.utils.Role</node>
+    <node x="215.0" y="145.75">ua.cafe.controllers.DetailsController</node>
+    <node x="341.1052631578947" y="246.25">ua.cafe.controllers.DishController</node>
+    <node x="568.5" y="254.75953442907513">ua.cafe.utils.ResponseFactory</node>
+    <node x="447.89999999999986" y="145.75">ua.cafe.utils.JsonMaker</node>
+    <node x="555.5" y="196.0">ua.cafe.controllers.CategoriesController</node>
+    <node x="337.1052631578947" y="196.0">ua.cafe.controllers.LoginController</node>
+    <node x="575.2758620689655" y="296.5">ua.cafe.utils.Stats</node>
+    <node x="364.6052631578947" y="296.5">ua.cafe.utils.Translit</node>
+    <node x="215.0" y="346.75">ua.cafe.services.DishService</node>
+    <node x="402.0" y="346.75">ua.cafe.controllers.OrderController</node>
+    <node x="362.5" y="397.0">ua.cafe.utils.ImageProcessor</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="ua.cafe.controllers.OrderController" target="ua.cafe.utils.ResponseFactory" relationship="DEPENDENCY">
+      <point x="50.61125513716729" y="-11.3665982660238" />
+      <point x="529.6112551371673" y="277.0657894736842" />
+      <point x="-82.42105263157919" y="7.806255044609088" />
+    </edge>
+    <edge source="ua.cafe.controllers.DishController" target="ua.cafe.services.DishService" relationship="DEPENDENCY">
+      <point x="-71.62365630430747" y="4.312625291345739" />
+      <point x="280.22117128189944" y="265.06262529134574" />
+      <point x="2.2211712818994442" y="-12.739098846585307" />
+    </edge>
+    <edge source="ua.cafe.controllers.DishController" target="ua.cafe.utils.Stats" relationship="DEPENDENCY">
+      <point x="62.5" y="15.25" />
+      <point x="476.1052631578947" y="301.32303640500777" />
+      <point x="-36.73927670311184" y="-9.67696359499223" />
+    </edge>
+    <edge source="ua.cafe.controllers.UserController" target="ua.cafe.utils.Stats" relationship="DEPENDENCY">
+      <point x="-65.0" y="-14.5" />
+      <point x="3.3491379310345337" y="14.5" />
+    </edge>
+    <edge source="ua.cafe.controllers.DetailsController" target="ua.cafe.utils.JsonMaker" relationship="DEPENDENCY">
+      <point x="81.0" y="0.0" />
+      <point x="-59.5" y="0.0" />
+    </edge>
+    <edge source="ua.cafe.controllers.CategoriesController" target="ua.cafe.utils.ResponseFactory" relationship="DEPENDENCY">
+      <point x="0.0" y="14.5" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="ua.cafe.controllers.OrderController" target="ua.cafe.services.DishService" relationship="TO_ONE">
+      <point x="-76.92307692307674" y="-8.884615384615358" />
+      <point x="61.769230769230944" y="-8.884615384615358" />
+    </edge>
+    <edge source="ua.cafe.controllers.OrderController" target="ua.cafe.services.DishService" relationship="DEPENDENCY">
+      <point x="-77.0" y="6.115384615384642" />
+      <point x="63.0" y="6.115384615384642" />
+    </edge>
+    <edge source="ua.cafe.controllers.DishController" target="ua.cafe.utils.ResponseFactory" relationship="DEPENDENCY">
+      <point x="71.0789473684219" y="-0.013157894736650633" />
+      <point x="503.453947368421" y="260.73684210526335" />
+      <point x="503.453947368421" y="260.75" />
+      <point x="-79.78947368421063" y="-8.509534429075131" />
+    </edge>
+    <edge source="ua.cafe.controllers.DetailsController" target="ua.cafe.utils.Role" relationship="CREATE">
+      <point x="-29.84210526315769" y="14.5" />
+      <point x="-15.0" y="-14.5" />
+    </edge>
+    <edge source="ua.cafe.controllers.OrderController" target="ua.cafe.utils.JsonMaker" relationship="DEPENDENCY">
+      <point x="34.32461955776148" y="-14.808064363826702" />
+      <point x="513.3246195577615" y="172.2" />
+      <point x="-27.89999999999992" y="11.950000000000003" />
+    </edge>
+    <edge source="ua.cafe.services.DishService" target="ua.cafe.utils.Translit" relationship="DEPENDENCY">
+      <point x="28.5" y="-14.5" />
+      <point x="306.5" y="311.0" />
+      <point x="-49.0" y="0.0" />
+    </edge>
+    <edge source="ua.cafe.services.DishService" target="ua.cafe.utils.Stats" relationship="DEPENDENCY">
+      <point x="17.500000000000057" y="18.5" />
+      <point x="295.50000000000006" y="386.375" />
+      <point x="582.0380034032901" y="386.375" />
+      <point x="-34.23785866567539" y="11.208458980163812" />
+    </edge>
+    <edge source="ua.cafe.controllers.DetailsController" target="ua.cafe.services.DishService" relationship="TO_ONE">
+      <point x="-73.44907862406473" y="15.037766303937929" />
+      <point x="222.55092137593527" y="350.0246084092008" />
+      <point x="-57.55434178195944" y="-11.225391590799177" />
+    </edge>
+    <edge source="ua.cafe.utils.ImageProcessor" target="ua.cafe.utils.Stats" relationship="DEPENDENCY">
+      <point x="77.5" y="0.0" />
+      <point x="599.2473057288715" y="411.5" />
+      <point x="-17.028556340093928" y="13.76659851504752" />
+    </edge>
+    <edge source="ua.cafe.services.DishService" target="ua.cafe.utils.ImageProcessor" relationship="DEPENDENCY">
+      <point x="0.0" y="14.5" />
+      <point x="278.0" y="411.5" />
+      <point x="-77.5" y="0.0" />
+    </edge>
+    <edge source="ua.cafe.controllers.UserController" target="ua.cafe.utils.JsonMaker" relationship="DEPENDENCY">
+      <point x="66.14723098849618" y="-16.247353150768618" />
+      <point x="750.7722309884962" y="154.00535295348868" />
+      <point x="58.18076733228929" y="-6.244647046511304" />
+    </edge>
+    <edge source="ua.cafe.controllers.LoginController" target="ua.cafe.utils.Role" relationship="CREATE">
+      <point x="-76.5" y="2.9078947368420245" />
+      <point x="40.0" y="0.0" />
+    </edge>
+    <edge source="ua.cafe.controllers.OrderController" target="ua.cafe.utils.Stats" relationship="DEPENDENCY">
+      <point x="65.36358479863895" y="-14.63060124787296" />
+      <point x="544.363584798639" y="317.9084022586663" />
+      <point x="-39.178301093355685" y="6.908402258666285" />
+    </edge>
+    <edge source="ua.cafe.controllers.DishController" target="ua.cafe.utils.JsonMaker" relationship="DEPENDENCY">
+      <point x="74.0" y="-9.5" />
+      <point x="498.27272727272725" y="251.25" />
+      <point x="-9.127272727272612" y="14.022727272727195" />
+    </edge>
+    <edge source="ua.cafe.controllers.DishController" target="ua.cafe.services.DishService" relationship="TO_ONE">
+      <point x="-67.48572526982468" y="-6.72185746727493" />
+      <point x="267.80737817845113" y="254.02814253272507" />
+      <point x="-10.192621821548869" y="-14.808064363826702" />
+    </edge>
+    <edge source="ua.cafe.controllers.CategoriesController" target="ua.cafe.utils.JsonMaker" relationship="DEPENDENCY">
+      <point x="2.2000000000000455" y="-14.849999999999994" />
+      <point x="651.2" y="168.1516944169033" />
+      <point x="61.10759660058193" y="7.901694416903297" />
+    </edge>
+    <edge source="ua.cafe.controllers.DetailsController" target="ua.cafe.services.DishService" relationship="DEPENDENCY">
+      <point x="-62.396447045117355" y="14.511450514464258" />
+      <point x="233.60355295488264" y="348.97197683025354" />
+      <point x="-45.975394413538424" y="-12.278023169746461" />
+    </edge>
+  </edges>
+  <settings layout="Compact" zoom="1.0" showDependencies="true" x="483.99999999999994" y="285.5" />
+  <SelectedNodes>
+    <node>ua.cafe.utils.ImageProcessor</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>Project Files</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

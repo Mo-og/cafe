@@ -38,7 +38,7 @@
                                     <th class="text-justify">Должность</th>
                                 </tr>
                                 </thead>
-                                <!--/*@thymesVar id="user" type="ua.cafe.entities.User"*/-->
+                                <!--/*@thymesVar id="user" type="ua.cafe.models.User"*/-->
                                 <tr th:class="${user.getUsername()==#authentication.name}?'table-active'"
                                     th:each="user, state : ${users}"
                                     th:onclick="${#authorization.expression('hasRole(&quot;ROLE_ADMIN&quot;)')||user.getUsername()==#authentication.name}?'javascript:rowClicked(\'' + ${user.id} + '\');'"

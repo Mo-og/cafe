@@ -2,7 +2,7 @@ package ua.cafe.utils;
 
 import java.util.regex.Pattern;
 
-public class Translit {
+public abstract class Translit {
     private static final Pattern PATTERN = Pattern.compile("^[A-Za-z0-9.,\\-()\\[\\]]+$");
 
     public static String cyr2lat(char ch) {

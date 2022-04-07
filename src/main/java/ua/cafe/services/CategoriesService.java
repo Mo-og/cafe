@@ -2,8 +2,8 @@ package ua.cafe.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.cafe.entities.Dish;
-import ua.cafe.entities.DishCategory;
+import ua.cafe.models.Category;
+import ua.cafe.models.Dish;
 import ua.cafe.repositories.CategoriesRepository;
 
 import java.util.List;
@@ -18,11 +18,11 @@ public class CategoriesService {
         this.repository = repository;
     }
 
-    public DishCategory saveCategory(DishCategory dishCategory) {
-        return repository.save(dishCategory);
+    public Category saveCategory(Category category) {
+        return repository.save(category);
     }
 
-    public List<DishCategory> getAllCategories() {
+    public List<Category> getAllCategories() {
         return repository.findAllByOrderByName();
     }
 
@@ -34,7 +34,7 @@ public class CategoriesService {
         return repository.existsById(id);
     }
 
-    public DishCategory getById(long id) {
+    public Category getById(long id) {
         return repository.getOne(id);
     }
 

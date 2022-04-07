@@ -1,4 +1,4 @@
-package ua.cafe.entities;
+package ua.cafe.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -35,6 +35,7 @@ public class Detail {
     @Column(insertable = false, updatable = false, nullable = false, name = "order_id")
     private Long orderId = -1L;
     private int quantity;
+    private String comment;
     private ReadyStatus status = ReadyStatus.NEW;
 
 
@@ -71,6 +72,7 @@ public class Detail {
         this.quantity = quantity;
     }
 
+    //Used when creating JSON
     public String getStatusDesc() {
         if (status == null)
             return null;
@@ -85,6 +87,7 @@ public class Detail {
         return dish;
     }
 
+    //Preserves integrity
     public void setDish(Dish dish) {
         if (this.dish != null && this.dish.equals(dish))
             return;
@@ -99,6 +102,7 @@ public class Detail {
         }
     }
 
+    //preserves integrity, dish must not be null
     public void setOrderRetrieveDish(Order order) {
         if (dish == null && dishId != -1)
             setDish(dishService.getById(dishId));
@@ -111,6 +115,7 @@ public class Detail {
         return order;
     }
 
+    //preserves integrity
     public void setOrder(Order order) {
         if (this.order != null && this.order.equals(order))
             return;

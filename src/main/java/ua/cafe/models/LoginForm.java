@@ -1,19 +1,19 @@
-package ua.cafe.entities;
+package ua.cafe.models;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 
-public class EntranceForm {
+public class LoginForm {
     @Pattern(regexp = "(\\+)?\\d{12}", message = "Номер телефона должен состоять из 12 цифр!")
     private String username;
     @Size(max = 200, min = 6, message = "Пароль должен быть в пределах 6-50 символов!")
     private String password;
 
-    public EntranceForm() {
+    public LoginForm() {
     }
 
-    public EntranceForm(String username, String password) {
+    public LoginForm(String username, String password) {
         username = username.replaceAll("[\\D]", "");
         this.username = username;
         this.password = password;

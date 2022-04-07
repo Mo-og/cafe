@@ -1,12 +1,12 @@
 package ua.cafe.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ua.cafe.entities.DishCategory;
+import ua.cafe.models.Category;
 
 import java.util.List;
 
-public interface CategoriesRepository extends JpaRepository<DishCategory, Long> {
-    List<DishCategory> findAllByOrderByName();
+public interface CategoriesRepository extends JpaRepository<Category, Long> {
+    List<Category> findAllByOrderByName();
 
-    DishCategory getById(long categoryId);
+    Category getById(long categoryId);
 }
