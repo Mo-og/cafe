@@ -18,7 +18,7 @@
                     <input class="form-control" id="id" th:field="*{id}" th:value="${dish.id}" type="hidden">
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label for="name">Название блюда</label>
                                 <input class="form-control" id="name" placeholder="" required
                                        th:field="*{name}"
@@ -27,15 +27,7 @@
                                        th:if="${#fields.hasErrors('name')}"></small>
                             </div>
 
-                            <div class="col-md-4 mb-3">
-                                <label for="price">Цена</label>
-                                <input class="form-control" id="price" required th:field="*{price}"
-                                       th:value="${dish.price}" type="number">
-                                <small class="text-danger" th:errors="*{price}"
-                                       th:if="${#fields.hasErrors('price')}"></small>
-                            </div>
-
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-3 mb-3">
                                 <label for="weight">Вес</label>
                                 <input class="form-control" id="weight" placeholder="" required
                                        th:field="*{weight}"
@@ -43,10 +35,24 @@
                                 <small class="text-danger" th:errors="*{weight}"
                                        th:if="${#fields.hasErrors('weight')}"></small>
                             </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label for="price">Цена</label>
+                                <input class="form-control" id="price" required th:field="*{price}"
+                                       th:value="${dish.price}" type="number">
+                                <small class="text-danger" th:errors="*{price}"
+                                       th:if="${#fields.hasErrors('price')}"></small>
+                            </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-9 mb-3">
+                                <label for="ingredients">Ингредиенты</label>
+                                <input class="form-control" id="ingredients" th:field="*{ingredients}"
+                                       th:value="${dish.ingredients}" type="text">
+                            </div>
+
+                            <div class="col-md-3 mb-3">
                                 <label for="category">
                                     <a style="color: black; text-decoration: underline" th:href="@{/categories}">
                                         Категория<img alt="gear icon" height="20px" src="../images/conf.png"
@@ -59,24 +65,23 @@
                                             th:text="${cat.name}" th:value="${cat.id}"></option>
                                 </select>
                             </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="ingredients">Ингредиенты</label>
-                                <input class="form-control" id="ingredients" th:field="*{ingredients}"
-                                       th:value="${dish.ingredients}" type="text">
-                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="mb-3" for="inputFile">
+                        <div class="row mb-3">
+                            <label class="col-md-4 mb-3" for="inputFile">
                                 <div class="up mb-1">Изображение блюда</div>
-                                <img alt="Изображение блюда" class="image zoom" style="height: 200px;"
-                                     th:src="${dish.imagePath}">
+                                <div class="image-box image zoom" th:style="'background-image: url('+${dish.imagePath}+'); height:200px'">
+                                    <!--<img alt="Изображение блюда" class="image zoom" style="height: 200px"
+                                          th:src="${dish.imagePath}">--></div>
                             </label>
+
+                            <div class="col-md-8 mb-3" style="display: flex">
+                                <input aria-describedby="inputFileButton" aria-label="Upload"
+                                        class="form-control" style="display: inline-block;align-self: flex-end"
+                                        id="inputFile"
+                                        name="file" placeholder="Выберите изображение"
+                                        type="file">
+                            </div>
                             <input name="imagePath" th:value="${dish.imagePath}" type="hidden">
-                            <input aria-describedby="inputFileButton" aria-label="Upload" class="form-control"
-                                   id="inputFile"
-                                   name="file" placeholder="Выберите изображение"
-                                   type="file">
                         </div>
                         <hr class="mb-4">
                         <div class="d-flex">

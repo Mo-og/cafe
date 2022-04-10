@@ -2189,27 +2189,27 @@ p {
     padding: 0.25rem;
     border-bottom-left-radius: 6px;
 }
-
-/*
-.zoom, .nav-item, .navbar-brand {
-    transition: transform .2s;
+.image-box{
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    box-sizing: border-box;
 }
 
-.nav-item:hover {
-    transform: scale(1.1) translateY(-5%);
-}
-
-@media (max-width: 768px) {
-    .nav-item:hover {
-        transform: scale(1.1) translateY(-5%) translateX(5%);
-    }
+.zoom {
+    transition: transform .2s, box-shadow .2s;
 }
 
 .zoom:hover {
-    transform: scale(1.1) translateY(-5%) translateX(5%);
-    text-shadow:  2px 2px 3px rgba(11, 11, 11, 0.5)
+    transform: scale(2) translateY(-25%) translateX(25%);
+    text-shadow:  2px 2px 3px rgba(11, 11, 11, 0.5);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    box-shadow: black 0 0 3px;
+    background-size: contain;
 }
-*/
 
 .nav-item span, .header-block .navbar-brand:hover {
     color: #ff7f50;
@@ -2223,12 +2223,6 @@ p {
 
 .navbar-brand:hover {
     border-bottom: 4px solid #868686;
-}
-
-.image {
-    border: 1px solid lightgray;
-    border-radius: 3px;
-    box-sizing: border-box;
 }
 
 table {
