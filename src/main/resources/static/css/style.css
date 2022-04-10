@@ -2190,6 +2190,8 @@ p {
     border-bottom-left-radius: 6px;
 }
 .image-box{
+    height:200px;
+    background-image: url(/images/no-dish-image.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;

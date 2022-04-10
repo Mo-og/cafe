@@ -50,7 +50,7 @@
                                     <td class="align-middle"><span th:text="${state.count}"></span></td>
                                     <td class="align-middle"><img class="image"
                                                                   style="width: 25px; height: 25px; display: block; "
-                                                                  th:src="${dish.imagePath}" alt=""></td>
+                                                                  th:src="${dish.imagePath}==null?'/images/no-dish-image.png':${dish.imagePath}" alt=""></td>
                                     <td class="align-middle"><span th:text="${dish.name}"></span></td>
                                     <td class="align-middle"><span th:text="${dish.category.name}"></span></td>
                                     <td class="align-middle"><span th:text="${dish.weight}"></span></td>

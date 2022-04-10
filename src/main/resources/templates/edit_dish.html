@@ -69,17 +69,16 @@
                         <div class="row mb-3">
                             <label class="col-md-4 mb-3" for="inputFile">
                                 <div class="up mb-1">Изображение блюда</div>
-                                <div class="image-box image zoom" th:style="'background-image: url('+${dish.imagePath}+'); height:200px'">
-                                    <!--<img alt="Изображение блюда" class="image zoom" style="height: 200px"
-                                          th:src="${dish.imagePath}">--></div>
+                                <div class="image-box zoom"
+                                     th:styleappend="${dish.imagePath}==null?'':('background-image: url('+${dish.imagePath}+')')"></div>
                             </label>
 
                             <div class="col-md-8 mb-3" style="display: flex">
                                 <input aria-describedby="inputFileButton" aria-label="Upload"
-                                        class="form-control" style="display: inline-block;align-self: flex-end"
-                                        id="inputFile"
-                                        name="file" placeholder="Выберите изображение"
-                                        type="file">
+                                       class="form-control" style="display: inline-block;align-self: flex-end"
+                                       id="inputFile"
+                                       name="file" placeholder="Выберите изображение"
+                                       type="file">
                             </div>
                             <input name="imagePath" th:value="${dish.imagePath}" type="hidden">
                         </div>
