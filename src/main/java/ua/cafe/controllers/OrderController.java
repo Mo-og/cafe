@@ -25,7 +25,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import static ua.cafe.utils.Stats.markPage;
+import static ua.cafe.utils.Stats.*;
 
 @Lazy
 @Controller
@@ -121,13 +121,32 @@ public class OrderController {
 
     //отчет
     @GetMapping("/report")
-    public String getReport(Model model, @RequestParam(name = "datetimeFrom", required = false) String from1, @RequestParam(name = "datetimeTo", required = false) String to1) throws ParseException {
-        Date from = Stats.dateParser.parse(from1);
-        Date to = Stats.dateParser.parse(to1);
+    public String getReport(
+            Model model,
+            @RequestParam(name = "datetimeSince", required = false) String since1,
+            @RequestParam(name = "datetimeTill", required = false) String till1,
+            @RequestParam(name = "sortByQuantity", required = false, defaultValue = "true") boolean sortByQuantity,
+            @RequestParam(name = "includeZeros", required = false) boolean includeZeros
+    ) {
         Order order;
-        if (from == null || to == null)
-            order = orderService.getReportOrder(true, true);
-        else order = orderService.getReportOrder(from, to, true, true);
+        model.addAttribute("sortByQuantity", sortByQuantity);
+        model.addAttribute("includeZeros", includeZeros);
+        Date from, to;
+        if (since1 == null || till1 == null) {
+            from = getTodaySince();
+            to = getTodayTill();
+        } else {
+            try {
+                from = Stats.dateParser.parse(since1);
+                to = Stats.dateParser.parse(till1);
+            } catch (ParseException e) {
+                from = getTodaySince();
+                to = getTodayTill();
+            }
+        }
+        order = orderService.getReportOrder(from, to, sortByQuantity, includeZeros);
+        model.addAttribute("datetimeSince", Stats.dateParser.format(from));
+        model.addAttribute("datetimeTill", Stats.dateParser.format(to));
         model.addAttribute("order", order);
         markPage(model, "report");
 

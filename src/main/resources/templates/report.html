@@ -25,20 +25,66 @@
     <section class="reservation-block pad-top-100 pad-bottom-100">
         <th:block th:replace="fragments :: headline('Отчет по продажам')"/>
         <form class="mb-2" enctype="multipart/form-data" method="get" th:action="@{/report}">
-            <div class="container-lg">
-                <label for="range">Отчет за период:</label>
-                <div class="row" id="range">
-                    <div class="col-2"><label for="datetimeFrom">с</label><input class="form-control" id="datetimeFrom"
-                                                                                 name="datetimeFrom"
-                                                                                 type="datetime-local"></div>
-                    <div class="col-2"><label for="datetimeTo">по</label><input class="form-control col-4"
-                                                                                id="datetimeTo" name="datetimeTo"
-                                                                                type="datetime-local"></div>
-                    <div class="col-1">
-                        <button class="form-control btn" type="submit">Отобразить</button>
+            <div class="container-md">
+
+                <div class="row col-md-12">
+                    <div class="row col-5">
+                        <label class="" for="range">Отчет за период:</label>
+                        <div class="col-6" id="range">
+                            <label for="datetimeSince">с</label>
+                            <input class="form-control" id="datetimeSince"
+                                   name="datetimeSince"
+                                   th:value="${datetimeSince}"
+                                   type="datetime-local">
+                        </div>
+                        <div class="col-6">
+                            <label for="datetimeTill">по</label>
+                            <input class="form-control col-4"
+                                   id="datetimeTill" name="datetimeTill"
+                                   th:value="${datetimeTill}" type="datetime-local">
+                        </div>
                     </div>
-                    <div class="col-1">
-                        <button class="form-control btn" type="submit">PDF</button>
+
+
+                    <div class="col-2 d-flex align-items-end">
+                        <div>
+                            <label class="mb-1" for="sorting">Сортировка</label>
+                            <div class="form-check" id="sorting">
+                                <label class="form-check-label" for="sortByQuantity">
+                                    По количеству
+                                </label>
+                                <input class="form-check-input" id="sortByQuantity" name="sortByQuantity"
+                                       th:checked="${sortByQuantity}"
+                                       type="radio"
+                                       value="true">
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label" for="sortByCost">
+                                    По сумме
+                                </label>
+                                <input class="form-check-input" id="sortByCost" name="sortByQuantity"
+                                       th:checked="${!sortByQuantity}" type="radio"
+                                       value="false">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-check col-2 d-flex align-items-end">
+                        <div>
+                            <input class="form-check-input" id="includeZeros" name="includeZeros"
+                                   th:checked="${includeZeros}"
+                                   type="checkbox" value="true">
+                            <label class="form-check-label" for="includeZeros">
+                                Включать<br>незаказанные
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <div class="col-2 d-flex align-items-end">
+                        <button class="form-control btn btn-warning" style="bottom: 0" type="submit">Отобразить</button>
+                    </div>
+                    <div class="col-1 d-flex align-items-end">
+                        <button class="form-control btn btn-warning" style="bottom: 0" type="submit">PDF</button>
                     </div>
                 </div>
             </div>
@@ -80,12 +126,12 @@
 <script src="../js/jquery.datetimepicker.full.min.js"></script>
 <script>
     jQuery.datetimepicker.setLocale('ru');
-    jQuery('#datetimeFrom').datetimepicker({
+    jQuery('#datetimeSince').datetimepicker({
         format:'d.m.Y H:i',
         value:0,
         mask: true
     });
-    jQuery('#datetimeTo').datetimepicker({
+    jQuery('#datetimeTill').datetimepicker({
         format:'d.m.Y H:i',
         value:0,
         mask: true

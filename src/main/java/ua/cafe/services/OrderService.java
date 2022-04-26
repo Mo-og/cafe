@@ -10,8 +10,6 @@ import ua.cafe.repositories.DetailRepository;
 import ua.cafe.repositories.DishRepository;
 import ua.cafe.repositories.OrderRepository;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -97,13 +95,6 @@ public class OrderService {
         return repository.save(fromDb);
     }
 
-    public Order getReportOrder(boolean sortByQuantity, boolean includeZeros) {
-        Date from = Date.from(LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).atZone(ZoneId.systemDefault()).toInstant());
-        Date to = Date.from(LocalDateTime.now().withHour(23).withMinute(59).withSecond(59).atZone(ZoneId.systemDefault()).toInstant());
-
-        return getReportOrder(from, to, sortByQuantity, includeZeros);
-    }
-
     public Order getReportOrder(Date from, Date to, boolean sortByQuantity, boolean includeZeros) {
         if (from.getTime() > to.getTime()) {
             Date temp = from;
@@ -111,7 +102,7 @@ public class OrderService {
             to = temp;
         }
 
-        log.info("\nMaking report for period\nfrom:\n" + from + "\nto:\n" + to + "\n");
+        log.info("\nMaking report for period\nfrom:\n" + from + "\nto:\n" + to + "\nsortByQuantity: " + sortByQuantity + "\nincludeZeros: " + includeZeros + "\n");
 
         List<Order> orders = repository.getOrdersByDateOrderedBetween(from, to);
 
