@@ -9,10 +9,12 @@ import java.util.Date;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
+
+    List<Order> getOrdersByDateOrderedBetween(Date dateOrderedFrom, Date dateOrderedTo);
+
     @Query("SELECT dateOrdered FROM Order where id=:id")
     Date findDateOrdered(@Param("id") long order_id);
 
-    //    @Query(value = "SELECT o FROM Order o ORDER BY o.tableNum, o.dateOrdered ASC ")
-    @Query(value = "SELECT * FROM orders o ORDER BY o.table_num, o.date_ordered LIMIT 50", nativeQuery = true)
+    @Query(value = "SELECT * FROM orders o ORDER BY o.table_num, o.date_ordered", nativeQuery = true)
     List<Order> findAllOrderedByTableNum();
 }

@@ -31,16 +31,23 @@ public class Order implements Comparable<Order> {
     private int tableNum;
     private ReadyStatus status;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
     @ToString.Exclude
     private List<Detail> details = new ArrayList<>();
 
     public Order() {
     }
 
+    //for report
     public void sortByQuantity() {
         if (details == null) return;
-        details.sort(Comparator.comparingInt(Detail::getQuantity).reversed());
+        details.sort((d1, d2) -> d1.getQuantity() == d2.getQuantity() ? (int) (d2.getCost() - d1.getCost()) : d2.getQuantity() - d1.getQuantity());
+    }
+
+    //for report
+    public void sortByCost() {
+        if (details == null) return;
+        details.sort((d1, d2) -> (int) (d2.getCost() - d1.getCost()));
     }
 
     public Detail getDetailsIfPresent(long id) {
@@ -66,6 +73,21 @@ public class Order implements Comparable<Order> {
         if (details.contains(detail)) return;
         details.add(detail);
         detail.setOrder(this);
+    }
+
+    //for report only
+    public void plainAddDetail(Detail detail) {
+        details.add(detail);
+    }
+
+    public void stackDetail(Detail detail) {
+        Optional<Detail> optionalDetail = details.stream()
+                .filter(d -> d.getDishId() == detail.getDishId())
+                .findFirst();
+        optionalDetail.ifPresentOrElse(
+                present -> present.setQuantity(present.getQuantity() + detail.getQuantity()),
+                () -> details.add(detail)
+        );
     }
 
     public String getDishNames() {

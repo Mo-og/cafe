@@ -1,7 +1,19 @@
 <!doctype html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="fragments::head_datatable(~{::title}, ~{})">
+<head th:insert="fragments::head_datatable(~{::title}, ~{::style})">
     <title>Отчет</title>
+    <style>
+        footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 3rem;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            background: rgba(128, 128, 128, 0.42);
+        }
+    </style>
 </head>
 <body class="creamBg" data-offset="150" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" id="mainBox">
 
@@ -12,37 +24,73 @@
 
     <section class="reservation-block pad-top-100 pad-bottom-100">
         <th:block th:replace="fragments :: headline('Отчет по продажам')"/>
-        <form class="reservation-block" enctype="multipart/form-data" method="post"
-              th:action="@{/order_update}">
+        <form class="mb-2" enctype="multipart/form-data" method="get" th:action="@{/report}">
             <div class="container-lg">
-                <div class="row">
-                    <div class="col-20" th:object="${order}"><br>
-                        <form class="reservation-block">
-                            <div class="table-responsive-sm">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th class="text-justify">Блюдо</th>
-                                        <th class="text-justify">Продано порций</th>
-                                        <th class="text-justify">Прибыль (грн.)</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="detail, state : ${order.details}">
-                                        <td class="align-middle"><span th:if="${detail.dish!=null}"
-                                                                       th:text="${detail.dish.name}"></span></td>
-                                        <td class="align-middle"><span th:text="${detail.quantity}"></span></td>
-                                        <td class="align-middle"><span th:text="${detail.cost}"></span></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </form>
+                <label for="range">Отчет за период:</label>
+                <div class="row" id="range">
+                    <div class="col-2"><label for="datetimeFrom">с</label><input class="form-control" id="datetimeFrom"
+                                                                                 name="datetimeFrom"
+                                                                                 type="datetime-local"></div>
+                    <div class="col-2"><label for="datetimeTo">по</label><input class="form-control col-4"
+                                                                                id="datetimeTo" name="datetimeTo"
+                                                                                type="datetime-local"></div>
+                    <div class="col-1">
+                        <button class="form-control btn" type="submit">Отобразить</button>
+                    </div>
+                    <div class="col-1">
+                        <button class="form-control btn" type="submit">PDF</button>
                     </div>
                 </div>
             </div>
         </form>
+        <div class="container-lg">
+            <div class="row">
+                <div class="col-20" th:object="${order}">
+                    <div class="table-responsive-sm">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th class="text-justify">Блюдо</th>
+                                <th class="text-justify">Продано порций</th>
+                                <th class="text-justify">Прибыль (грн.)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="detail, state : ${order.details}">
+                                <td class="align-middle"><span th:if="${detail.dish!=null}"
+                                                               th:text="${detail.dish.name}"></span></td>
+                                <td class="align-middle"><span th:text="${detail.quantity}"></span></td>
+                                <td class="align-middle"><span th:text="${detail.cost}"></span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
+    <footer>
+        <span style="color:white; text-shadow: black 1px 1px 2px; font-size: 2rem">
+            Итого за период: [[${order.getCost()}]]
+        </span>
+    </footer>
 </div>
+<!--<link rel="stylesheet" type="text/css" href="../css/jquery.datetimepicker.min.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="../js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    jQuery.datetimepicker.setLocale('ru');
+    jQuery('#datetimeFrom').datetimepicker({
+        format:'d.m.Y H:i',
+        value:0,
+        mask: true
+    });
+    jQuery('#datetimeTo').datetimepicker({
+        format:'d.m.Y H:i',
+        value:0,
+        mask: true
+    });
+</script>-->
 </body>
+
 </html>

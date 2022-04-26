@@ -13,6 +13,7 @@ public abstract class Stats {
 
     private static final DateFormat dateFormat = new SimpleDateFormat("_-_dd.MM.yyyy_HH.mm.ss");
 
+    public static final SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
     public static String getDateString() {
         return dateFormat.format(new Date());
     }

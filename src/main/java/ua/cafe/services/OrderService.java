@@ -1,22 +1,28 @@
 package ua.cafe.services;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ua.cafe.models.Detail;
 import ua.cafe.models.Order;
 import ua.cafe.repositories.DetailRepository;
+import ua.cafe.repositories.DishRepository;
 import ua.cafe.repositories.OrderRepository;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
 @Lazy
 @Service
+@Slf4j
 public class OrderService {
 
     private OrderRepository repository;
     private DetailRepository detailRepository;
+    private DishRepository dishRepository;
 
     @Autowired
     public void setRepository(OrderRepository repository) {
@@ -26,6 +32,11 @@ public class OrderService {
     @Autowired
     public void setRepository(DetailRepository repository) {
         this.detailRepository = repository;
+    }
+
+    @Autowired
+    public void setRepository(DishRepository repository) {
+        this.dishRepository = repository;
     }
 
     public Order saveOrder(Order order) {
@@ -84,5 +95,41 @@ public class OrderService {
         fromDb.setDetails(orderUpdate.getDetails());
         fromDb.updateStatus();
         return repository.save(fromDb);
+    }
+
+    public Order getReportOrder(boolean sortByQuantity, boolean includeZeros) {
+        Date from = Date.from(LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).atZone(ZoneId.systemDefault()).toInstant());
+        Date to = Date.from(LocalDateTime.now().withHour(23).withMinute(59).withSecond(59).atZone(ZoneId.systemDefault()).toInstant());
+
+        return getReportOrder(from, to, sortByQuantity, includeZeros);
+    }
+
+    public Order getReportOrder(Date from, Date to, boolean sortByQuantity, boolean includeZeros) {
+        if (from.getTime() > to.getTime()) {
+            Date temp = from;
+            from = to;
+            to = temp;
+        }
+
+        log.info("\nMaking report for period\nfrom:\n" + from + "\nto:\n" + to + "\n");
+
+        List<Order> orders = repository.getOrdersByDateOrderedBetween(from, to);
+
+        Order order = new Order();
+        // We need to add all existing dishes (with quantity of 0) to see which ones were not ordered,
+        // otherwise we won't be able to tell which dishes had zero success
+        if (includeZeros)
+            dishRepository.findAll().forEach(dish -> order.plainAddDetail(new Detail(dish.getId())));
+
+        for (Order o : orders) {
+            for (Detail d : o.getDetails()) {
+                order.stackDetail(d);
+            }
+        }
+
+        if (sortByQuantity) order.sortByQuantity();
+        else order.sortByCost();
+
+        return order;
     }
 }

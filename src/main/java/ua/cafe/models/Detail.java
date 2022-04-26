@@ -39,12 +39,12 @@ public class Detail {
     private ReadyStatus status = ReadyStatus.NEW;
 
 
-    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "dish_id")
     @JsonIgnore
     private Dish dish;
 
-    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "order_id")
     @JsonIgnore
     private Order order;
@@ -57,19 +57,16 @@ public class Detail {
     public Detail() {
     }
 
-    public Detail(long dishId, int quantity) {
-        dish = dishService.getById(dishId);
-        if (dish == null)
-            throw new IllegalArgumentException();
-        dish.addDetail(this);
-        this.dishId = dishId;
-        this.quantity = quantity;
-    }
-
     public Detail(long dishId, long orderId, int quantity) {
         this.dishId = dishId;
         this.orderId = orderId;
         this.quantity = quantity;
+    }
+
+    //for report only
+    public Detail(long dishIdAndDetailId) {
+        id = dishIdAndDetailId;
+        this.dishId = dishIdAndDetailId;
     }
 
     //Used when creating JSON

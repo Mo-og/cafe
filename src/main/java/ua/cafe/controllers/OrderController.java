@@ -11,8 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.cafe.models.Detail;
-import ua.cafe.models.Dish;
 import ua.cafe.models.Order;
 import ua.cafe.services.DetailService;
 import ua.cafe.services.DishService;
@@ -20,8 +18,11 @@ import ua.cafe.services.OrderService;
 import ua.cafe.services.PdfService;
 import ua.cafe.utils.JsonMaker;
 import ua.cafe.utils.ResponseFactory;
+import ua.cafe.utils.Stats;
 
 import javax.validation.Valid;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import static ua.cafe.utils.Stats.markPage;
@@ -58,7 +59,7 @@ public class OrderController {
     }
 
     //API
-    @RequestMapping(value = "/api/orders", method = RequestMethod.GET)
+    @GetMapping("/api/orders")
     @ResponseBody
     public ResponseEntity<String> apiGetOrders() {
         List<Order> orders = orderService.getAllOrders();
@@ -73,7 +74,6 @@ public class OrderController {
         return JsonMaker.getJsonResponse(order);
     }
 
-    //POST
     @PostMapping("/api/order")
     public ResponseEntity<?> apiSaveOrder(@RequestBody @Valid Order order, BindingResult result) {
         var ErrorsMap = ResponseFactory.createResponse(result);
@@ -84,8 +84,7 @@ public class OrderController {
         return ResponseEntity.ok(temp);
     }
 
-    //PUT
-    @RequestMapping(value = "/api/order", method = RequestMethod.PUT)
+    @PutMapping("/api/order")
     public ResponseEntity<?> apiUpdateOrder(@RequestBody @Valid Order order, BindingResult result) {
         ResponseEntity<?> ErrorsMap = ResponseFactory.createResponse(result);
         if (ErrorsMap != null) return ErrorsMap;
@@ -98,7 +97,7 @@ public class OrderController {
     }
 
     //DELETE
-    @RequestMapping(value = "/api/order", method = RequestMethod.DELETE)
+    @DeleteMapping("/api/order")
     public ResponseEntity<String> apiRemoveOrder(@RequestParam Long id) {
         try {
             orderService.deleteById(id);
@@ -122,21 +121,13 @@ public class OrderController {
 
     //отчет
     @GetMapping("/report")
-    public String getReport(Model model) {
-        // Report is represented as an order of all dishes
-        Order order = new Order();
-        List<Dish> dishes = dishService.getAllDishes();
-        for (Dish d : dishes) {
-            // We need to add all existing dishes (with quantity of 0) to see which ones were not ordered,
-            // otherwise we won't be able to tell which dishes had zero success
-            order.addDetail(new Detail(d.getId(), -1, 0));
-        }
-        for (Order o : orderService.getAllOrders()) {
-            for (Detail d : o.getDetails()) {
-                order.addDetail(d);
-            }
-        }
-        order.sortByQuantity();
+    public String getReport(Model model, @RequestParam(name = "datetimeFrom", required = false) String from1, @RequestParam(name = "datetimeTo", required = false) String to1) throws ParseException {
+        Date from = Stats.dateParser.parse(from1);
+        Date to = Stats.dateParser.parse(to1);
+        Order order;
+        if (from == null || to == null)
+            order = orderService.getReportOrder(true, true);
+        else order = orderService.getReportOrder(from, to, true, true);
         model.addAttribute("order", order);
         markPage(model, "report");
 
