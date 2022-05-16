@@ -1,42 +1,43 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="fragments::head_datatable(~{::title}, ~{})">
+<head th:insert="fragments::head_datatable(~{::title}, ~{::style})">
     <title>Заказы</title>
-</head>
-<style>
-    .b-popup {
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        overflow: hidden;
-        position: fixed;
-        top: 0;
-        backdrop-filter: blur(2px);
-    }
+    <style>
+        .b-popup {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            backdrop-filter: blur(2px);
+        }
 
-    .b-popup .b-popup-content { /*настройки формы*/
-        margin: auto;
-        width: 500px;
-        height: auto;
-        padding: 1.5rem;
-        background-color: #fdfdfd; /*заливка формы*/
-        border-radius: 15px;
-        box-shadow: 0 0 10px #000; /*тень от всплывающего окна*/
-        max-height: 79vh;
+        .b-popup .b-popup-content { /*настройки формы*/
+            margin: auto;
+            width: 500px;
+            height: auto;
+            padding: 1.5rem;
+            background-color: #fdfdfd; /*заливка формы*/
+            border-radius: 15px;
+            box-shadow: 0 0 10px #000; /*тень от всплывающего окна*/
+            max-height: 79vh;
         overflow-y: auto;
     }
 
-    @media (max-width: 480px) {
-        .b-popup .b-popup-content {
-            width: 95%;
-            max-height: 65vh;
-        }
+        @media (max-width: 480px) {
+            .b-popup .b-popup-content {
+                width: 95%;
+                max-height: 65vh;
+            }
 
-        .table > :not(caption) > * > * {
-            padding: 0.25rem 0.25rem;
+            .table > :not(caption) > * > * {
+                padding: 0.25rem 0.25rem;
+            }
         }
-    }
-</style>
+    </style>
+</head>
+
 <body id="mainBox" class="creamBg" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="150">
 <!--<script type="text/javascript" src="../js/table-sorting.js"></script>-->
 <div id="app">

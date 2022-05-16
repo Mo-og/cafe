@@ -21,11 +21,10 @@ import ua.cafe.utils.ResponseFactory;
 import ua.cafe.utils.Stats;
 
 import javax.validation.Valid;
-import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-import static ua.cafe.utils.Stats.*;
+import static ua.cafe.utils.Stats.markPage;
 
 @Lazy
 @Controller
@@ -123,34 +122,33 @@ public class OrderController {
     @GetMapping("/report")
     public String getReport(
             Model model,
-            @RequestParam(name = "datetimeSince", required = false) String since1,
-            @RequestParam(name = "datetimeTill", required = false) String till1,
+            @RequestParam(name = "datetimeFrom", required = false) String from,
+            @RequestParam(name = "datetimeTo", required = false) String to,
             @RequestParam(name = "sortByQuantity", required = false, defaultValue = "true") boolean sortByQuantity,
             @RequestParam(name = "includeZeros", required = false) boolean includeZeros
     ) {
         Order order;
         model.addAttribute("sortByQuantity", sortByQuantity);
         model.addAttribute("includeZeros", includeZeros);
-        Date from, to;
-        if (since1 == null || till1 == null) {
-            from = getTodaySince();
-            to = getTodayTill();
-        } else {
-            try {
-                from = Stats.dateParser.parse(since1);
-                to = Stats.dateParser.parse(till1);
-            } catch (ParseException e) {
-                from = getTodaySince();
-                to = getTodayTill();
-            }
-        }
-        order = orderService.getReportOrder(from, to, sortByQuantity, includeZeros);
-        model.addAttribute("datetimeSince", Stats.dateParser.format(from));
-        model.addAttribute("datetimeTill", Stats.dateParser.format(to));
+        Stats.Interval interval = new Stats.Interval(from, to);
+        order = orderService.getReportOrder(interval, sortByQuantity, includeZeros);
+        model.addAttribute("datetimeFrom", interval.getFromAsHtmlString());
+        model.addAttribute("datetimeTo", interval.getToAsHtmlString());
         model.addAttribute("order", order);
         markPage(model, "report");
 
+        order.acquireDetails().forEach(detail -> System.out.println("Q: " + detail.getQuantity() + "; C: " + detail.getCost()));
+
         return "report";
+    }
+
+    @PostMapping(value = "/report", consumes = "application/json", produces = "application/pdf")
+    @ResponseBody
+    public String getPdfReport(@RequestBody Map<String, String> params) {
+        Stats.Interval interval = new Stats.Interval(params.get("datetimeFrom"), params.get("datetimeTo"));
+        System.out.printf("***** %s", interval);
+        Order order = orderService.getReportOrder(interval, Boolean.parseBoolean(params.get("sortByQuantity")), Boolean.parseBoolean(params.get("includeZeros")));
+        return pdfService.generatePdf(order, interval);
     }
 
     @GetMapping("/change_status")

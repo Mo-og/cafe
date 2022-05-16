@@ -1,8 +1,10 @@
 package ua.cafe.utils;
 
+import lombok.ToString;
 import org.springframework.ui.Model;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,12 +31,51 @@ public abstract class Stats {
         return calendar.getTime();
     }
 
+    private static final SimpleDateFormat dateFormatForUser = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+
     private static final DateFormat dateFormat = new SimpleDateFormat("_-_dd.MM.yyyy_HH.mm.ss");
 
     public static final SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
+    public static String formatForUser(Date date) {
+        return dateFormatForUser.format(date);
+    }
+
     public static String getDateString() {
         return dateFormat.format(new Date());
+    }
+
+    @ToString
+    public static class Interval {
+        public final Date from;
+        public final Date to;
+
+        public Interval(String from, String to) {
+            Date to1;
+            Date from1;
+            if (from == null || to == null) {
+                from1 = getTodaySince();
+                to1 = getTodayTill();
+            } else {
+                try {
+                    from1 = Stats.dateParser.parse(from);
+                    to1 = Stats.dateParser.parse(to);
+                } catch (ParseException e) {
+                    from1 = getTodaySince();
+                    to1 = getTodayTill();
+                }
+            }
+            this.to = to1;
+            this.from = from1;
+        }
+
+        public String getFromAsHtmlString() {
+            return dateParser.format(from);
+        }
+
+        public String getToAsHtmlString() {
+            return dateParser.format(to);
+        }
     }
 
     public static void markPage(Model model, String pageName) {

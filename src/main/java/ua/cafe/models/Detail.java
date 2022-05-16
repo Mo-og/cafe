@@ -140,9 +140,9 @@ public class Detail {
     }
 
     public double getCost() {
-        if (dish == null)
-            return -0.001;
-        return dish.getPrice() * quantity;
+        if (dishId == -1)
+            return -0.0;
+        return getDish().getPrice() * quantity;
     }
 
     @Override

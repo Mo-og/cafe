@@ -41,7 +41,7 @@ public class Order implements Comparable<Order> {
     //for report
     public void sortByQuantity() {
         if (details == null) return;
-        details.sort((d1, d2) -> d1.getQuantity() == d2.getQuantity() ? (int) (d2.getCost() - d1.getCost()) : d2.getQuantity() - d1.getQuantity());
+        details.sort((d1, d2) -> d2.getQuantity() == d1.getQuantity() ? (int) (d2.getCost() - d1.getCost()) : (d2.getQuantity() - d1.getQuantity()));
     }
 
     //for report

@@ -24,30 +24,30 @@
 
     <section class="reservation-block pad-top-100 pad-bottom-100">
         <th:block th:replace="fragments :: headline('Отчет по продажам')"/>
-        <form class="mb-2" enctype="multipart/form-data" method="get" th:action="@{/report}">
+        <form class="mb-2" enctype="multipart/form-data" id="reportFrom" method="get" th:action="@{/report}">
             <div class="container-md">
 
-                <div class="row col-md-12">
+                <div class="row justify-content-between">
                     <div class="row col-5">
                         <label class="" for="range">Отчет за период:</label>
                         <div class="col-6" id="range">
-                            <label for="datetimeSince">с</label>
-                            <input class="form-control" id="datetimeSince"
-                                   name="datetimeSince"
-                                   th:value="${datetimeSince}"
+                            <label for="datetimeFrom">с</label>
+                            <input class="form-control" id="datetimeFrom"
+                                   name="datetimeFrom"
+                                   th:value="${datetimeFrom}"
                                    type="datetime-local">
                         </div>
                         <div class="col-6">
-                            <label for="datetimeTill">по</label>
+                            <label for="datetimeTo">по</label>
                             <input class="form-control col-4"
-                                   id="datetimeTill" name="datetimeTill"
-                                   th:value="${datetimeTill}" type="datetime-local">
+                                   id="datetimeTo" name="datetimeTo"
+                                   th:value="${datetimeTo}" type="datetime-local">
                         </div>
                     </div>
 
 
                     <div class="col-2 d-flex align-items-end">
-                        <div>
+                        <div style="width: 100%">
                             <label class="mb-1" for="sorting">Сортировка</label>
                             <div class="form-check" id="sorting">
                                 <label class="form-check-label" for="sortByQuantity">
@@ -68,7 +68,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-check col-2 d-flex align-items-end">
+                    <div class="form-check col-1 d-flex align-items-end">
                         <div>
                             <input class="form-check-input" id="includeZeros" name="includeZeros"
                                    th:checked="${includeZeros}"
@@ -84,7 +84,10 @@
                         <button class="form-control btn btn-warning" style="bottom: 0" type="submit">Отобразить</button>
                     </div>
                     <div class="col-1 d-flex align-items-end">
-                        <button class="form-control btn btn-warning" style="bottom: 0" type="submit">PDF</button>
+                        <button class="form-control btn btn-warning" id="pdfButton" onclick="generateReport()"
+                                style="bottom: 0; width: 100%"
+                                type="button">PDF
+                        </button>
                     </div>
                 </div>
             </div>
@@ -93,7 +96,7 @@
             <div class="row">
                 <div class="col-20" th:object="${order}">
                     <div class="table-responsive-sm">
-                        <table class="table table-striped">
+                        <table class="table table-striped" id="table">
                             <thead>
                             <tr>
                                 <th class="text-justify">Блюдо</th>
@@ -117,7 +120,7 @@
     </section>
     <footer>
         <span style="color:white; text-shadow: black 1px 1px 2px; font-size: 2rem">
-            Итого за период: [[${order.getCost()}]]
+            Итого за период: [[${order.getCost()}]] грн.
         </span>
     </footer>
 </div>
@@ -126,17 +129,80 @@
 <script src="../js/jquery.datetimepicker.full.min.js"></script>
 <script>
     jQuery.datetimepicker.setLocale('ru');
-    jQuery('#datetimeSince').datetimepicker({
+    jQuery('#datetimeFrom').datetimepicker({
         format:'d.m.Y H:i',
         value:0,
         mask: true
     });
-    jQuery('#datetimeTill').datetimepicker({
+    jQuery('#datetimeTo').datetimepicker({
         format:'d.m.Y H:i',
         value:0,
         mask: true
     });
 </script>-->
+<script>
+    $(document).ready(function () {
+        $('#table').DataTable({
+            language: {
+                // lengthMenu: "Отображать _MENU_ блюд",
+                url: "https://cdn.datatables.net/plug-ins/1.10.21/i18n/Russian.json",
+            },
+            // "bLengthChange": false,
+            "pageLength": 50,
+        });
+    });
+</script>
 </body>
+<script>
+    var generateReport = function () {
+        // $('#generatingReport').removeClass('d-none');
+        // $('#details').addClass('d-none');
+        console.log("WORK1");
+        // document.getElementById('pdfButton').setAttribute("disabled", true);
+        console.log("WORK2");
+        var form = $('#reportFrom');
+        var actionUrl = form.attr('action');
+        console.log("WORK3");
+        console.log(objectifyForm(form.serializeArray()));
+        $.ajax({
+            type: "POST",
+            url: actionUrl,
+            data: JSON.stringify(objectifyForm(form.serializeArray())), // serializes the form's elements.
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'X-XSRF-TOKEN': document.querySelector("meta[name='_csrf']").getAttribute('content')
+            },
+            success: function (data) {
+                console.log("WORK4");
+                showDocument(data, "application/pdf");
+                document.getElementById('pdfButton').removeAttribute("disabled");
+            }
+        });
+    };
 
+    function objectifyForm(formArray) {
+        //serialize data function
+        var returnArray = {};
+        for (var i = 0; i < formArray.length; i++) {
+            returnArray[formArray[i]['name']] = formArray[i]['value'];
+        }
+        return returnArray;
+    }
+
+    function base64ToArrayBuffer(_base64Str) {
+        var binaryString = window.atob(_base64Str);
+        var binaryLen = binaryString.length;
+        var bytes = new Uint8Array(binaryLen);
+        for (var i = 0; i < binaryLen; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        return bytes;
+    }
+
+    function showDocument(_base64Str, _contentType) {
+        var byte = base64ToArrayBuffer(_base64Str);
+        var blob = new Blob([byte], {type: _contentType});
+        window.open(URL.createObjectURL(blob), "_blank");
+    }
+</script>
 </html>

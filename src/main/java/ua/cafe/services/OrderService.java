@@ -9,6 +9,7 @@ import ua.cafe.models.Order;
 import ua.cafe.repositories.DetailRepository;
 import ua.cafe.repositories.DishRepository;
 import ua.cafe.repositories.OrderRepository;
+import ua.cafe.utils.Stats;
 
 import java.util.Date;
 import java.util.List;
@@ -95,7 +96,12 @@ public class OrderService {
         return repository.save(fromDb);
     }
 
+    public Order getReportOrder(Stats.Interval interval, boolean sortByQuantity, boolean includeZeros) {
+        return getReportOrder(interval.from, interval.to, sortByQuantity, includeZeros);
+    }
+
     public Order getReportOrder(Date from, Date to, boolean sortByQuantity, boolean includeZeros) {
+
         if (from.getTime() > to.getTime()) {
             Date temp = from;
             from = to;

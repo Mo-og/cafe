@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class ResponseFactory {
+public abstract class ResponseFactory {
 
     public static ResponseEntity<HashMap<String, List<String>>> createResponse(BindingResult result) {
         if (result.hasErrors()) {
