@@ -127,18 +127,15 @@ public class OrderController {
             @RequestParam(name = "sortByQuantity", required = false, defaultValue = "true") boolean sortByQuantity,
             @RequestParam(name = "includeZeros", required = false) boolean includeZeros
     ) {
-        Order order;
         model.addAttribute("sortByQuantity", sortByQuantity);
         model.addAttribute("includeZeros", includeZeros);
         Stats.Interval interval = new Stats.Interval(from, to);
-        order = orderService.getReportOrder(interval, sortByQuantity, includeZeros);
+        Order order = orderService.getReportOrder(interval, sortByQuantity, includeZeros);
         model.addAttribute("datetimeFrom", interval.getFromAsHtmlString());
         model.addAttribute("datetimeTo", interval.getToAsHtmlString());
         model.addAttribute("order", order);
+        model.addAttribute("cost", Stats.formatNumber(order.getCost()));
         markPage(model, "report");
-
-        order.acquireDetails().forEach(detail -> System.out.println("Q: " + detail.getQuantity() + "; C: " + detail.getCost()));
-
         return "report";
     }
 
@@ -146,9 +143,11 @@ public class OrderController {
     @ResponseBody
     public String getPdfReport(@RequestBody Map<String, String> params) {
         Stats.Interval interval = new Stats.Interval(params.get("datetimeFrom"), params.get("datetimeTo"));
-        System.out.printf("***** %s", interval);
-        Order order = orderService.getReportOrder(interval, Boolean.parseBoolean(params.get("sortByQuantity")), Boolean.parseBoolean(params.get("includeZeros")));
-        return pdfService.generatePdf(order, interval);
+        boolean sortByQuantity = Boolean.parseBoolean(params.get("sortByQuantity")),
+                includeZeros = Boolean.parseBoolean(params.get("includeZeros")),
+                override = Boolean.parseBoolean(params.get("override"));
+
+        return pdfService.getPdf(interval, sortByQuantity, includeZeros, override);
     }
 
     @GetMapping("/change_status")

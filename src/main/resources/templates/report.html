@@ -28,7 +28,7 @@
             <div class="container-md">
 
                 <div class="row justify-content-between">
-                    <div class="row col-5">
+                    <div class="row col-5 mb-1">
                         <label class="" for="range">Отчет за период:</label>
                         <div class="col-6" id="range">
                             <label for="datetimeFrom">с</label>
@@ -46,7 +46,7 @@
                     </div>
 
 
-                    <div class="col-2 d-flex align-items-end">
+                    <div class="col d-flex align-items-end mb-1">
                         <div style="width: 100%">
                             <label class="mb-1" for="sorting">Сортировка</label>
                             <div class="form-check" id="sorting">
@@ -68,26 +68,38 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-check col-1 d-flex align-items-end">
+                    <div class="form-check col d-flex flex-column justify-content-end mb-1">
                         <div>
                             <input class="form-check-input" id="includeZeros" name="includeZeros"
                                    th:checked="${includeZeros}"
-                                   type="checkbox" value="true">
+                                   style="margin-left: -1.1rem" type="checkbox" value="true">
                             <label class="form-check-label" for="includeZeros">
-                                Включать<br>незаказанные
+                                Включать незаказанные
+                            </label>
+                        </div>
+                        <div>
+                            <input class="form-check-input" id="override" name="override"
+                                   style="margin-left: -1.1rem" type="checkbox" value="true">
+                            <label class="form-check-label" for="override">
+                                Перезаписать PDF
                             </label>
                         </div>
                     </div>
 
 
-                    <div class="col-2 d-flex align-items-end">
-                        <button class="form-control btn btn-warning" style="bottom: 0" type="submit">Отобразить</button>
-                    </div>
-                    <div class="col-1 d-flex align-items-end">
-                        <button class="form-control btn btn-warning" id="pdfButton" onclick="generateReport()"
-                                style="bottom: 0; width: 100%"
-                                type="button">PDF
-                        </button>
+                    <div class="row col d-flex" style="width: 100%;">
+                        <div class="col d-flex align-items-end">
+                            <button class="form-control btn btn-warning mb-1" style="bottom: 0; width: 100%"
+                                    type="submit">
+                                Отобразить
+                            </button>
+                        </div>
+                        <div class="col d-flex align-items-end">
+                            <button class="form-control btn btn-warning mb-1" id="pdfButton" onclick="generateReport()"
+                                    style="bottom: 0; width: 100%"
+                                    type="button">PDF
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -119,9 +131,9 @@
         </div>
     </section>
     <footer>
-        <span style="color:white; text-shadow: black 1px 1px 2px; font-size: 2rem">
-            Итого за период: [[${order.getCost()}]] грн.
-        </span>
+        <h2 style="color:white; text-shadow: black 1px 1px 2px;">
+            Итого за период: [[${cost}]] грн.
+        </h2>
     </footer>
 </div>
 <!--<link rel="stylesheet" type="text/css" href="../css/jquery.datetimepicker.min.css"/>
@@ -156,14 +168,10 @@
 <script>
     var generateReport = function () {
         // $('#generatingReport').removeClass('d-none');
-        // $('#details').addClass('d-none');
-        console.log("WORK1");
+        $('#pdfButton').addClass('active');
         // document.getElementById('pdfButton').setAttribute("disabled", true);
-        console.log("WORK2");
         var form = $('#reportFrom');
         var actionUrl = form.attr('action');
-        console.log("WORK3");
-        console.log(objectifyForm(form.serializeArray()));
         $.ajax({
             type: "POST",
             url: actionUrl,
@@ -173,9 +181,9 @@
                 'X-XSRF-TOKEN': document.querySelector("meta[name='_csrf']").getAttribute('content')
             },
             success: function (data) {
-                console.log("WORK4");
                 showDocument(data, "application/pdf");
                 document.getElementById('pdfButton').removeAttribute("disabled");
+                $('#pdfButton').removeClass('active');
             }
         });
     };
@@ -202,7 +210,14 @@
     function showDocument(_base64Str, _contentType) {
         var byte = base64ToArrayBuffer(_base64Str);
         var blob = new Blob([byte], {type: _contentType});
-        window.open(URL.createObjectURL(blob), "_blank");
+        let a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display: none";
+        a.href = URL.createObjectURL(blob);
+        a.download = 'report';
+        a.click();
+        document.body.removeChild(a);
+        // window.open(URL.createObjectURL(blob), "_blank");
     }
 </script>
 </html>
