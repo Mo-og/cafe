@@ -210,14 +210,18 @@
     function showDocument(_base64Str, _contentType) {
         var byte = base64ToArrayBuffer(_base64Str);
         var blob = new Blob([byte], {type: _contentType});
-        let a = document.createElement("a");
-        document.body.appendChild(a);
-        a.style = "display: none";
-        a.href = URL.createObjectURL(blob);
-        a.download = 'report';
-        a.click();
-        document.body.removeChild(a);
-        // window.open(URL.createObjectURL(blob), "_blank");
+        var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        if (isSafari) {
+            let a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            a.href = URL.createObjectURL(blob);
+            a.download = 'report';
+            a.click();
+            document.body.removeChild(a);
+        } else {
+            window.open(URL.createObjectURL(blob), "_blank");
+        }
     }
 </script>
 </html>
