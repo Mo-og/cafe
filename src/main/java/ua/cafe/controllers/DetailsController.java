@@ -1,6 +1,7 @@
 package ua.cafe.controllers;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -9,83 +10,77 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.cafe.models.Detail;
-import ua.cafe.models.Dish;
-import ua.cafe.models.Order;
+import ua.cafe.models.ReadyStatus;
 import ua.cafe.services.DetailService;
-import ua.cafe.services.DishService;
-import ua.cafe.services.OrderService;
-import ua.cafe.utils.JsonMaker;
-import ua.cafe.utils.Role;
+import ua.cafe.utils.ResponseFactory;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Lazy
 @Controller
+@Slf4j
 public class DetailsController {
 
     private static DetailService detailService;
-    private static DishService dishService;
-    private static OrderService orderService;
-
-    @Autowired
-    public void setService(DishService service) {
-        dishService = service;
-    }
 
     @Autowired
     public void setDetailService(DetailService service) {
         DetailsController.detailService = service;
     }
 
-    @Autowired
-    public void setOrderService(OrderService service) {
-        DetailsController.orderService = service;
-    }
-
     //API
     //get
     @GetMapping("/api/detail")
-    public ResponseEntity<String> apiViewOrderDetail(@RequestParam Long dish_id, @RequestParam Long order_id, HttpServletRequest httpServletRequest) {
-        if (new Role(httpServletRequest).isAuthorised())
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        Detail detail = detailService.findByOrderIdAndDishID(order_id, dish_id);
-        if (detail == null)
-            return new ResponseEntity<>("No such order or dish in it", HttpStatus.NOT_FOUND);
-        return JsonMaker.getJsonResponse(detail);
+    public ResponseEntity<String> getDetailById(@RequestParam Long id) {
+        return detailService.getDetailResponse(id);
     }
 
     //add
     @PostMapping("/api/detail")
-    public ResponseEntity<String> apiAddDishToOrder(@Valid Detail detail, BindingResult result, HttpServletRequest httpServletRequest) {
-        if (new Role(httpServletRequest).isAuthorised())
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        if (result.hasErrors())
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+    public ResponseEntity<?> apiAddDish(@RequestBody @Valid Detail detail, BindingResult result) {
+        log.debug("Trying to save: " + detail.toString());
+        ResponseEntity<?> ErrorsMap = ResponseFactory.createResponse(result);
+        if (ErrorsMap != null) return ErrorsMap;
+        Detail saved;
+        try {
+            saved = detailService.saveDetail(detail);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
+        log.debug("Successfully saved: " + saved);
+        return ResponseEntity.ok(saved);
+    }
+
+    /*@GetMapping("/api/detail")
+    public ResponseEntity<String> apiViewOrderDetail(@RequestParam Long dish_id, @RequestParam Long order_id) {
+        Detail detail = detailService.findByOrderIdAndDishID(order_id, dish_id);
+        if (detail == null)
+            return new ResponseEntity<>("No such order or dish in it", HttpStatus.NOT_FOUND);
+        return JsonMaker.getJsonResponse(detail);
+    }*/
+    @PostMapping("/api/detail/status")
+    public ResponseEntity<String> apiSetOrderDetailStatus(@RequestParam Long id, @RequestParam ReadyStatus status) {
+        Detail detail = detailService.getById(id);
+        if (detail == null)
+            return new ResponseEntity<>("No detail found by given id", HttpStatus.NOT_FOUND);
+        detail.setStatus(status);
         detailService.saveDetail(detail);
-        return ResponseEntity.ok("Detail was saved successfully");
+        return ResponseEntity.ok("Status was updated successfully");
     }
 
     //update | add dish to order
-    @RequestMapping(value = "/api/detail", method = RequestMethod.PUT)
-    public ResponseEntity<String> apiUpdateDetail(@Valid Detail detail, BindingResult result) {
+    @PutMapping(value = "/api/detail")
+    public ResponseEntity<?> apiUpdateDetail(@RequestBody @Valid Detail detail, BindingResult result) {
         if (result.hasErrors())
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-//TODO: simplify or optimise
-        Order order = orderService.getById(detail.getOrderId());
-        Dish dish_toSave = dishService.getById(detail.getDishId());
-        detailService.remove(detail);
-        detail.setDish(dish_toSave);
-        detail.setOrder(order);
-        detailService.saveDetail(detail);
-        return ResponseEntity.ok("Detail was updated successfully");
+        return ResponseEntity.ok(detailService.saveDetail(detail));
     }
 
     //delete
-    @RequestMapping(value = "/api/detail", method = RequestMethod.DELETE)
-    public ResponseEntity<String> apiRemoveDishFromOrder(@RequestParam Long dish_id, @RequestParam Long order_id) {
-        detailService.removeByOrderIdAndDishID(order_id, dish_id);
-        return ResponseEntity.ok("Dish was removed from order if existed!");
+    @DeleteMapping(value = "/api/detail")
+    public ResponseEntity<String> apiRemoveDishFromOrder(@RequestParam Long id) {
+        detailService.removeById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////

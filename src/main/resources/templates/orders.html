@@ -22,8 +22,8 @@
             border-radius: 15px;
             box-shadow: 0 0 10px #000; /*тень от всплывающего окна*/
             max-height: 79vh;
-        overflow-y: auto;
-    }
+            overflow-y: auto;
+        }
 
         @media (max-width: 480px) {
             .b-popup .b-popup-content {
@@ -54,12 +54,40 @@
                         Для редактирования конкретного заказа, нажмите на него в списке ниже.
                         <br>
                     </h4>
-                    <div class="d-grid col-12 gap-md-2 col-md-3 mx-auto mb-3">
-                        <a @click="showAddOrder" class="btn btn-block orange-btn empty-btn"
-                           role="button" aria-disabled="true">
-                            Добавить заказ
-                            <br>
-                        </a>
+                    <div class="row d-flex flex-row justify-content-between">
+                        <form action="/orders" class="mb-2 col-8 row" enctype="multipart/form-data" id="intervalForm"
+                              method="get">
+                            <label class="" for="range">Заказы за период:</label>
+                            <div class="col-5" id="range">
+                                <label for="datetimeFrom">с</label>
+                                <input class="form-control" id="datetimeFrom"
+                                       name="datetimeFrom"
+                                       type="datetime-local">
+                            </div>
+                            <div class="col-5">
+                                <label for="datetimeTo">по</label>
+                                <input class="form-control col-4"
+                                       id="datetimeTo" name="datetimeTo"
+                                       type="datetime-local">
+                            </div>
+                            <div class="col-1 d-flex flex-column justify-content-end">
+                                <button class="btn btn-outline-secondary btn-md d-flex align-items-center">
+                                    <svg class="bi bi-check-square" fill="currentColor" height="25" viewBox="0 0 16 16"
+                                         width="25" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                        <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="col-1 d-flex align-items-end"><a class="btn btn-outline-secondary btn-md"
+                                                                         href="/orders">Сегодня</a></div>
+                        </form>
+                        <div class="col-4 mb-2 d-flex align-items-end justify-content-end">
+                            <a @click="showAddOrder" aria-disabled="true"
+                               class="btn btn-block orange-btn empty-btn" role="button">
+                                Добавить заказ
+                            </a>
+                        </div>
                     </div>
                     <form class="reservation-block">
                         <div class="table-responsive">
@@ -225,7 +253,8 @@
     }
     const defaultDetail = {
         dishId: null,
-        quantity: 1
+        quantity: 1,
+        status: null
     }
     new Vue({
         el: '#app',

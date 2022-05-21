@@ -20,7 +20,7 @@ import java.util.Objects;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Pattern(regexp = "[ A-Za-zА-Яа-яЁё-]{2,50}",
             message = "Фамилия должна содержать только буквы (латинские или русские) и быть в пределах 2-50 символов.")

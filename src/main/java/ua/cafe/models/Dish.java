@@ -24,7 +24,7 @@ import java.util.Objects;
 public class Dish implements Comparable<Dish> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne
     private Category category;

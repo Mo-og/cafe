@@ -1,16 +1,20 @@
 package ua.cafe.services;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ua.cafe.models.Detail;
 import ua.cafe.repositories.DetailRepository;
+import ua.cafe.utils.JsonMaker;
 
 import java.util.List;
+import java.util.Optional;
 
-@Lazy
 @Service
+@Slf4j
 public class DetailService {
 
     private DetailRepository repository;
@@ -20,17 +24,12 @@ public class DetailService {
         this.repository = repository;
     }
 
-    public void saveDetail(Detail detail) {
-        Detail det = repository.findByOrder_idAndDish_id(detail.getOrderId(), detail.getDishId());
-        if (det != null) {
-            det.setQuantity(det.getQuantity() + detail.getQuantity());
-            repository.save(det);
-            return;
-        }
-        repository.save(detail);
+    public Detail saveDetail(Detail detail) throws IllegalStateException {
+        detail.persist();
+        return repository.save(detail);
     }
 
-    public void saveAll(List<Detail> details){
+    public void saveAll(List<Detail> details) {
         repository.saveAll(details);
     }
 
@@ -51,9 +50,6 @@ public class DetailService {
     }
 
     public void remove(Detail detail) {
-        //TODO: should not set nulls
-        detail.setDish(null);
-        detail.setOrder(null);
         repository.delete(detail);
     }
 
@@ -73,4 +69,10 @@ public class DetailService {
         return repository.getOne(id);
     }
 
+    public ResponseEntity<String> getDetailResponse(Long id) {
+        Optional<Detail> optionalDetail = repository.findById(id);
+        if (optionalDetail.isEmpty())
+            return new ResponseEntity<>("No detail found for given id.", HttpStatus.NOT_FOUND);
+        return JsonMaker.getJsonResponse(optionalDetail.get());
+    }
 }

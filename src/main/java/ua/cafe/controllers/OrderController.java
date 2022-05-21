@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -60,8 +59,8 @@ public class OrderController {
     //API
     @GetMapping("/api/orders")
     @ResponseBody
-    public ResponseEntity<String> apiGetOrders() {
-        List<Order> orders = orderService.getAllOrders();
+    public ResponseEntity<String> apiGetOrders(@RequestParam(required = false) String datetimeFrom, @RequestParam(required = false) String datetimeTo) {
+        List<Order> orders = orderService.getOrdersForDate(new Stats.Interval(datetimeFrom, datetimeTo));
         return JsonMaker.getJsonResponse(orders);
     }
 
@@ -75,6 +74,7 @@ public class OrderController {
 
     @PostMapping("/api/order")
     public ResponseEntity<?> apiSaveOrder(@RequestBody @Valid Order order, BindingResult result) {
+        log.info("**************************************POSTED ORDER:\n" + order);
         var ErrorsMap = ResponseFactory.createResponse(result);
         if (ErrorsMap != null) return ErrorsMap;
 
@@ -108,13 +108,11 @@ public class OrderController {
 
     ///////////////////////////////////////////////////////////
     @GetMapping("/orders")
-    public String getOrders(Model model, Authentication authentication) {
-        if (authentication == null) return "redirect:/";
-
-        model.addAttribute("orders", orderService.getAllOrders());
+    public String getOrders(Model model, @RequestParam(required = false) String datetimeFrom, @RequestParam(required = false) String datetimeTo) {
+        /*model.addAttribute("orders", orderService.getOrdersForDate(new Stats.Interval(datetimeFrom, datetimeTo)));
         model.addAttribute("new_order", new Order());
         markPage(model, "orders");
-
+*/
         return "orders";
     }
 

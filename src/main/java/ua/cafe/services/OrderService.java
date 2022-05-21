@@ -100,6 +100,10 @@ public class OrderService {
         return getReportOrder(interval.from, interval.to, sortByQuantity, includeZeros);
     }
 
+    public List<Order> getOrdersForDate(Stats.Interval interval) {
+        return repository.getOrdersByDateOrderedBetween(interval.from, interval.to);
+    }
+
     public Order getReportOrder(Date from, Date to, boolean sortByQuantity, boolean includeZeros) {
 
         if (from.getTime() > to.getTime()) {

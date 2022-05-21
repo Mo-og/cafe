@@ -81,6 +81,11 @@ public abstract class Stats {
             this.from = from1;
         }
 
+        public Interval() {
+            from = getTodaySince();
+            to = getTodayTill();
+        }
+
         public String getFromAsHtmlString() {
             return dateParser.format(from);
         }

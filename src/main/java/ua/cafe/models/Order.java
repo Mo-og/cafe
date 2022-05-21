@@ -21,7 +21,7 @@ import java.util.*;
 public class Order implements Comparable<Order> {
     public static final int TABLES_COUNT = 100;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(updatable = false, name = "date_ordered", nullable = false)
     private Date dateOrdered;
