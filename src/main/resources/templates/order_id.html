@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+>
+<head th:insert="fragments::head(~{::title}, ~{})">
+    <title>Title</title>
+</head>
+<body class="creamBg">
+<th:block th:replace="fragments :: navbar"/>
+
+</body>
+</html>

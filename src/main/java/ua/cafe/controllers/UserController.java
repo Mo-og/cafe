@@ -93,4 +93,14 @@ public class UserController {
         userService.checkSaveUser(user, result, authentication);
         return "redirect:/users";
     }
+
+    @GetMapping("/api/iscook")
+    @ResponseBody
+    public boolean isCook(Authentication authentication) {
+        if (authentication == null) {
+            return false;
+        }
+        User user = (User) authentication.getPrincipal();
+        return user.getAuthorities().contains(Authority.COOK) || user.getAuthorities().contains(Authority.DIRECTOR);
+    }
 }
