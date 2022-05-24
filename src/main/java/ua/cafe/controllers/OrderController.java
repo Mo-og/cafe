@@ -109,11 +109,21 @@ public class OrderController {
     ///////////////////////////////////////////////////////////
     @GetMapping("/orders")
     public String getOrders(Model model, @RequestParam(required = false) String datetimeFrom, @RequestParam(required = false) String datetimeTo) {
-        /*model.addAttribute("orders", orderService.getOrdersForDate(new Stats.Interval(datetimeFrom, datetimeTo)));
-        model.addAttribute("new_order", new Order());
         markPage(model, "orders");
-*/
         return "orders";
+    }
+
+    @GetMapping("/order/{id}")
+    public String getOrders(Model model, @PathVariable Long id) {
+        markPage(model, "orders");
+        model.addAttribute("orderId", id);
+        return "order_id";
+    }
+
+    @GetMapping("/order/new")
+    public String getOrders(Model model) {
+        markPage(model, "orders");
+        return "order_id";
     }
 
     //отчет

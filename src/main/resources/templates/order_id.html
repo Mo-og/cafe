@@ -3,9 +3,288 @@
 >
 <head th:insert="fragments::head(~{::title}, ~{})">
     <title>Title</title>
+    <style>
+        .b-popup {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            backdrop-filter: blur(2px);
+        }
+
+        .b-popup .b-popup-content { /*настройки формы*/
+            margin: auto;
+            width: 500px;
+            height: auto;
+            padding: 1.5rem;
+            background-color: #fdfdfd; /*заливка формы*/
+            border-radius: 15px;
+            box-shadow: 0 0 10px #000; /*тень от всплывающего окна*/
+            max-height: 79vh;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 480px) {
+            .b-popup .b-popup-content {
+                width: 95%;
+                max-height: 65vh;
+            }
+
+            .table > :not(caption) > * > * {
+                padding: 0.25rem 0.25rem;
+            }
+        }
+    </style>
 </head>
 <body class="creamBg">
 <th:block th:replace="fragments :: navbar"/>
+<input hidden id="orderId" name="orderId" th:value="${orderId}">
+<section class="reservation-block pad-top-100 pad-bottom-100">
+    <div class="container-lg">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div id="app">
+                    <form @submit.prevent="saveOrder" class="reservation-block" style="margin-bottom: 10px">
+                        <div class="row mb-3">
+                            <div class="col-6 mb-1">
+                                <h5><label for="tabl_num">Номер столика</label></h5>
+                                <input class="form-control" id="tabl_num" name="tab_num" placeholder="" required
+                                       type="number" v-model="order.tableNum">
+                                <small class="text-danger"></small>
+                            </div>
+                            <div class="col-6 mb-1">
+                                <h5><label for="commen">Комментарий к заказу</label></h5>
+                                <input class="form-control" id="commen" name="comment" placeholder="" type="text"
+                                       v-model="order.comments">
+                                <small class="text-danger"></small>
+                            </div>
+                        </div>
+                        <h5 class="block-title text-align-center">Добавьте блюдо в заказ</h5>
 
+                        <button @click.prevent="openAddDish" class="btn btn-warning btn-lg btn-block mb-2">
+                            Добавить блюдо
+                        </button>
+                        <div class="table-responsive mb-2">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th class="text-justify">Блюдо</th>
+                                    <th class="text-justify">Шт.</th>
+                                    <th class="text-justify">Цена</th>
+                                    <th class="text-justify">Стоимость</th>
+                                    <th class="text-justify">Статус</th>
+                                    <th class="text-justify"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr :key="i"
+                                    @click="editOrderDish(detail.dishId)"
+                                    style="cursor: pointer"
+                                    v-for="(detail,i) in order.details">
+                                    <td class="align-middle"><span>{{dishName(detail.dishId)}}</span></td>
+                                    <td class="align-middle"><span>{{detail.quantity}}</span></td>
+                                    <td class="align-middle"><span>{{dishCost(detail.dishId)}}₴</span></td>
+                                    <td class="align-middle"><span>{{dishCost(detail.dishId) * detail.quantity}}</span>
+                                    </td>
+                                    <td class="align-middle"><span>{{dishStatus(detail.status) }}</span>
+                                    </td>
+                                    <td @click.stop="deleteOrderDish(detail.dishId)">
+                                        <svg class="bi bi-x-square-fill" fill="currentColor" height="1em"
+                                             style="display: inline; cursor: pointer"
+                                             viewBox="0 0 16 16" width="1em"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path clip-rule="evenodd"
+                                                  d="M2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2zm9.854 4.854a.5.5 0 00-.708-.708L8 7.293 4.854 4.146a.5.5 0 10-.708.708L7.293 8l-3.147 3.146a.5.5 0 00.708.708L8 8.707l3.146 3.147a.5.5 0 00.708-.708L8.707 8l3.147-3.146z"
+                                                  fill-rule="evenodd"/>
+                                        </svg>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex col-12 justify-content-between mb-1">
+                            <button class="btn btn-warning btn-lg" type="submit" value="Submit">
+                                {{ isNewOrder ? 'Оформить заказ' : 'Сохранить заказ' }}
+                            </button>
+                            <a class="btn btn-secondary btn-lg" href="/orders">
+                                Отменить
+                            </a>
+                        </div>
+                    </form>
+
+                    <div class="b-popup"
+                         style="display: flex; flex-direction: column; justify-content: center; z-index: 10"
+                         v-show="isShowEditDish">
+                        <div style="position: fixed; left: 0;right: 0;top: 0;bottom: 0; background: rgba(0,0,0,0.2);"></div>
+                        <div class="b-popup-content" id="inner"
+                             style="position: relative; padding: 30px; border-radius: 6px; background: #fff;">
+                            <form @submit.prevent="saveDish">
+                                <div class="col mb-1">
+                                    <h5><label for="dish">Выберите блюдо</label></h5>
+                                    <select class="form-control" id="dish" v-model="selectedDetail.dishId">
+                                        <option :disabled="!isAvailableDish(dish.id)" :key="dish.id" :value="dish.id"
+                                                v-for="dish in dishes">{{ dish.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col mb-1">
+                                    <h5><label for="quantity">Количество</label></h5>
+                                    <input class="form-control" id="quantity" type="number"
+                                           v-model.number="selectedDetail.quantity">
+                                </div>
+                                <div class="col mb-1" v-if="!isNewOrder">
+                                    <h5><label for="quantity">Статус</label></h5>
+                                    <select class="form-control" id="status"
+                                            v-model="selectedDetail.status">
+                                        <option :key="status.value" :value="status.value" v-for="status in statuses">
+                                            {{ status.text }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <button :disabled="!selectedDetail.dishId" class="btn btn-secondary" type="submit">
+                                        Сохранить
+                                    </button>
+                                    <button @click="isShowEditDish = false" class="btn" type="button">Закрыть</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script>
+
+    const defaultOrder = {
+        comments: '',
+        cost: 0,
+        dateOrdered: 0,
+        details: [],
+        tableNum: 1,
+        id: null,
+        status: '',
+        statusDescription: ''
+    }
+    const defaultDetail = {
+        dishId: null,
+        quantity: 1,
+        status: null
+    }
+    new Vue({
+        el: '#app',
+        data: {
+            isNewOrder: true,
+            order: JSON.parse(JSON.stringify(defaultOrder)),
+            selectedDetail: JSON.parse(JSON.stringify(defaultDetail)),
+            isShowEditDish: false,
+            dishes: [],
+            statuses: [
+                {
+                    value: 'NEW',
+                    text: 'Новый'
+                },
+                {
+                    value: 'IN_PROGRESS',
+                    text: 'Готовится'
+                },
+                {
+                    value: 'READY',
+                    text: 'Готов'
+                },
+                {
+                    value: 'FINISHED',
+                    text: 'Завершен'
+                },
+                {
+                    value: 'PAID',
+                    text: 'Оплачен'
+                }
+            ]
+        },
+        async created() {
+            const orderId = document.querySelector('#orderId').value;
+            if (orderId) {
+                this.isNewOrder = false;
+                await fetch('/api/order?id=' + orderId).then(r => r.json()).then(d => this.order = d);
+            }
+            fetch('/api/dishes')
+                .then(r => r.json())
+                .then(d => {
+                    this.dishes = d;
+                })
+        },
+        computed: {
+            isAvailableDish() {
+                return dishId => !this.order.details.some(d => d.dishId === dishId);
+            }
+        },
+        methods: {
+
+
+            async saveOrder() {
+                if (this.isNewOrder) {
+                    const {tableNum, details, comments} = this.order;
+                    const response = await fetch('/api/order', {
+                        method: 'POST',
+                        body: JSON.stringify({tableNum, details, comments}),
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8',
+                            'X-XSRF-TOKEN': document.querySelector("meta[name='_csrf']").getAttribute('content')
+                        },
+                    });
+                    location.href = '/orders';
+                } else {
+                    const {tableNum, details, comments, id} = this.order;
+                    const response = await fetch('/api/order', {
+                        method: 'PUT',
+                        body: JSON.stringify({tableNum, details, comments, id}),
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8',
+                            'X-XSRF-TOKEN': document.querySelector("meta[name='_csrf']").getAttribute('content')
+                        },
+                    });
+                    location.href = '/orders';
+                }
+
+            },
+            saveDish() {
+                this.order.details = this.order.details.some(d => d.dishId === this.selectedDetail.dishId)
+                    ? this.order.details.map(d => {
+                        d.quantity = this.selectedDetail.quantity;
+                        d.status = this.selectedDetail.status;
+                        return d
+                    })
+                    : [...this.order.details, this.selectedDetail];
+                this.selectedDetail = JSON.parse(JSON.stringify(defaultDetail));
+            },
+            openAddDish() {
+                this.selectedDetail = JSON.parse(JSON.stringify(defaultDetail));
+                this.isShowEditDish = true;
+            },
+            editOrderDish(dishId) {
+                this.selectedDetail = JSON.parse(JSON.stringify(this.order.details.find(d => d.dishId === dishId)));
+                this.isShowEditDish = true;
+            },
+            deleteOrderDish(dishId) {
+                this.order.details = this.order.details.filter(d => d.dishId !== dishId)
+            },
+            dishName(dishId) {
+                return this.dishes.find(d => d.id === dishId)?.name
+            },
+            dishCost(dishId) {
+                return this.dishes.find(d => d.id === dishId)?.price
+            },
+            dishStatus(status) {
+                return this.statuses.find(s => s.value === status)?.text;
+            }
+        }
+    })
+</script>
 </body>
 </html>
