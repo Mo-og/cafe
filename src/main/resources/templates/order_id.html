@@ -256,12 +256,15 @@
             saveDish() {
                 this.order.details = this.order.details.some(d => d.dishId === this.selectedDetail.dishId)
                     ? this.order.details.map(d => {
-                        d.quantity = this.selectedDetail.quantity;
-                        d.status = this.selectedDetail.status;
+                        if (d.dishId === this.selectedDetail.dishId) {
+                            d.quantity = this.selectedDetail.quantity;
+                            d.status = this.selectedDetail.status;
+                        }
                         return d
                     })
                     : [...this.order.details, this.selectedDetail];
                 this.selectedDetail = JSON.parse(JSON.stringify(defaultDetail));
+                this.isShowEditDish = false;
             },
             openAddDish() {
                 this.selectedDetail = JSON.parse(JSON.stringify(defaultDetail));

@@ -62,16 +62,18 @@
                                 <label for="datetimeFrom">с</label>
                                 <input class="form-control" id="datetimeFrom"
                                        name="datetimeFrom"
-                                       type="datetime-local">
+                                       @change="isChangedRange = true;" type="datetime-local" v-model="datetimeFrom">
                             </div>
                             <div class="col-5">
                                 <label for="datetimeTo">по</label>
                                 <input class="form-control col-4"
                                        id="datetimeTo" name="datetimeTo"
-                                       type="datetime-local">
+                                       @change="isChangedRange = true;" type="datetime-local" v-model="datetimeTo">
                             </div>
                             <div class="col-1 d-flex flex-column justify-content-end">
-                                <button class="btn btn-outline-secondary btn-md d-flex align-items-center">
+                                <button :disabled="!isChangedRange" @click="refreshOrders"
+                                        class="btn btn-outline-secondary btn-md d-flex align-items-center"
+                                        type="button">
                                     <svg class="bi bi-check-square" fill="currentColor" height="25" viewBox="0 0 16 16"
                                          width="25" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
@@ -158,13 +160,19 @@
         data: {
 
             orders: [],
+            datetimeFrom: '',
+            datetimeTo: '',
+            isChangedRange: false,
         },
         async created() {
             await this.refreshOrders();
         },
         methods: {
             async refreshOrders() {
-                const response = await fetch('/api/orders')
+                const params = new URLSearchParams();
+                this.datetimeFrom && params.set('datetimeFrom', this.datetimeFrom);
+                this.datetimeTo && params.set('datetimeTo', this.datetimeTo);
+                const response = await fetch(`/api/orders?${params.toString()}`)
                 this.orders = await response.json();
             },
             editOrder(orderId) {

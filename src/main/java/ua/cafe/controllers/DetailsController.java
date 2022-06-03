@@ -15,6 +15,7 @@ import ua.cafe.services.DetailService;
 import ua.cafe.utils.ResponseFactory;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Lazy
 @Controller
@@ -33,6 +34,12 @@ public class DetailsController {
     @GetMapping("/api/detail")
     public ResponseEntity<String> getDetailById(@RequestParam Long id) {
         return detailService.getDetailResponse(id);
+    }
+
+    @GetMapping("/api/details/{orderId}")
+    @ResponseBody
+    public List<Detail> getDetailsOfOrder(@PathVariable Long orderId) {
+        return detailService.getByOrderId(orderId);
     }
 
     //add

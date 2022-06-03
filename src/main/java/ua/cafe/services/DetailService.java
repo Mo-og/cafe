@@ -69,6 +69,10 @@ public class DetailService {
         return repository.getOne(id);
     }
 
+    public List<Detail> getByOrderId(long orderId) {
+        return repository.findDetailsByOrder_id(orderId);
+    }
+
     public ResponseEntity<String> getDetailResponse(Long id) {
         Optional<Detail> optionalDetail = repository.findById(id);
         if (optionalDetail.isEmpty())

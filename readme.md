@@ -7,25 +7,28 @@ Response:
 ```json
 [
   {
-  "id" : 3,
-  "dateOrdered" : 1639198835000,
-  "comments" : null,
-  "tableNum" : 11,
-  "status" : "FINISHED", // NEW, IN_PROGRESS, READY, FINISHED, PAID
-  "details" : [ {
-    "id" : 187,
-    "dishId" : 682,
-    "orderId" : 3,
-    "quantity" : 1,
-    "comment" : "resuscitation's,substitution's",
-    "status" : "FINISHED",
-    "cost" : 32.0,
-    "statusDesc" : "Выполнено"
-  } ],
-  "statusDescription" : "Выполнено",
-  "cost" : 32.0,
-  "dishNames" : "Блюдо 682 (1 шт.)"
- }
+    "id": 3,
+    "dateOrdered": 1639198835000,
+    "comments": null,
+    "tableNum": 11,
+    "status": "FINISHED",
+    // NEW, IN_PROGRESS, READY, FINISHED, PAID
+    "details": [
+      {
+        "id": 187,
+        "dishId": 682,
+        "orderId": 3,
+        "quantity": 1,
+        "comment": "resuscitation's,substitution's",
+        "status": "FINISHED",
+        "cost": 32.0,
+        "statusDesc": "Выполнено"
+      }
+    ],
+    "statusDescription": "Выполнено",
+    "cost": 32.0,
+    "dishNames": "Блюдо 682 (1 шт.)"
+  }
 ]
 ```
 
@@ -35,24 +38,26 @@ Response:
 
 ```json
 {
-  "id" : 3,
-  "dateOrdered" : 1639198835000,
-  "comments" : null,
-  "tableNum" : 11,
-  "status" : "FINISHED",
-  "details" : [ {
-    "id" : 187,
-    "dishId" : 682,
-    "orderId" : 3,
-    "quantity" : 1,
-    "comment" : "resuscitation's,substitution's",
-    "status" : "FINISHED",
-    "cost" : 32.0,
-    "statusDesc" : "Выполнено"
-  } ],
-  "statusDescription" : "Выполнено",
-  "cost" : 32.0,
-  "dishNames" : "Блюдо 682 (1 шт.)"
+  "id": 3,
+  "dateOrdered": 1639198835000,
+  "comments": null,
+  "tableNum": 11,
+  "status": "FINISHED",
+  "details": [
+    {
+      "id": 187,
+      "dishId": 682,
+      "orderId": 3,
+      "quantity": 1,
+      "comment": "resuscitation's,substitution's",
+      "status": "FINISHED",
+      "cost": 32.0,
+      "statusDesc": "Выполнено"
+    }
+  ],
+  "statusDescription": "Выполнено",
+  "cost": 32.0,
+  "dishNames": "Блюдо 682 (1 шт.)"
 }
 ```
 
@@ -283,15 +288,15 @@ Response:
 
 ```json
 {
-    "id": 1,
-    "categoryId": 1,
-    "name": "Some dish",
-    "weight": 100.0,
-    "price": 100.0,
-    "ingredients": "ingr 1, ingr 2...",
-    "available": true,
-    "imagePath": "DishImages/test2_-_17.01.2022_14.13.26.jpg"
-  }
+  "id": 1,
+  "categoryId": 1,
+  "name": "Some dish",
+  "weight": 100.0,
+  "price": 100.0,
+  "ingredients": "ingr 1, ingr 2...",
+  "available": true,
+  "imagePath": "DishImages/test2_-_17.01.2022_14.13.26.jpg"
+}
 ```
 
 #### POST /api/dish
@@ -302,28 +307,33 @@ Payload:
 
 ```json
 {
-    "categoryId": 1,
-    "name": "Some dish", //not blank
-    "weight": 100.0,  // >=1
-    "price": 100.0,   //? 
-    "ingredients": "ingr 1, ingr 2...", //?
-    "available": true //?
-  }
+  "categoryId": 1,
+  "name": "Some dish",
+  //not blank
+  "weight": 100.0,
+  // >=1
+  "price": 100.0,
+  //? 
+  "ingredients": "ingr 1, ingr 2...",
+  //?
+  "available": true
+  //?
+}
 ```
 
 Status 200 Response:
 
 ```json
 {
-    "id": 1,
-    "categoryId": 1,
-    "name": "Some dish",
-    "weight": 100.0,
-    "price": 100.0,
-    "ingredients": "ingr 1, ingr 2...",
-    "available": true,
-    "imagePath": "DishImages/test2_-_17.01.2022_14.13.26.jpg"
-  }
+  "id": 1,
+  "categoryId": 1,
+  "name": "Some dish",
+  "weight": 100.0,
+  "price": 100.0,
+  "ingredients": "ingr 1, ingr 2...",
+  "available": true,
+  "imagePath": "DishImages/test2_-_17.01.2022_14.13.26.jpg"
+}
 ```
 
 Status 406 Response:
@@ -344,29 +354,34 @@ Payload:
 
 ```json
 {
-    "id":1,
-    "categoryId": 1,
-    "name": "Some dish", //not blank
-    "weight": 100.0,  // >=1
-    "price": 100.0,   //? 
-    "ingredients": "ingr 1, ingr 2...", //?
-    "available": true //?
-  }
+  "id": 1,
+  "categoryId": 1,
+  "name": "Some dish",
+  //not blank
+  "weight": 100.0,
+  // >=1
+  "price": 100.0,
+  //? 
+  "ingredients": "ingr 1, ingr 2...",
+  //?
+  "available": true
+  //?
+}
 ```
 
 Status 200 Response:
 
 ```json
 {
-    "id": 1,
-    "categoryId": 1,
-    "name": "Some dish",
-    "weight": 100.0,
-    "price": 100.0,
-    "ingredients": "ingr 1, ingr 2...",
-    "available": true,
-    "imagePath": "DishImages/test2_-_17.01.2022_14.13.26.jpg"
-  }
+  "id": 1,
+  "categoryId": 1,
+  "name": "Some dish",
+  "weight": 100.0,
+  "price": 100.0,
+  "ingredients": "ingr 1, ingr 2...",
+  "available": true,
+  "imagePath": "DishImages/test2_-_17.01.2022_14.13.26.jpg"
+}
 ```
 
 Status 406 Response:
@@ -387,19 +402,47 @@ Status 404 - `{"No dish was found by given id of <id>"}`
 
 ### Details
 
+GET /api/details/`500`
+Status 200 Response:
+
+```json
+[
+  {
+    "id": 1197,
+    "dishId": 166,
+    "orderId": 500,
+    "quantity": 5,
+    "comment": "chivalry's,retraction's",
+    "status": "IN_PROGRESS",
+    "cost": 180.0,
+    "statusDesc": "Готовится"
+  },
+  {
+    "id": 2385,
+    "dishId": 637,
+    "orderId": 500,
+    "quantity": 4,
+    "comment": "preferable,recognition",
+    "status": "READY",
+    "cost": 164.0,
+    "statusDesc": "Приготовлено"
+  }
+]
+```
+
 GET /api/detail?id=`3`
 Status 200 Response:
 
 ```json
 {
-  "id" : 3,
-  "dishId" : 623,
-  "orderId" : 1563,
-  "quantity" : 3,
-  "comment" : "bulks,bend",
-  "status" : "IN_PROGRESS",
-  "cost" : 84.0,
-  "statusDesc" : "Готовится"
+  "id": 3,
+  "dishId": 623,
+  "orderId": 1563,
+  "quantity": 3,
+  "comment": "bulks,bend",
+  "status": "IN_PROGRESS",
+  "cost": 84.0,
+  "statusDesc": "Готовится"
 }
 ```
 
@@ -422,14 +465,14 @@ Status 200 Response:
 
 ```json
 {
-    "id": 3005,
-    "dishId": 1000,
-    "orderId": 1000,
-    "quantity": 1,
-    "comment": null,
-    "status": "NEW",
-    "cost": 46.0,
-    "statusDesc": "Новый"
+  "id": 3005,
+  "dishId": 1000,
+  "orderId": 1000,
+  "quantity": 1,
+  "comment": null,
+  "status": "NEW",
+  "cost": 46.0,
+  "statusDesc": "Новый"
 }
 ```
 
@@ -437,12 +480,12 @@ Status 406 Response:
 
 ```json
 {
-    "orderId": [
-        "должно быть больше или равно 1"
-    ],
-    "dishId": [
-        "должно быть больше или равно 1"
-    ]
+  "orderId": [
+    "должно быть больше или равно 1"
+  ],
+  "dishId": [
+    "должно быть больше или равно 1"
+  ]
 }
 ```
 
