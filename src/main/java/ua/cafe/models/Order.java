@@ -122,24 +122,26 @@ public class Order implements Comparable<Order> {
     public void updateStatus() {
         boolean hasNew = false;
         boolean hasReady = false;
+        boolean hasInProgress = false;
+        boolean hasFinished = false;
         for (var d : details) {
             switch (d.getStatus()) {
-                case IN_PROGRESS -> {
-                    status = ReadyStatus.IN_PROGRESS;
-                    return;
-                }
+                case IN_PROGRESS -> hasInProgress = true;
                 case NEW -> hasNew = true;
                 case READY -> hasReady = true;
+                case FINISHED -> hasFinished = true;
             }
         }
-        if (!hasNew) {
-            if (hasReady) {
-                status = ReadyStatus.READY;
-            } else {
-                status = ReadyStatus.FINISHED;
-            }
-        } else
+
+        if (hasReady) {
+            status = ReadyStatus.READY;
+        } else if (hasInProgress) {
+            status = ReadyStatus.IN_PROGRESS;
+        } else if (hasNew) {
             status = ReadyStatus.NEW;
+        } else {
+            status = hasFinished ? ReadyStatus.FINISHED : ReadyStatus.PAID;
+        }
     }
 
     public ReadyStatus getStatus() {

