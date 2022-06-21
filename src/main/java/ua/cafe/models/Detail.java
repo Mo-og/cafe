@@ -92,7 +92,11 @@ public class Detail {
     public Dish getDish() {
         //TODO: remove database interaction
         if (dish == null && dishId != -1) {
-            dish = dishService.getById(dishId);
+            if (dishService == null) {
+                dish = new Dish();
+                dish.setPrice(dishId);
+            } else
+                dish = dishService.getById(dishId);
         }
         return dish;
     }

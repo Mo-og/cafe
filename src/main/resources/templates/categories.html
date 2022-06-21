@@ -13,24 +13,24 @@
     <section class="reservation-block pad-top-100 pad-bottom-100">
         <div class="container-lg">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <th:block th:replace="fragments :: headline('Категории')"/>
+                <th:block th:replace="fragments :: headline('Категорії')"/>
 
                 <div class="d-grid col-12 gap-md-2 col-xl-5 col-lg-7 col-md-8 col-sm-9 col-xs-12 mx-auto mb-2">
                     <a aria-disabled="true" class="btn btn-block orange-btn empty-btn" role="button"
                        sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/add_category}">
-                        Добавить категорию блюда
+                        Додати категорію страви
                     </a>
                 </div>
                 <h4 class="block-title text-align-center mb-3">
-                    Для редактирования конкретной категории блюда, выберите её в списке ниже
+                    Для редагування конкретної категорії страви, оберіть її в списку нижче
                 </h4>
                 <form class="reservation-block">
                     <div class="table-responsive">
                         <table class="table table-striped" id="table">
                             <thead>
                             <tr>
-                                <th class="text-justify">Порядок сортировки</th>
-                                <th class="text-justify">Название</th>
+                                <th class="text-justify">Порядок сортування</th>
+                                <th class="text-justify">Назва</th>
                             </tr>
                             </thead>
                             <tbody>

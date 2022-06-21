@@ -26,7 +26,7 @@
 <form class="animate__animated " style="float: right; margin-right: 1em" th:action="@{/}" method="get">
     <button class="btn-sm btn-secondary" type="submit"
             style="width: auto;background: rgba(255,255,255,0.2); color: #e75b1e; text-shadow:   0 0 1px white; border: #ff7f50 1px solid">
-        Главная
+        Головна
     </button>
 </form>
 <form class="animate__animated " style="float: right; margin-right: 1em" th:action="@{/menu}" method="get">
@@ -43,11 +43,11 @@
     <div class=" fade-in container">
         <img alt="" src="../images/simple-logo.png"
              style="position:absolute;height: 60%; margin-top: 3rem;margin-left: 2rem; opacity: 0.8; filter: blur(5px)">
-        <h2>Вход в аккаунт</h2>
+        <h2>Вхід в акаунт</h2>
         <form class="form needs-validation" id="form" enctype="multipart/form-data" th:object="${form}" method="post">
             <div style="margin-bottom: 1em">
                 <input id="username" th:field="*{username}" type="number"
-                       th:value="${form.username}" required placeholder="Логин">
+                       placeholder="Логін" required th:value="${form.username}">
                 <!--suppress ThymeleafVariablesResolveInspection -->
                 <small style="color: red; text-shadow: white 0 0 5px" th:if="${usernameFailed!=null&&usernameFailed}"
                        th:text="${messageUsername}"></small>
@@ -59,7 +59,7 @@
                 <small style="color: red; text-shadow: white 0 0 5px" th:if="${passwordFailed!=null&&passwordFailed}"
                        th:text="${messagePassword}"></small>
             </div>
-            <button type="submit" id="login-button" value="Submit">Войти</button>
+            <button id="login-button" type="submit" value="Submit">Увійти</button>
             <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden">
         </form>
     </div>

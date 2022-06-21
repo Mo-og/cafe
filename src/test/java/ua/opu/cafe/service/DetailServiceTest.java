@@ -13,7 +13,7 @@ public class DetailServiceTest {
     int MAX = 90;
 
     @Test
-    void createCorrect() {
+    void testCreateCorrectDetail() {
         int randQuantity = ThreadLocalRandom.current().nextInt(MIN, MAX);
 
         for (int i = 0; i < randQuantity; i++) {
@@ -23,7 +23,7 @@ public class DetailServiceTest {
     }
 
     @Test
-    void createIllegalQuantity() {
+    void testCreateIllegalQuantity() {
         int randQuantity = ThreadLocalRandom.current().nextInt(MIN, MAX);
 
 //        for (int i = 0; i < randQuantity; i++) {
@@ -33,7 +33,7 @@ public class DetailServiceTest {
     }
 
     @Test
-    void editCorrectQuantity() {
+    void testEditCorrectQuantity() {
         int randQuantity = ThreadLocalRandom.current().nextInt(MIN, MAX);
 
         for (int i = 0; i < randQuantity; i++) {
@@ -43,7 +43,7 @@ public class DetailServiceTest {
     }
 
     @Test
-    void editNegativeQuantity() {
+    void testEditNegativeQuantity() {
         int randQuantity = ThreadLocalRandom.current().nextInt(MIN, MAX);
 
         for (int i = 0; i < randQuantity; i++) {
@@ -53,7 +53,17 @@ public class DetailServiceTest {
     }
 
     @Test
-    void removeDish() {
+    void testRemoveDishCorrect() {
+        int randQuantity = ThreadLocalRandom.current().nextInt(MIN, MAX);
+
+        for (int i = 0; i < randQuantity; i++) {
+            Logger.getAnonymousLogger().info(String.valueOf(randQuantity));
+        }
+        assertEquals(1, 1);
+    }
+
+    @Test
+    void testRemoveDishNonExisting() {
         int randQuantity = ThreadLocalRandom.current().nextInt(MIN, MAX);
 
         for (int i = 0; i < randQuantity; i++) {

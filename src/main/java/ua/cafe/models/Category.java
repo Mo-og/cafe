@@ -22,7 +22,7 @@ public class Category implements Comparable<Category> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Pattern(regexp = "[ A-Za-zА-Яа-яЁё]{2,200}", message = "Название категории должно содержать только буквы (латинские или русские) и быть в пределах 2-200 символов.")
+    @Pattern(regexp = "[ A-Za-zА-Яа-яЁёІіЇїЄєҐґ]{2,200}", message = "Название категории должно содержать только буквы (латинские или русские) и быть в пределах 2-200 символов.")
     private String name;
     private int categoryOrder; //for menu sorting
 

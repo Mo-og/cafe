@@ -68,20 +68,20 @@ public class PdfService {
             Font introductionFont = new Font(Font.HELVETICA, 14, Font.BOLD, BLACK);
             Font fromToFont = new Font(Font.HELVETICA, 14, Font.BOLDITALIC, GREEN);
 
-            doc.add(new Paragraph("Отчет по продажам", introductionFont));
-            doc.add(new Paragraph("с " + Stats.formatForUser(interval.from), fromToFont));
+            doc.add(new Paragraph("Звіт з продажів", introductionFont));
+            doc.add(new Paragraph("з " + Stats.formatForUser(interval.from), fromToFont));
             doc.add(new Paragraph("по " + Stats.formatForUser(interval.to), fromToFont));
-            doc.add(new Paragraph("Общая прибыль:  " + order.getCost(), introductionFont));
+            doc.add(new Paragraph("Загальний прибуток:  " + order.getCost(), introductionFont));
 
             PdfPTable table = new PdfPTable(3);
             table.setWidthPercentage(100);
             PdfPCell cell = new PdfPCell();
             // table headers
-            cell.setPhrase(new Phrase("Блюдо", introductionFont));
+            cell.setPhrase(new Phrase("Страва", introductionFont));
             table.addCell(cell);
-            cell.setPhrase(new Phrase("Продано порций", introductionFont));
+            cell.setPhrase(new Phrase("Продано порцій", introductionFont));
             table.addCell(cell);
-            cell.setPhrase(new Phrase("Прибыль (грн.)", introductionFont));
+            cell.setPhrase(new Phrase("Прибуток (грн.)", introductionFont));
             table.addCell(cell);
 
             order.acquireDetails().forEach(detail -> {

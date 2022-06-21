@@ -6,7 +6,7 @@ import ua.cafe.utils.JsonMaker;
 import java.util.HashMap;
 
 public enum ReadyStatus {
-    NEW("Новый"), IN_PROGRESS("Готовится"), READY("Приготовлено"), FINISHED("Выполнено"), PAID("Оплачено");
+    NEW("Новий"), IN_PROGRESS("Готується"), READY("Приготовано"), FINISHED("Выконано"), PAID("Сплачено");
     public final String description;
 
     public static final ResponseEntity<String> MAP_RESPONSE_ENTITY;

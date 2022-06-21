@@ -55,25 +55,25 @@
                                 <small class="text-danger"></small>
                             </div>
                             <div class="col-6 mb-1">
-                                <h5><label for="commen">Комментарий к заказу</label></h5>
+                                <h5><label for="commen">Комментар до замовлення</label></h5>
                                 <input class="form-control" id="commen" name="comment" placeholder="" type="text"
                                        v-model="order.comments">
                                 <small class="text-danger"></small>
                             </div>
                         </div>
-                        <h5 class="block-title text-align-center">Добавьте блюдо в заказ</h5>
+                        <h3 class="block-title text-align-center">Додайте страву в замовлення</h3>
 
                         <button @click.prevent="openAddDish" class="btn btn-warning btn-lg btn-block mb-2">
-                            Добавить блюдо
+                            Додати страву
                         </button>
                         <div class="table-responsive mb-2">
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th class="text-justify">Блюдо</th>
-                                    <th class="text-justify">Шт.</th>
-                                    <th class="text-justify">Цена</th>
-                                    <th class="text-justify">Стоимость</th>
+                                    <th class="text-justify">Страва</th>
+                                    <th class="text-justify">К-ть.</th>
+                                    <th class="text-justify">Ціна</th>
+                                    <th class="text-justify">Вартість</th>
                                     <th class="text-justify">Статус</th>
                                     <th class="text-justify"></th>
                                 </tr>
@@ -106,10 +106,10 @@
                         </div>
                         <div class="d-flex col-12 justify-content-between mb-1">
                             <button class="btn btn-warning btn-lg" type="submit" value="Submit">
-                                {{ isNewOrder ? 'Оформить заказ' : 'Сохранить заказ' }}
+                                {{ isNewOrder ? 'Оформити замовлення' : 'Зберегти замовлення' }}
                             </button>
                             <a class="btn btn-secondary btn-lg" href="/orders">
-                                Отменить
+                                Скасувати зміни
                             </a>
                         </div>
                     </form>
@@ -122,7 +122,7 @@
                              style="position: relative; padding: 30px; border-radius: 6px; background: #fff;">
                             <form @submit.prevent="saveDish">
                                 <div class="col mb-1">
-                                    <h5><label for="dish">Выберите блюдо</label></h5>
+                                    <h5><label for="dish">Оберіть страву</label></h5>
                                     <select class="form-control" id="dish" v-model="selectedDetail.dishId">
                                         <option :disabled="!isAvailableDish(dish.id)" :key="dish.id" :value="dish.id"
                                                 v-for="dish in dishes">{{ dish.name }}
@@ -130,7 +130,7 @@
                                     </select>
                                 </div>
                                 <div class="col mb-1">
-                                    <h5><label for="quantity">Количество</label></h5>
+                                    <h5><label for="quantity">Кількість</label></h5>
                                     <input class="form-control" id="quantity" type="number"
                                            v-model.number="selectedDetail.quantity">
                                 </div>
@@ -145,9 +145,9 @@
                                 </div>
                                 <div class="col">
                                     <button :disabled="!selectedDetail.dishId" class="btn btn-secondary" type="submit">
-                                        Сохранить
+                                        Зберегти
                                     </button>
-                                    <button @click="isShowEditDish = false" class="btn" type="button">Закрыть</button>
+                                    <button @click="isShowEditDish = false" class="btn" type="button">Закрити</button>
                                 </div>
                             </form>
                         </div>
@@ -187,23 +187,23 @@
             statuses: [
                 {
                     value: 'NEW',
-                    text: 'Новый'
+                    text: 'Новий'
                 },
                 {
                     value: 'IN_PROGRESS',
-                    text: 'Готовится'
+                    text: 'Готується'
                 },
                 {
                     value: 'READY',
-                    text: 'Приготовлено'
+                    text: 'Приготовано'
                 },
                 {
                     value: 'FINISHED',
-                    text: 'Выполнено'
+                    text: 'Виконано'
                 },
                 {
                     value: 'PAID',
-                    text: 'Оплачено'
+                    text: 'Сплачено'
                 }
             ]
         },

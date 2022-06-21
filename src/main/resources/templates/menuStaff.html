@@ -19,12 +19,12 @@
                     <div class="d-grid col-12 gap-md-2 col-md-3 mx-auto">
                         <a th:href="@{/add_dish}" class="btn btn-block orange-btn empty-btn" role="button"
                            aria-disabled="true" sec:authorize="hasRole('ROLE_ADMIN')">
-                            Добавить блюдо
+                            Додати страву
                         </a>
                     </div>
                     <br>
                     <h4 class="block-title text-align-center" sec:authorize="hasRole('ROLE_ADMIN')">
-                        Для редактирования конкретного блюда меню, выберите его в списке ниже<i></i><i></i><i></i>
+                        Для редагування конкретної страви меню, оберіть її в списку нижче<i></i><i></i><i></i>
                     </h4>
                     <br sec:authorize="hasRole('ROLE_ADMIN')"><br sec:authorize="hasRole('ROLE_ADMIN')">
                     <form class="reservation-block">
@@ -34,11 +34,11 @@
                                 <tr>
                                     <th class="text-justify">#</th>
                                     <th class="text-justify">#</th>
-                                    <th class="text-justify">Название</th>
-                                    <th class="text-justify">Категория</th>
-                                    <th class="text-justify">Порция (г)</th>
-                                    <th class="text-justify">Цена (грн)</th>
-                                    <th class="text-justify">Состав</th>
+                                    <th class="text-justify">Назва</th>
+                                    <th class="text-justify">Категорія</th>
+                                    <th class="text-justify">Порція (г)</th>
+                                    <th class="text-justify">Ціна (грн)</th>
+                                    <th class="text-justify">Склад/Опис</th>
                                 </tr>
                                 </thead>
                                 <tbody>

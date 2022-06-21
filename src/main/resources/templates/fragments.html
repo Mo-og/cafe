@@ -63,7 +63,7 @@
 <header id="header" class="header-block" th:fragment="navbar">
     <nav class="navbar menuBar navbar-expand-sm navbar-light">
         <div class="container-fluid">
-            <a th:href="@{/}"><span class="navbar-brand">Главная</span></a>
+            <a th:href="@{/}"><span class="navbar-brand">Головна</span></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -72,21 +72,21 @@
                 <ul class="navbar-nav ms-auto my-2 my-lg-0 mb-navbar-item">
                     <li sec:authorize="isAuthenticated()" class="nav-item"
                         th:classappend="${page == 'menuStaff' ? 'active' : ''}">
-                        <a th:href="@{/menu_staff}"><span>Рабочее меню</span></a></li>
+                        <a th:href="@{/menu_staff}"><span>Робоче меню</span></a></li>
                     <li sec:authorize="isAuthenticated()" class="nav-item"
                         th:classappend="${page == 'users' ? 'active' : ''}">
-                        <a th:href="@{/users}"><span>Сотрудники</span></a></li>
+                        <a th:href="@{/users}"><span>Робітники</span></a></li>
                     <li sec:authorize="isAuthenticated()" class="nav-item"
                         th:classappend="${page == 'orders' ? 'active' : ''}">
-                        <a th:href="@{/orders}"><span>Заказы</span></a></li>
+                        <a th:href="@{/orders}"><span>Замовлення</span></a></li>
                     <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"
                         th:classappend="${page == 'report' ? 'active' : ''}">
-                        <a th:href="@{/report}"><span>Отчет</span></a></li>
+                        <a th:href="@{/report}"><span>Звіт</span></a></li>
                     <li sec:authorize="isAuthenticated()" class="nav-item">
                         <a onclick="return confirm('Вы уверены, что хотите выйти из личного кабинета?');"
-                           th:href="@{/logout}"><span>Выход</span></a></li>
+                           th:href="@{/logout}"><span>Вихід</span></a></li>
                     <li class="nav-item" sec:authorize="!isAuthenticated()">
-                        <a th:href="@{/login}"><span>Вход</span></a></li>
+                        <a th:href="@{/login}"><span>Увійти</span></a></li>
                 </ul>
             </div>
 

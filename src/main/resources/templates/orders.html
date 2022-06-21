@@ -49,17 +49,17 @@
         <div class="container-lg">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
-                    <th:block th:replace="fragments :: headline('Заказы')"/>
+                    <th:block th:replace="fragments :: headline('Замовлення')"/>
                     <h4 class="block-title text-align-center">
-                        Для редактирования конкретного заказа, нажмите на него в списке ниже.
+                        Для редгування конкретного замовлення, натисніть на нього у списку нижче.
                         <br>
                     </h4>
                     <div class="row d-flex flex-row justify-content-between">
                         <form action="/orders" class="mb-2 col-8 row" enctype="multipart/form-data" id="intervalForm"
                               method="get">
-                            <label class="" for="range">Заказы за период:</label>
+                            <label class="" for="range">Замовлення за період:</label>
                             <div class="col-5" id="range">
-                                <label for="datetimeFrom">с</label>
+                                <label for="datetimeFrom">з</label>
                                 <input class="form-control" id="datetimeFrom"
                                        name="datetimeFrom"
                                        @change="isChangedRange = true;" type="datetime-local" v-model="datetimeFrom">
@@ -82,12 +82,12 @@
                                 </button>
                             </div>
                             <div class="col-1 d-flex align-items-end"><a class="btn btn-outline-secondary btn-md"
-                                                                         href="/orders">Сегодня</a></div>
+                                                                         href="/orders">Сьогодні</a></div>
                         </form>
                         <div class="col-4 mb-2 d-flex align-items-end justify-content-end">
                             <a :href="`/order/new`" aria-disabled="true"
                                class="btn btn-block orange-btn empty-btn" role="button">
-                                Добавить заказ
+                                Додати замовлення
                             </a>
                         </div>
                     </div>
@@ -97,14 +97,14 @@
                                 <thead>
                                 <tr>
                                     <th class="text-justify">Код</th>
-                                    <th class="text-justify">Стол</th>
-                                    <th class="text-justify">Блюда</th>
-                                    <th class="text-justify">Счёт</th>
+                                    <th class="text-justify">Стіл</th>
+                                    <th class="text-justify">Страви</th>
+                                    <th class="text-justify">Рахунок</th>
                                     <th class="text-justify" rowspan="2"></th>
                                 </tr>
                                 <tr>
-                                    <th class="text-justify text-align-center" colspan="2">Оформлен</th>
-                                    <th class="text-justify">Комментарий</th>
+                                    <th class="text-justify text-align-center" colspan="2">Оформлений</th>
+                                    <th class="text-justify">Комментар</th>
                                     <th class="text-justify">Статус</th>
                                 </tr>
                                 </thead>

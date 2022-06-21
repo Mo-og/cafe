@@ -23,15 +23,15 @@
     <!-- Header Section Ends -->
 
     <section class="reservation-block pad-top-100 pad-bottom-100">
-        <th:block th:replace="fragments :: headline('Отчет по продажам')"/>
+        <th:block th:replace="fragments :: headline('Звіт з продажів')"/>
         <form class="mb-2" enctype="multipart/form-data" id="reportFrom" method="get" th:action="@{/report}">
             <div class="container-md">
 
                 <div class="row justify-content-between">
                     <div class="row col-5 mb-1">
-                        <label class="" for="range">Отчет за период:</label>
+                        <label class="" for="range">Звіт за період:</label>
                         <div class="col-6" id="range">
-                            <label for="datetimeFrom">с</label>
+                            <label for="datetimeFrom">з</label>
                             <input class="form-control" id="datetimeFrom"
                                    name="datetimeFrom"
                                    th:value="${datetimeFrom}"
@@ -51,7 +51,7 @@
                             <label class="mb-1" for="sorting">Сортировка</label>
                             <div class="form-check" id="sorting">
                                 <label class="form-check-label" for="sortByQuantity">
-                                    По количеству
+                                    За кількістю
                                 </label>
                                 <input class="form-check-input" id="sortByQuantity" name="sortByQuantity"
                                        th:checked="${sortByQuantity}"
@@ -60,7 +60,7 @@
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label" for="sortByCost">
-                                    По сумме
+                                    За сумою
                                 </label>
                                 <input class="form-check-input" id="sortByCost" name="sortByQuantity"
                                        th:checked="${!sortByQuantity}" type="radio"
@@ -74,14 +74,14 @@
                                    th:checked="${includeZeros}"
                                    style="margin-left: -1.1rem" type="checkbox" value="true">
                             <label class="form-check-label" for="includeZeros">
-                                Включать незаказанные
+                                Включати незамовлені
                             </label>
                         </div>
                         <div>
                             <input class="form-check-input" id="override" name="override"
                                    style="margin-left: -1.1rem" type="checkbox" value="true">
                             <label class="form-check-label" for="override">
-                                Перезаписать PDF
+                                Перезаписати PDF
                             </label>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                         <div class="col d-flex align-items-end">
                             <button class="form-control btn btn-warning mb-1" style="bottom: 0; width: 100%"
                                     type="submit">
-                                Отобразить
+                                Відобразити
                             </button>
                         </div>
                         <div class="col d-flex align-items-end">
@@ -111,9 +111,9 @@
                         <table class="table table-striped" id="table">
                             <thead>
                             <tr>
-                                <th class="text-justify">Блюдо</th>
-                                <th class="text-justify">Продано порций</th>
-                                <th class="text-justify">Прибыль (грн.)</th>
+                                <th class="text-justify">Страва</th>
+                                <th class="text-justify">Продано порцій</th>
+                                <th class="text-justify">Прибуток (грн.)</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -132,7 +132,7 @@
     </section>
     <footer>
         <h2 style="color:white; text-shadow: black 1px 1px 2px;">
-            Итого за период: [[${cost}]] грн.
+            Загалом за період: [[${cost}]] грн.
         </h2>
     </footer>
 </div>
@@ -157,7 +157,7 @@
         $('#table').DataTable({
             language: {
                 // lengthMenu: "Отображать _MENU_ блюд",
-                url: "https://cdn.datatables.net/plug-ins/1.10.21/i18n/Russian.json",
+                url: "https://cdn.datatables.net/plug-ins/1.10.21/i18n/Ukrainian.json",
             },
             // "bLengthChange": false,
             "pageLength": 50,

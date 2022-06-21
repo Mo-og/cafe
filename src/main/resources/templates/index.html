@@ -49,20 +49,21 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li><a sec:authorize="isAuthenticated()" th:href="@{/menu_staff}">Рабочее
+                                        <li><a sec:authorize="isAuthenticated()" th:href="@{/menu_staff}">Робоче
                                             меню</a></li>
                                         <li><a sec:authorize="!isAuthenticated()" th:href="@{/menu}">Меню</a></li>
-                                        <li><a sec:authorize="isAuthenticated()" th:href="@{/orders}">Заказы</a></li>
-                                        <li><a sec:authorize="isAuthenticated()" th:href="@{/users}">Сотрудники</a></li>
-                                        <li><a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/report}">Отчет</a></li>
-                                        <li><a href="#about">О нас</a></li>
+                                        <li><a sec:authorize="isAuthenticated()" th:href="@{/orders}">Замовлення</a>
+                                        </li>
+                                        <li><a sec:authorize="isAuthenticated()" th:href="@{/users}">Робітники</a></li>
+                                        <li><a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/report}">Звіт</a></li>
+                                        <li><a href="#about">Про нас</a></li>
                                         <li><a href="#gallery">Галерея</a></li>
-                                        <li><a href="#footer">Связаться с нами</a></li>
-                                        <li><a sec:authorize="!isAuthenticated()" th:href="@{/login}">Вход</a></li>
+                                        <li><a href="#footer">Зв'язатися з нами</a></li>
+                                        <li><a sec:authorize="!isAuthenticated()" th:href="@{/login}">Вхід</a></li>
                                         <li><a sec:authorize="isAuthenticated()" style="cursor: pointer"
                                                onclick="if(confirm('Вы уверены, что хотите выйти из личного кабинета?'))
                                                    document.logout.submit()">
-                                            Выйти
+                                            Вийти
                                         </a>
                                             <form name="logout" th:if="${role.isAuthorised()}" th:action="@{/logout}"
                                                   method="post">
@@ -91,7 +92,7 @@
                             <h1 style="font-size: 9vmin">
                                 <img src="../images/dine-img.png" alt="image"
                                      style="margin-left: -1rem;margin-top: 0.5rem"/>
-                                Добро пожаловать! </h1>
+                                Ласкаво просимо! </h1>
                             <h2><span class="side-img left-side-img"><i></i><i></i><i></i></span> consectetuer
                                 adipiscing <span class="side-img right-side-img"><i></i><i></i><i></i></span></h2>
                             <p> Lorem ipsum dolor sit amet consectetuer adipiscing </p>
@@ -119,7 +120,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    <h2 class="block-title"> О нас <span class="side-img right-side-img"><i></i><i></i><i></i></span>
+                    <h2 class="block-title"> Про нас <span class="side-img right-side-img"><i></i><i></i><i></i></span>
                     </h2>
                     <h3> Всё началось примерно так... </h3>
                     <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusm incididunt ut labore et
@@ -244,9 +245,9 @@
                     <div class="  footer-content" style="display: flex;justify-content: space-around">
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <div class="contact-us">
-                                <h3 class="footer-title">Связаться с нами</h3>
+                                <h3 class="footer-title">Зв'язатися з нами</h3>
                                 <ul>
-                                    <li><i class="fa fa-map-marker"></i> <span> Одесса, ул. Красная, 121 </span>
+                                    <li><i class="fa fa-map-marker"></i> <span> Одесса, вул. Красна, 121 </span>
                                     </li>
                                     <li><i class="fa fa-phone"></i> <span> +380 98 765 42 10 </span></li>
                                     <li><i class="fa fa-envelope-o"></i> <a href="#"> support@food.com </a></li>
@@ -255,12 +256,12 @@
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                             <div class="opening-hours">
-                                <h3 class="footer-title">Мы работаем</h3>
+                                <h3 class="footer-title">Ми працюємо</h3>
                                 <h6><i class="fa fa-calendar-minus-o" aria-hidden="true"></i>
-                                    <span>Понедельник - Четверг <br/> 10:00 - 19:00 </span>
+                                    <span>Понеділок - Четвер <br/> 10:00 - 19:00 </span>
                                 </h6>
                                 <h6><i class="fa fa-calendar-minus-o" aria-hidden="true"></i>
-                                    <span>Пятница - Суббота <br/> 10:00  - 17:00 </span>
+                                    <span>П'ятниця - Субота <br/> 10:00  - 17:00 </span>
                                 </h6>
                             </div>
                         </div>

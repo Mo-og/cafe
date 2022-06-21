@@ -10,16 +10,16 @@
     <div class="container-lg">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
-                <th:block th:replace="fragments :: headline('Изменение данных блюда')"/>
+                <th:block th:replace="fragments :: headline('Зміна даних страви')"/>
                 <h4 class="block-title text-align-center">
-                    Измените необходимые поля и нажмите кнопку 'Сохранить блюдо'
+                    Змініть необхідні поля та натисніть кнопку "Зберегти зміни"
                 </h4>
                 <form enctype="multipart/form-data" method="post" th:action="@{/dish_update}" th:object="${dish}">
                     <input class="form-control" id="id" th:field="*{id}" th:value="${dish.id}" type="hidden">
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="name">Название блюда</label>
+                                <label for="name">Назва страви</label>
                                 <input class="form-control" id="name" placeholder="" required
                                        th:field="*{name}"
                                        th:value="${dish.name}" type="text">
@@ -28,7 +28,7 @@
                             </div>
 
                             <div class="col-md-3 mb-3">
-                                <label for="weight">Вес</label>
+                                <label for="weight">Вага</label>
                                 <input class="form-control" id="weight" placeholder="" required
                                        th:field="*{weight}"
                                        th:value="${dish.weight}" type="number">
@@ -37,7 +37,7 @@
                             </div>
 
                             <div class="col-md-3 mb-3">
-                                <label for="price">Цена</label>
+                                <label for="price">Ціна</label>
                                 <input class="form-control" id="price" required th:field="*{price}"
                                        th:value="${dish.price}" type="number">
                                 <small class="text-danger" th:errors="*{price}"
@@ -47,7 +47,7 @@
 
                         <div class="row">
                             <div class="col-md-9 mb-3">
-                                <label for="ingredients">Ингредиенты</label>
+                                <label for="ingredients">Склад/Опис</label>
                                 <input class="form-control" id="ingredients" th:field="*{ingredients}"
                                        th:value="${dish.ingredients}" type="text">
                             </div>
@@ -55,7 +55,7 @@
                             <div class="col-md-3 mb-3">
                                 <label for="category">
                                     <a style="color: black; text-decoration: underline" th:href="@{/categories}">
-                                        Категория<img alt="gear icon" height="20px" src="../images/conf.png"
+                                        Категорія<img alt="gear icon" height="20px" src="../images/conf.png"
                                                       style="margin-left: 5px;" width="20px">
                                     </a>
                                 </label>
@@ -68,7 +68,7 @@
                         </div>
                         <div class="row mb-3">
                             <label class="col-md-4 mb-3" for="inputFile">
-                                <div class="up mb-1">Изображение блюда</div>
+                                <div class="up mb-1">Зображення страви</div>
                                 <div class="image-box zoom"
                                      th:styleappend="${dish.imagePath}==null?'':('background-image: url('+${dish.imagePath}+')')"></div>
                             </label>
@@ -86,14 +86,14 @@
                         <div class="d-flex">
                             <div style="flex: 1"></div>
                             <button class="btn btn-outline-secondary mx-1" style="margin-right: 1rem;" type="submit"
-                                    value="Submit">Отключить
+                                    value="Submit">Вимкнути
                             </button>
                             <button class="btn btn-warning mx-1" style="margin-right: 1rem;" type="submit"
-                                    value="Submit">Сохранить блюдо
+                                    value="Submit">Зберегти зміни
                             </button>
 
                             <button class="btn btn-danger" th:onclick="'javascript:sure(\'' + ${dish.id} + '\');'"
-                                    type="button">Удалить
+                                    type="button">Видалити
                             </button>
                         </div>
                     </div>
