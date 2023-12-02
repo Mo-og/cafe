@@ -13,12 +13,9 @@ spring:
   datasource:
     platform: postgres
 
-    url: jdbc:postgresql://localhost:5432/cafe
+    url: jdbc:postgresql://localhost:5432/test
     username: postgres
-    password: '74553211'
-    #    url: jdbc:postgresql://ec2-52-31-201-170.eu-west-1.compute.amazonaws.com:5432/d2d8d57ghtt4gq
-    #    username: jtwicqhtmnwkyw
-    #    password: 'c8d17b9e6c8a6e4d7247e675c198337263fd5ef3638736f564f7609e76ec3e23'
+    password: postgres
     driverClassName: org.postgresql.Driver
   servlet:
     multipart:

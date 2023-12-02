@@ -1,5 +1,13 @@
 package ua.cafe.models;
 
+import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -7,14 +15,11 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.*;
-import javax.validation.constraints.Pattern;
-import java.util.Objects;
-
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "dish_category")
 public class Category implements Comparable<Category> {
