@@ -30,7 +30,7 @@ import ua.cafe.utils.Stats;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Dish implements Comparable<Dish> {
+public class Dish implements Comparable<Dish>, Cloneable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,7 +55,8 @@ public class Dish implements Comparable<Dish> {
     @ToString.Exclude
     private List<Detail> details = new ArrayList<>();
 
-  public Dish(Category category, String name, int weight, double price, String ingredients) {
+  public Dish(long id, Category category, String name, int weight, double price, String ingredients) {
+    this.id = id;
     this.category = category;
     this.name = name;
     this.weight = weight;

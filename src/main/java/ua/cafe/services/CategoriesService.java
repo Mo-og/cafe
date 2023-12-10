@@ -1,20 +1,20 @@
 package ua.cafe.services;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ua.cafe.models.Category;
 import ua.cafe.models.Dish;
 import ua.cafe.repositories.CategoriesRepository;
-
-import java.util.List;
 
 @Service
 public class CategoriesService {
 
     private CategoriesRepository repository;
 
-    @Autowired
-    public void setRepository(CategoriesRepository repository) {
+  @Autowired(required = false)
+  public void setRepository(@Lazy CategoriesRepository repository) {
         this.repository = repository;
     }
 

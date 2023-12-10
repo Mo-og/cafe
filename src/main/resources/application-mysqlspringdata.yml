@@ -12,7 +12,6 @@ spring:
         show_sql: true
   datasource:
     platform: postgres
-
     url: jdbc:postgresql://localhost:5432/test
     username: postgres
     password: postgres

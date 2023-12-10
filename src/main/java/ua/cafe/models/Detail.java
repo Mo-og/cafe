@@ -2,16 +2,23 @@ package ua.cafe.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.Objects;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.cafe.services.DishService;
 import ua.cafe.services.OrderService;
-
-import javax.persistence.*;
-import javax.validation.constraints.Min;
-import java.util.Objects;
 
 @Entity
 @Table(name = "details")
@@ -46,7 +53,12 @@ public class Detail {
     private String comment;
     private ReadyStatus status = ReadyStatus.NEW;
 
-    @Autowired
+  public Detail(Dish dish, Order order) {
+    setDish(dish);
+    setOrder(order);
+  }
+
+  @Autowired
     @JsonIgnore
     public void setService(DishService service) {
         dishService = service;
